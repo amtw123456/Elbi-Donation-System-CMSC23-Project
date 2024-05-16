@@ -1,6 +1,6 @@
 import 'package:elbi_donation_app/views/auth_views/landing.dart';
 import 'package:flutter/material.dart';
-import 'package:elbi_donation_app/views/user_home_screen.dart';
+import 'package:elbi_donation_app/views/user_views/user_home_page.dart';
 
 void main() {
   runApp(const MyApp());
