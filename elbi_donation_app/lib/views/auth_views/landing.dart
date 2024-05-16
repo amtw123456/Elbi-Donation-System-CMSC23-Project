@@ -28,22 +28,25 @@ class LandingPage extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white)),
+                            color: Colors.white,
+                            fontFamily: "Poppins")),
                     TextSpan(
                         text: 'Bigay',
                         style: TextStyle(
                             fontSize: 36,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white))
+                            color: Colors.white,
+                            fontFamily: "Poppins"))
                   ])),
                   Text(
                     'Make a difference. Together.',
-                    style: TextStyle(fontSize: 16, color: Colors.white),
+                    style: TextStyle(fontSize: 16, color: Colors.white, fontFamily: "Poppins"),
                   )
                 ],
               ),
             )),
             SizedBox(
+              height: 50,
               width: double.infinity,
               child: FilledButton(
                   style: OutlinedButton.styleFrom(
@@ -55,12 +58,15 @@ class LandingPage extends StatelessWidget {
                         builder: (context) => const SignUpDonorPage()));
                   },
                   child: const Text('Get Started',
-                      style: TextStyle(color: Color(0xff4cba8b)))),
+                      style: TextStyle(color: Color(0xff4cba8b), fontFamily: "Poppins"))),
             ),
+            SizedBox(height: 10),
             SizedBox(
+              height: 50,
               width: double.infinity,
               child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: Colors.white),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4))),
                   onPressed: () {
@@ -69,7 +75,7 @@ class LandingPage extends StatelessWidget {
                   },
                   child: const Text(
                     'I already have an account',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.white, fontFamily: "Poppins"),
                   )),
             ),
           ],

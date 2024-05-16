@@ -19,9 +19,7 @@ class SignUpDonorPage extends StatelessWidget {
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
                 ),
                 const Text('Create your account so you can start donating.'),
-                const SizedBox(
-                  height: 48,
-                ),
+                const SizedBox(height: 20,),
                 const Text(
                   'Personal',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
@@ -99,12 +97,20 @@ class SignUpDonorPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 48,
+                  height: 20,
                 ),
                 SizedBox(
                     width: double.infinity,
-                    child: FilledButton(
-                        onPressed: () {}, child: const Text('Sign up'))),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.all(20),
+                        backgroundColor: Color(0xFF37A980),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(2),
+                        )
+                      ), 
+                      onPressed: () {}, 
+                      child: const Text('Sign up', style: TextStyle(color: Colors.white, fontFamily: "Poppins"),))),
                 Row(
                   children: [
                     const Text('Want to sign up as an organization?'),

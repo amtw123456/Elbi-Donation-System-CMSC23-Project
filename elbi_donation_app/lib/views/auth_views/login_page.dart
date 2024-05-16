@@ -56,12 +56,16 @@ class LoginPage extends StatelessWidget {
                 ),
                 SizedBox(
                     width: double.infinity,
-                    child: FilledButton(
-                        style: OutlinedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4))),
-                        onPressed: () {},
-                        child: const Text('Login'))),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.all(20),
+                        backgroundColor: Color(0xFF37A980),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(2),
+                        )
+                      ), 
+                      onPressed: () {},
+                      child: const Text('Login', style: TextStyle(color: Colors.white, fontFamily: "Poppins")))),
               ],
             ),
           ),
