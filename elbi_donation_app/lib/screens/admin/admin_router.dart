@@ -1,4 +1,5 @@
 import 'package:elbi_donation_app/screens/admin/admin_nav_bar.dart';
+import 'package:elbi_donation_app/screens/admin/admin_profile.dart';
 import 'package:flutter/material.dart';
 
 import 'admin_donors_page.dart';
@@ -51,7 +52,7 @@ class _AdminRouterState extends State<AdminRouter> {
       case 1:
         return const AdminDonorsPage();
       case 2:
-        // return const AdminProfilePage();
+        return const AdminProfile();
       default:
         return const SizedBox.shrink();
     }
