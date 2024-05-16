@@ -64,19 +64,21 @@ class _OrganizationDonationDetailsPageState
               ),
             ),
             SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                    style: OutlinedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4))),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const DonateGoodsPage(),
-                        ),
-                      );
-                    },
-                    child: const Text('Donate'))),
+              width: double.infinity,
+              child: FilledButton(
+                style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4))),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const DonateGoodsPage(),
+                    ),
+                  );
+                },
+                child: const Text('Donate'),
+              ),
+            ),
           ],
         ),
       ),
