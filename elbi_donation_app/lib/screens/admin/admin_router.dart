@@ -22,13 +22,13 @@ class _AdminRouterState extends State<AdminRouter> {
     // Use Navigator to navigate to different screens
     switch (index) {
       case 0:
-        Navigator.pushNamed(context, '/admin/organizations');
+        // Navigator.pushNamed(context, '/admin/organizations');
         break;
       case 1:
-        Navigator.pushNamed(context, '/admin/donors');
+        // Navigator.pushNamed(context, '/admin/donors');
         break;
       case 2:
-        Navigator.pushNamed(context, '/admin/profile');
+        // Navigator.pushNamed(context, '/admin/profile');
         break;
     }
   }
