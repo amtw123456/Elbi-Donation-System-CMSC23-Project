@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -67,7 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
-
                               fontSize: 16.0, // Adjust the font size as needed
                             ),
                           ),
