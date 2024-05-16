@@ -1,3 +1,4 @@
+import 'package:elbi_donation_app/views/auth_views/sign_up_legit_page.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -53,7 +54,12 @@ class SignUpPage extends StatelessWidget {
                 Row(
                   children: [
                     const Text('Want to sign up as an organization?'),
-                    TextButton(onPressed: () {}, child: const Text('Sign up'))
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const SignUpLegitPage()));
+                        },
+                        child: const Text('Sign up'))
                   ],
                 )
               ],
