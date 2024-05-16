@@ -9,8 +9,10 @@ class LandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: const Color(0xff35aa80),
         padding: const EdgeInsets.all(36),
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('images/landing_bg.png'), fit: BoxFit.cover)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -45,15 +47,15 @@ class LandingPage extends StatelessWidget {
               width: double.infinity,
               child: FilledButton(
                   style: OutlinedButton.styleFrom(
+                      backgroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4))),
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const SignUpDonorPage()));
                   },
-                  child: const Text(
-                    'Get Started',
-                  )),
+                  child: const Text('Get Started',
+                      style: TextStyle(color: Color(0xff4cba8b)))),
             ),
             SizedBox(
               width: double.infinity,
