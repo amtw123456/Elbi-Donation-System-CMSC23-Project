@@ -21,11 +21,29 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(
                   height: 48,
                 ),
-                TextFormField(
-                  decoration: const InputDecoration(hintText: 'Email'),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: 'Email',
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                      ),
+                    ),
+                  ),
                 ),
-                TextFormField(
-                  decoration: const InputDecoration(hintText: 'Password'),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: 'Password',
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                      ),
+                    ),
+                  ),
                 ),
                 Row(
                   children: [
@@ -39,7 +57,11 @@ class LoginPage extends StatelessWidget {
                 SizedBox(
                     width: double.infinity,
                     child: FilledButton(
-                        onPressed: () {}, child: const Text('Login'))),
+                        style: OutlinedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4))),
+                        onPressed: () {},
+                        child: const Text('Login'))),
               ],
             ),
           ),

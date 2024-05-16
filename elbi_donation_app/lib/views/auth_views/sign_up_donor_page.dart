@@ -26,23 +26,77 @@ class SignUpDonorPage extends StatelessWidget {
                   'Personal',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
-                TextFormField(
-                  decoration: const InputDecoration(hintText: 'First name'),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: 'First name',
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                      ),
+                    ),
+                  ),
                 ),
-                TextFormField(
-                  decoration: const InputDecoration(hintText: 'Last name'),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: 'Last name',
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                      ),
+                    ),
+                  ),
                 ),
-                TextFormField(
-                  decoration: const InputDecoration(hintText: 'Username'),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: 'Username',
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                      ),
+                    ),
+                  ),
                 ),
-                TextFormField(
-                  decoration: const InputDecoration(hintText: 'Email'),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: 'Email',
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                      ),
+                    ),
+                  ),
                 ),
-                TextFormField(
-                  decoration: const InputDecoration(hintText: 'Address'),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: 'Address',
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                      ),
+                    ),
+                  ),
                 ),
-                TextFormField(
-                  decoration: const InputDecoration(hintText: 'Contact number'),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: 'Contact number',
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                      ),
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   height: 48,
@@ -55,6 +109,9 @@ class SignUpDonorPage extends StatelessWidget {
                   children: [
                     const Text('Want to sign up as an organization?'),
                     TextButton(
+                        style: OutlinedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4))),
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => const SignUpOrgPage()));

@@ -25,12 +25,20 @@ class SignUpOrgPage extends StatelessWidget {
                   'Personal',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
-                TextFormField(
-                  decoration:
-                      const InputDecoration(hintText: 'Name of organization'),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: 'Name of organization',
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                      ),
+                    ),
+                  ),
                 ),
                 const SizedBox(
-                  height: 48,
+                  height: 32,
                 ),
                 const Text(
                   'Proof of legitimacy',
@@ -44,7 +52,11 @@ class SignUpOrgPage extends StatelessWidget {
                 SizedBox(
                     width: double.infinity,
                     child: FilledButton(
-                        onPressed: () {}, child: const Text('Sign up'))),
+                        style: OutlinedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4))),
+                        onPressed: () {},
+                        child: const Text('Sign up'))),
               ],
             ),
           ),
