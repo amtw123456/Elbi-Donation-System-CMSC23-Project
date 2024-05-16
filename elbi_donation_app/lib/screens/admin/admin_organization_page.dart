@@ -1,5 +1,6 @@
 import 'package:elbi_donation_app/components/organization_card.dart';
 import 'package:elbi_donation_app/screens/admin/admin_nav_bar.dart';
+import 'package:elbi_donation_app/screens/admin/admin_signups_page.dart';
 import 'package:flutter/material.dart';
 
 class AdminOrganizationPage extends StatefulWidget {
@@ -22,18 +23,24 @@ class _AdminOrganizationPageState extends State<AdminOrganizationPage> {
             SizedBox(height: 25),
             Text("Hello, admin 👋", style: TextStyle(fontFamily: 'Poppins', fontSize: 32, fontWeight: FontWeight.w700, color: Color(0xFF37A980))),
             Text("Here are the organizations that are accepting donations", style: TextStyle(fontFamily: 'Poppins', fontSize: 16)),
-            Container(
-                width: double.infinity,
-                child: Padding(
-                  child: Text("Pending sign ups", style: TextStyle(fontFamily: "Poppins", fontSize: 16),),
-                  padding: EdgeInsets.all(15),
-              ),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-                border: Border.all(color: Colors.grey, width: 1.0),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AdminSignups()));
+              },
+              child: Container(
+                  width: double.infinity,
+                  child: Padding(
+                    child: Text("Pending sign ups", style: TextStyle(fontFamily: "Poppins", fontSize: 16),),
+                    padding: EdgeInsets.all(15),
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  border: Border.all(color: Colors.grey, width: 1.0),
+                ),
               ),
             ),
+            
             Expanded(
               child: SingleChildScrollView(
                 child: Column(

@@ -27,12 +27,6 @@ class AdminOrganizationDetailsState extends State<AdminOrganizationDetails> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     Text('Details', style: TextStyle(fontFamily: 'Poppins', fontSize: 24, fontWeight: FontWeight.w700)),
-            //   ],
-            // ),
             SizedBox(height: 25),
             Container(
               height: 300,
