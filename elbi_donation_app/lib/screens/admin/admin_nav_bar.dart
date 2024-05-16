@@ -18,6 +18,7 @@ class _AdminNavBarState extends State<AdminNavBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      selectedItemColor: Color(0xFF37A980),
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
