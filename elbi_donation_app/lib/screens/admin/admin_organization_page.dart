@@ -19,9 +19,9 @@ class _AdminOrganizationPageState extends State<AdminOrganizationPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 25),
             Text("Hello, admin 👋", style: TextStyle(fontFamily: 'Poppins', fontSize: 32, fontWeight: FontWeight.w700, color: Color(0xFF37A980))),
             Text("Here are the organizations that are accepting donations", style: TextStyle(fontFamily: 'Poppins', fontSize: 16)),
-            SizedBox(height: 25),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(

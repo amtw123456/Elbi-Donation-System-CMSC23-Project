@@ -22,12 +22,6 @@ class AdminProfileState extends State<AdminProfile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Profile", style: TextStyle(fontFamily: 'Poppins', fontSize: 32, fontWeight: FontWeight.w700, color: Colors.black)),
-                ],
-              ),
               SizedBox(height: 25),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -108,14 +102,14 @@ class AdminProfileState extends State<AdminProfile> {
                     width: double.infinity,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.all(20),
+                        padding: EdgeInsets.all(10),
                         backgroundColor: Colors.red,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         )
                       ), 
                       onPressed: () {}, 
-                      child: const Text('Log out', style: TextStyle(color: Colors.white, fontFamily: "Poppins"),))),
+                      child: const Text('Log out', style: TextStyle(color: Colors.white, fontFamily: "Poppins", fontSize: 20)))),
                 ],
               )
             ],
