@@ -1,3 +1,4 @@
+import 'package:elbi_donation_app/views/auth_views/sign_up_page.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatelessWidget {
@@ -30,7 +31,10 @@ class LandingPage extends StatelessWidget {
               ),
             )),
             FilledButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const SignUpPage()));
+                },
                 child: const Text(
                   'Get Started',
                 )),
