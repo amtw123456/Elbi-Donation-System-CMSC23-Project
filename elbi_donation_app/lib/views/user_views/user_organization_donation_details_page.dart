@@ -62,6 +62,14 @@ class _OrganizationDonationDetailsPageState
                 fontSize: 12.0,
               ),
             ),
+            SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                    style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4))),
+                    onPressed: () {},
+                    child: const Text('Donate'))),
           ],
         ),
       ),
