@@ -1,4 +1,4 @@
-import 'package:elbi_donation_app/views/auth_views/sign_up_legit_page.dart';
+import 'package:elbi_donation_app/views/auth_views/sign_up_org_page.dart';
 import 'package:flutter/material.dart';
 
 class SignUpDonorPage extends StatelessWidget {

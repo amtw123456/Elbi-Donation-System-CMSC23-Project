@@ -1,5 +1,5 @@
 import 'package:elbi_donation_app/views/auth_views/login_page.dart';
-import 'package:elbi_donation_app/views/auth_views/sign_up_page.dart';
+import 'package:elbi_donation_app/views/auth_views/sign_up_donor_page.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatelessWidget {
