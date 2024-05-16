@@ -1,3 +1,4 @@
+import 'package:elbi_donation_app/views/auth_views/landing.dart';
 import 'package:flutter/material.dart';
 import 'package:elbi_donation_app/views/user_home_screen.dart';
 
@@ -12,8 +13,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      home: const HomeScreen(),
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+          useMaterial3: true,
+        ),
+        home: const LandingPage());
   }
 }
