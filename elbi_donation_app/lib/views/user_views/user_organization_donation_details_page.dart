@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:elbi_donation_app/views/user_views/user_donate_goods_page.dart';
 
 class OrganizationDonationDetailsPage extends StatefulWidget {
   const OrganizationDonationDetailsPage({super.key});
@@ -68,7 +69,13 @@ class _OrganizationDonationDetailsPageState
                     style: OutlinedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4))),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const DonateGoodsPage(),
+                        ),
+                      );
+                    },
                     child: const Text('Donate'))),
           ],
         ),
