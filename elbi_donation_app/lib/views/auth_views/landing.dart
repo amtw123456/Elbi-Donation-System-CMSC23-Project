@@ -10,7 +10,7 @@ class LandingPage extends StatelessWidget {
     return Scaffold(
       body: Container(
         color: const Color(0xff35aa80),
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(36),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -20,33 +20,56 @@ class LandingPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    'elBigay',
-                    style: TextStyle(fontSize: 48, color: Colors.white),
-                  ),
+                  Text.rich(TextSpan(children: [
+                    TextSpan(
+                        text: 'el',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white)),
+                    TextSpan(
+                        text: 'Bigay',
+                        style: TextStyle(
+                            fontSize: 36,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white))
+                  ])),
                   Text(
                     'Make a difference. Together.',
-                    style: TextStyle(fontSize: 24, color: Colors.white),
+                    style: TextStyle(fontSize: 16, color: Colors.white),
                   )
                 ],
               ),
             )),
-            FilledButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const SignUpDonorPage()));
-                },
-                child: const Text(
-                  'Get Started',
-                )),
-            OutlinedButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const LoginPage()));
-                },
-                child: const Text(
-                  'I already have an account',
-                )),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                  style: OutlinedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4))),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const SignUpDonorPage()));
+                  },
+                  child: const Text(
+                    'Get Started',
+                  )),
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4))),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const LoginPage()));
+                  },
+                  child: const Text(
+                    'I already have an account',
+                    style: TextStyle(color: Colors.white),
+                  )),
+            ),
           ],
         ),
       ),
