@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SignUpOrgPage extends StatelessWidget {
-  const SignUpOrgPage({super.key});
+class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,37 +14,32 @@ class SignUpOrgPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Help us get to know you',
+                  'Welcome back',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
                 ),
-                const Text('Create your account so you can start donating.'),
+                const Text('Login to continue'),
                 const SizedBox(
                   height: 48,
-                ),
-                const Text(
-                  'Personal',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 TextFormField(
-                  decoration:
-                      const InputDecoration(hintText: 'Name of organization'),
+                  decoration: const InputDecoration(hintText: 'Email'),
                 ),
-                const SizedBox(
-                  height: 48,
+                TextFormField(
+                  decoration: const InputDecoration(hintText: 'Password'),
                 ),
-                const Text(
-                  'Proof of legitimacy',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                Row(
+                  children: [
+                    const Text('Don\'t have an account yet?'),
+                    TextButton(onPressed: () {}, child: const Text('Sign up'))
+                  ],
                 ),
-                IconButton.outlined(
-                    onPressed: () {}, icon: const Icon(Icons.add)),
                 const SizedBox(
                   height: 48,
                 ),
                 SizedBox(
                     width: double.infinity,
                     child: FilledButton(
-                        onPressed: () {}, child: const Text('Sign up'))),
+                        onPressed: () {}, child: const Text('Login'))),
               ],
             ),
           ),

@@ -1,8 +1,8 @@
 import 'package:elbi_donation_app/views/auth_views/sign_up_legit_page.dart';
 import 'package:flutter/material.dart';
 
-class SignUpPage extends StatelessWidget {
-  const SignUpPage({super.key});
+class SignUpDonorPage extends StatelessWidget {
+  const SignUpDonorPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class SignUpPage extends StatelessWidget {
                     TextButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const SignUpLegitPage()));
+                              builder: (context) => const SignUpOrgPage()));
                         },
                         child: const Text('Sign up'))
                   ],
