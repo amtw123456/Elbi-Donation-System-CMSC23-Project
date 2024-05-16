@@ -1,3 +1,4 @@
+import 'package:elbi_donation_app/screens/admin/admin_org_details.dart';
 import 'package:flutter/material.dart';
 
 class OrganizationCard extends StatefulWidget {
@@ -11,7 +12,9 @@ class _OrganizationCardState extends State<OrganizationCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {print("clicked");},
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AdminOrganizationDetails()));
+      },
       child: Container(
         width: double.infinity,
         height: 300,
