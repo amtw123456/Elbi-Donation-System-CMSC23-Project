@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:elbi_donation_app/views/user_views/user_organization_donation_details_page.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class UserHomePage extends StatefulWidget {
+  const UserHomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<UserHomePage> createState() => _UserHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _UserHomePageState extends State<UserHomePage> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -70,9 +70,22 @@ class _HomePageState extends State<HomePage> {
                               fontSize: 16.0, // Adjust the font size as needed
                             ),
                           ),
-                          Text(
-                            "short description here. One or two sentences maybe",
-                          ),
+                          // Text(
+                          //   "short description here. One or two sentences maybe",
+                          // ),
+                          Center(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const OrganizationDonationDetailsPage(),
+                                  ),
+                                );
+                              },
+                              child: const Text("Go to Donation Details"),
+                            ),
+                          )
                         ],
                       ),
                     ),
