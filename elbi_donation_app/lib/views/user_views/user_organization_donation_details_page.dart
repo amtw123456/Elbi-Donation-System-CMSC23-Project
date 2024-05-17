@@ -18,7 +18,7 @@ class _UserOrganizationDetailsState
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true, // Add this line to center the title
-        title: Text("Details"),
+        title: Text("Details", style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w700),),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(
@@ -45,6 +45,7 @@ class _UserOrganizationDetailsState
             Text(
               "Organization Title here.",
               style: TextStyle(
+                fontFamily: 'Poppins',
                 color: Colors.black,
                 fontSize: 24.0, // Adjust the font size as needed
               ),
@@ -52,33 +53,44 @@ class _UserOrganizationDetailsState
             Text(
               "Contact Number.",
               style: TextStyle(
+                fontFamily: 'Poppins',
                 color: Colors.grey,
                 fontSize: 12.0,
               ),
             ),
-            Text(
-              "This is a description This is a description This is a description This is a description This is a description",
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 12.0,
+            Expanded(
+              child: Column(
+                children: [
+                  Text(
+                    "This is a description This is a description This is a description This is a description This is a description",
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      color: Colors.grey,
+                      fontSize: 12.0,
+                    ),
+                  ),
+                ],
               ),
             ),
             SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                style: OutlinedButton.styleFrom(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.all(10),
+                    backgroundColor: Color(0xFF37A980),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4))),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const DonateGoodsPage(),
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
                     ),
-                  );
-                },
-                child: const Text('Donate Now'),
-              ),
-            ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => DonateGoodsPage()));   
+                  },
+                  child: const Text(
+                    'Donate now',
+                    style: TextStyle(color: Colors.white, fontFamily: "Poppins", fontSize: 20),
+                  ),
+                ),
+              )
           ],
         ),
       ),
