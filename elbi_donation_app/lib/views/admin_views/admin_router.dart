@@ -1,5 +1,5 @@
-import 'package:elbi_donation_app/screens/admin/admin_nav_bar.dart';
-import 'package:elbi_donation_app/screens/admin/admin_profile.dart';
+import 'package:elbi_donation_app/views/admin_views/admin_nav_bar.dart';
+import 'package:elbi_donation_app/views/admin_views/admin_profile.dart';
 import 'package:flutter/material.dart';
 
 import 'admin_donors_page.dart';

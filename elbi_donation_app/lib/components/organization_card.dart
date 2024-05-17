@@ -1,4 +1,4 @@
-import 'package:elbi_donation_app/screens/admin/admin_org_details.dart';
+import 'package:elbi_donation_app/views/admin_views/admin_org_details.dart';
 import 'package:flutter/material.dart';
 
 class OrganizationCard extends StatefulWidget {

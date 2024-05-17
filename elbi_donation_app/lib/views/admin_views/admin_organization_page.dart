@@ -1,6 +1,6 @@
 import 'package:elbi_donation_app/components/organization_card.dart';
-import 'package:elbi_donation_app/screens/admin/admin_nav_bar.dart';
-import 'package:elbi_donation_app/screens/admin/admin_signups_page.dart';
+import 'package:elbi_donation_app/views/admin_views/admin_nav_bar.dart';
+import 'package:elbi_donation_app/views/admin_views/admin_signups_page.dart';
 import 'package:flutter/material.dart';
 
 class AdminOrganizationPage extends StatefulWidget {

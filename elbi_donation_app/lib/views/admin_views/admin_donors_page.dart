@@ -26,15 +26,7 @@ class _AdminDonorsPageState extends State<AdminDonorsPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    ListView.separated(
-                      separatorBuilder: (BuildContext context, int index) => SizedBox(height: 10),
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return UserCard();
-                      },
-                    ),
+
                   ],
                 ),
               ),
