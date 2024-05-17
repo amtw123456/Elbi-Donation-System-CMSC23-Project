@@ -317,7 +317,9 @@ packages:
       sha256: b3d56ff4341b8f182b96aceb2fa20e3dcb336b9f867bc0eafc0de10f1048e957
       url: "https://pub.dev"
     source: hosted
+<<<<<<< HEAD
     version: "13.0.0"
+=======
     version: "14.2.1"
   web:
     dependency: transitive
@@ -327,5 +329,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.1"
+>>>>>>> bd6ea44 (chore: connected the project to firebase)
 sdks:
   dart: ">=3.3.4 <4.0.0"
