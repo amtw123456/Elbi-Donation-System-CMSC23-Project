@@ -4,10 +4,11 @@ class UserModel {
   String? id;
   String? firstName;
   String? lastName;
-  String? username;
+  String? username; // can be used for org name
   String email;
   String? address;
   String? contactNumber;
+  String? type;
 
   UserModel(
       {this.id,
@@ -16,7 +17,8 @@ class UserModel {
       this.username,
       required this.email,
       this.address,
-      this.contactNumber});
+      this.contactNumber,
+      this.type});
 
   // Factory constructor to instantiate object from json format
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -28,6 +30,7 @@ class UserModel {
       email: json['email'],
       address: json['address'],
       contactNumber: json['contactNumber'],
+      type: json['type'],
     );
   }
 
@@ -44,7 +47,8 @@ class UserModel {
       'username': userModel.username,
       'email': userModel.email,
       'address': userModel.address,
-      'contactNumber': userModel.contactNumber
+      'contactNumber': userModel.contactNumber,
+      'type': userModel.type
     };
   }
 }
