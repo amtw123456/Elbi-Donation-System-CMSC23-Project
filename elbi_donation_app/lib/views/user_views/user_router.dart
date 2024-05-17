@@ -1,6 +1,7 @@
 import 'package:elbi_donation_app/components/user_navbar.dart';
 import 'package:elbi_donation_app/views/user_views/user_donation_history_page.dart';
 import 'package:elbi_donation_app/views/user_views/user_home_page.dart';
+import 'package:elbi_donation_app/views/user_views/user_profile_page.dart';
 import 'package:flutter/material.dart';
 
 class UserRouter extends StatefulWidget {
@@ -50,7 +51,7 @@ class _UserRouterState extends State<UserRouter> {
       case 1:
         return const UserDonationHistory();
       case 2:
-        // return const AdminProfile();
+        return const UserProfile();
       default:
         return const SizedBox.shrink();
     }
