@@ -99,13 +99,32 @@ class UserProfileState extends State<UserProfile> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.all(10),
+                        backgroundColor: Colors.grey,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                        )
+                      ), 
+                      onPressed: () {
+                        // TODO: add address
+                      }, 
+                      child: const Text('Add another address', style: TextStyle(color: Colors.white, fontFamily: "Poppins", fontSize: 20))
+                    )
+                  ),
+                  SizedBox(height: 10),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.all(10),
                         backgroundColor: Colors.red,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         )
                       ), 
                       onPressed: () {}, 
-                      child: const Text('Log out', style: TextStyle(color: Colors.white, fontFamily: "Poppins", fontSize: 20)))),
+                      child: const Text('Log out', style: TextStyle(color: Colors.white, fontFamily: "Poppins", fontSize: 20))
+                    )
+                  ),
                 ],
               )
             ],
