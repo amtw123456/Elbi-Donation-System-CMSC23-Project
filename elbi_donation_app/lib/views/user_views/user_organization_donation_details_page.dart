@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:elbi_donation_app/views/user_views/user_donate_goods_page.dart';
 
-class OrganizationDonationDetailsPage extends StatefulWidget {
-  const OrganizationDonationDetailsPage({super.key});
+class UserOrganizationDetails extends StatefulWidget {
+  const UserOrganizationDetails({super.key});
 
   @override
-  State<OrganizationDonationDetailsPage> createState() =>
-      _OrganizationDonationDetailsPageState();
+  State<UserOrganizationDetails> createState() =>
+      _UserOrganizationDetailsState();
 }
 
-class _OrganizationDonationDetailsPageState
-    extends State<OrganizationDonationDetailsPage> {
+class _UserOrganizationDetailsState
+    extends State<UserOrganizationDetails> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -76,7 +76,7 @@ class _OrganizationDonationDetailsPageState
                     ),
                   );
                 },
-                child: const Text('Donate'),
+                child: const Text('Donate Now'),
               ),
             ),
           ],
