@@ -1,6 +1,7 @@
 import 'package:elbi_donation_app/screens/admin/admin_router.dart';
+import 'package:elbi_donation_app/views/auth_views/landing.dart';
 import 'package:flutter/material.dart';
-import 'package:elbi_donation_app/views/user_home_screen.dart';
+import 'package:elbi_donation_app/views/user_views/user_home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,8 +14,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      home: AdminRouter(),
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Color(0xFF37A980)
+          ),
+          useMaterial3: true,
+        ),
+        home: const LandingPage());
   }
 }
