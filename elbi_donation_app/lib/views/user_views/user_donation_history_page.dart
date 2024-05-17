@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../components/donation_card.dart';
+import 'user_donate_details_page.dart';
 
 class UserDonationHistory extends StatefulWidget {
   const UserDonationHistory({super.key});
@@ -28,7 +29,12 @@ class _UserDonationHistoryState extends State<UserDonationHistory> {
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: 5,
                 itemBuilder: (context, index) {
-                  return DonationCard();
+                  return GestureDetector(
+                    child: DonationCard(),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => UserDonationDetails()));
+                    },
+                  );
                 },
               ),
             ],
