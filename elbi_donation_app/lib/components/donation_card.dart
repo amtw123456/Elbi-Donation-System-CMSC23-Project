@@ -30,6 +30,7 @@ class _DonationCardState extends State<DonationCard> {
           width: double.infinity,
           child: Text("Made on: 05/25/2003", style: TextStyle(fontFamily: 'Poppins', ),),
           decoration: BoxDecoration(
+            color: Colors.white,
             borderRadius: BorderRadius.circular(5),
             border: Border.all(
               color: Color(0xFFD2D2D2),
