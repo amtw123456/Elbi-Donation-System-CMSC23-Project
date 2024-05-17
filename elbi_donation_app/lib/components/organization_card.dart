@@ -11,11 +11,7 @@ class OrganizationCard extends StatefulWidget {
 class _OrganizationCardState extends State<OrganizationCard> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => AdminOrganizationDetails()));
-      },
-      child: Container(
+    return Container(
         width: double.infinity,
         height: 300,
         padding: EdgeInsets.all(16.0),
@@ -43,7 +39,6 @@ class _OrganizationCardState extends State<OrganizationCard> {
             Text('A short description here. One or two sentences maybe?'),
           ],
         ),
-      ) 
     );
   }
 }

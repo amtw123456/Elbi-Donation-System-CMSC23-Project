@@ -34,7 +34,12 @@ class _UserHomePageState extends State<UserHomePage> {
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: 5,
                       itemBuilder: (context, index) {
-                        return OrganizationCard();
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => UserOrganizationDetails()));                          
+                          },
+                          child: OrganizationCard(),
+                        ); 
                       },
                     ),
                   ],

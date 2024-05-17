@@ -1,5 +1,6 @@
 import 'package:elbi_donation_app/components/organization_card.dart';
 import 'package:elbi_donation_app/views/admin_views/admin_nav_bar.dart';
+import 'package:elbi_donation_app/views/admin_views/admin_org_details.dart';
 import 'package:elbi_donation_app/views/admin_views/admin_signups_page.dart';
 import 'package:flutter/material.dart';
 
@@ -51,7 +52,12 @@ class _AdminOrganizationPageState extends State<AdminOrganizationPage> {
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: 5,
                       itemBuilder: (context, index) {
-                        return OrganizationCard();
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => AdminOrganizationDetails())); 
+                          },
+                          child: OrganizationCard()
+                        ) ;
                       },
                     ),
                   ],
