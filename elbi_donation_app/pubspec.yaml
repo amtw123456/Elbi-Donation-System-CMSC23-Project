@@ -60,6 +60,9 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
   uses-material-design: true
   fonts:
+    - family: DonationIcons
+      fonts:
+        - asset: fonts/DonationIcons.ttf
     - family: Poppins
       fonts:
         - asset: fonts/Poppins-Regular.ttf
