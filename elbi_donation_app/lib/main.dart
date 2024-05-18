@@ -2,9 +2,14 @@ import 'package:elbi_donation_app/views/admin_views/admin_router.dart';
 import 'package:elbi_donation_app/views/auth_views/landing.dart';
 import 'package:elbi_donation_app/views/user_views/user_router.dart';
 import 'package:flutter/material.dart';
-import 'package:elbi_donation_app/views/user_views/user_home_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -15,11 +20,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
+        title: 'elBigay',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Color(0xFF37A980)
-          ),
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF37A980)),
           useMaterial3: true,
         ),
         home: UserRouter());
