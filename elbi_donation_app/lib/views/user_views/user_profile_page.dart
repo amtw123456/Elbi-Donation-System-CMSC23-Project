@@ -18,7 +18,7 @@ class UserProfileState extends State<UserProfile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 25),
+              SizedBox(height: 35),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -74,6 +74,7 @@ class UserProfileState extends State<UserProfile> {
                   Text("Saved addresses", style: TextStyle(fontFamily: "Poppins", fontSize: 16)),
                   // TODO: Iterate over addresses
                   ListView.separated(
+                    padding: EdgeInsets.zero,
                     separatorBuilder: (BuildContext context, int index) => SizedBox(height: 10),
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),

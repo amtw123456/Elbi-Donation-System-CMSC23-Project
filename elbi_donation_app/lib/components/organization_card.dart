@@ -13,7 +13,7 @@ class _OrganizationCardState extends State<OrganizationCard> {
   Widget build(BuildContext context) {
     return Container(
         width: double.infinity,
-        height: 300,
+        height: 400,
         padding: EdgeInsets.all(16.0),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -28,7 +28,7 @@ class _OrganizationCardState extends State<OrganizationCard> {
           children: [
             // image container
             Container(
-              height: 150,
+              height: 250,
               padding: EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 color: Colors.green,

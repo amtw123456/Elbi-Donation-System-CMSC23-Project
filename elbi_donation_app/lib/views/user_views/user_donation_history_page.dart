@@ -16,6 +16,7 @@ class _UserDonationHistoryState extends State<UserDonationHistory> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Donation History', style: TextStyle(fontFamily: 'Poppins', fontSize: 24, fontWeight: FontWeight.w700)),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
