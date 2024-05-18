@@ -58,18 +58,18 @@ class UserProfileState extends State<UserProfile> {
                   ),
                   SizedBox(height: 10),
                   Text("Contact number", style: TextStyle(fontFamily: "Poppins", fontSize: 16)),
-                    Container(
-                      width: double.infinity,
-                      child: Padding(
-                        child: Text("1234567890", style: TextStyle(fontFamily: "Poppins", fontSize: 16),),
-                        padding: EdgeInsets.all(15),
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      border: Border.all(color: Colors.grey, width: 1.0),
-                    ),
+                  Container(
+                    width: double.infinity,
+                    child: Padding(
+                      child: Text("1234567890", style: TextStyle(fontFamily: "Poppins", fontSize: 16),),
+                      padding: EdgeInsets.all(15),
                   ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    border: Border.all(color: Colors.grey, width: 1.0),
+                  ),
+                ),
                   SizedBox(height: 10),
                   Text("Saved addresses", style: TextStyle(fontFamily: "Poppins", fontSize: 16)),
                   // TODO: Iterate over addresses
@@ -110,7 +110,7 @@ class UserProfileState extends State<UserProfile> {
                       child: const Text('Add another address', style: TextStyle(color: Colors.white, fontFamily: "Poppins", fontSize: 20))
                     )
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
