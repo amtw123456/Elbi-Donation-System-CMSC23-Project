@@ -1,4 +1,6 @@
+import 'package:elbi_donation_app/views/admin_views/admin_router.dart';
 import 'package:elbi_donation_app/views/auth_views/landing.dart';
+import 'package:elbi_donation_app/views/user_views/user_router.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -23,6 +25,6 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF37A980)),
           useMaterial3: true,
         ),
-        home: const LandingPage());
+        home: UserRouter());
   }
 }
