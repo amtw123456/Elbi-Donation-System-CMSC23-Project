@@ -1,3 +1,4 @@
+import 'package:elbi_donation_app/views/auth_views/sign_up_donor_page.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 
@@ -5,6 +6,16 @@ class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
   final _formKey = GlobalKey<FormState>();
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  // @override
+  // void dispose() {
+  //   emailController.dispose();
+  //   passwordController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +40,7 @@ class LoginPage extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: TextFormField(
+                      controller: emailController,
                       validator: ValidationBuilder().email().build(),
                       decoration: const InputDecoration(
                         hintText: 'Email',
@@ -42,6 +54,7 @@ class LoginPage extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: TextFormField(
+                      controller: passwordController,
                       obscureText: true,
                       validator: ValidationBuilder().minLength(8).build(),
                       decoration: const InputDecoration(
@@ -56,7 +69,12 @@ class LoginPage extends StatelessWidget {
                   Row(
                     children: [
                       const Text('Don\'t have an account yet?'),
-                      TextButton(onPressed: () {}, child: const Text('Sign up'))
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const SignUpDonorPage()));
+                          },
+                          child: const Text('Sign up'))
                     ],
                   ),
                   const SizedBox(

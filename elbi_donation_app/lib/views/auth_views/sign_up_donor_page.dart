@@ -14,6 +14,30 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
 
   final _formKey = GlobalKey<FormState>();
 
+  // controllers
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController contactNumberController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController organizationNameController =
+      TextEditingController();
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    usernameController.dispose();
+    emailController.dispose();
+    addressController.dispose();
+    contactNumberController.dispose();
+    passwordController.dispose();
+    organizationNameController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +65,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: TextFormField(
+                      controller: firstNameController,
                       validator: ValidationBuilder().build(),
                       decoration: const InputDecoration(
                         hintText: 'First name',
@@ -54,6 +79,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: TextFormField(
+                      controller: lastNameController,
                       validator: ValidationBuilder().build(),
                       decoration: const InputDecoration(
                         hintText: 'Last name',
@@ -67,6 +93,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: TextFormField(
+                      controller: usernameController,
                       validator: ValidationBuilder().build(),
                       decoration: const InputDecoration(
                         hintText: 'Username',
@@ -80,6 +107,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: TextFormField(
+                      controller: emailController,
                       validator: ValidationBuilder().email().build(),
                       decoration: const InputDecoration(
                         hintText: 'Email',
@@ -93,6 +121,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: TextFormField(
+                      controller: addressController,
                       validator: ValidationBuilder().build(),
                       decoration: const InputDecoration(
                         hintText: 'Address',
@@ -106,6 +135,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: TextFormField(
+                      controller: contactNumberController,
                       validator: ValidationBuilder().build(),
                       decoration: const InputDecoration(
                         hintText: 'Contact number',
@@ -119,6 +149,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: TextFormField(
+                      controller: passwordController,
                       obscureText: true,
                       validator: ValidationBuilder().minLength(8).build(),
                       decoration: const InputDecoration(
@@ -145,6 +176,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                     Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: TextFormField(
+                        controller: organizationNameController,
                         validator: ValidationBuilder().build(),
                         decoration: const InputDecoration(
                           hintText: 'Organization name',
