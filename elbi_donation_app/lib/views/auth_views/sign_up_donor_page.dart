@@ -1,9 +1,11 @@
 import 'package:elbi_donation_app/views/auth_views/sign_up_org_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/user_provider.dart';
+import '../../models/user_model.dart';
 
 class SignUpDonorPage extends StatefulWidget {
   const SignUpDonorPage({super.key});
@@ -215,11 +217,31 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                 const SnackBar(content: Text('Successful!')),
                               );
                               // TODO: just do the authentication here
-                              await context
+                              String? userId = await context
                                   .read<UserAuthProvider>()
                                   .authService
                                   .signUp(emailController.text,
                                       passwordController.text);
+
+                              print(userId);
+
+                              UserModel user = UserModel(
+                                  id: userId,
+                                  firstName: firstNameController.text,
+                                  lastName: lastNameController.text,
+                                  username: usernameController.text,
+                                  orgName: "",
+                                  email: emailController.text,
+                                  address: addressController.text,
+                                  contactNumber: contactNumberController.text,
+                                  type: "");
+
+                              await context
+                                  .read<UserProvider>()
+                                  .firebaseService
+                                  .addUserModel(
+                                    user.toJson(user),
+                                  );
                             }
                           },
                           child: const Text(
