@@ -1,5 +1,3 @@
-import 'package:elbi_donation_app/views/auth_views/sign_up_org_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:provider/provider.dart';
@@ -214,29 +212,46 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               // TODO: just do the authentication here
-                              await context.read<UserAuthProvider>().signUp(
-                                  emailController.text,
-                                  passwordController.text);
+                              try {
+                                Map<String, dynamic> result;
+                                result = await context
+                                    .read<UserAuthProvider>()
+                                    .signUp(emailController.text,
+                                        passwordController.text);
 
-                              UserModel userModel = UserModel(
-                                  id: const Uuid().v4(),
-                                  firstName: firstNameController.text,
-                                  lastName: lastNameController.text,
-                                  username: usernameController.text,
-                                  orgName: organizationNameController.text,
-                                  email: emailController.text,
-                                  address: addressController.text,
-                                  contactNumber: contactNumberController.text,
-                                  type: _isOrganization
-                                      ? "organization"
-                                      : "donor",
-                                  isApprovedByAdmin:
-                                      _isOrganization ? false : null);
+                                if (!result['success']) {
+                                  throw result['error'];
+                                }
 
-                              if (context.mounted) {
-                                context
-                                    .read<UserProvider>()
-                                    .addUserModel(userModel);
+                                UserModel userModel = UserModel(
+                                    id: const Uuid().v4(),
+                                    firstName: firstNameController.text,
+                                    lastName: lastNameController.text,
+                                    username: usernameController.text,
+                                    orgName: organizationNameController.text,
+                                    email: emailController.text,
+                                    address: addressController.text,
+                                    contactNumber: contactNumberController.text,
+                                    type: _isOrganization
+                                        ? "organization"
+                                        : "donor",
+                                    isApprovedByAdmin:
+                                        _isOrganization ? false : null);
+
+                                if (context.mounted) {
+                                  result = await context
+                                      .read<UserProvider>()
+                                      .addUserModel(userModel);
+
+                                  if (!result['success']) {
+                                    throw result['error'];
+                                  }
+                                }
+                              } catch (e) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(e.toString())));
+                                }
                               }
                             }
                           },
