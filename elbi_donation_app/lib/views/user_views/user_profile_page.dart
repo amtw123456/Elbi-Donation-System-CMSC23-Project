@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../providers/auth_provider.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -8,11 +10,7 @@ class UserProfile extends StatefulWidget {
 }
 
 class UserProfileState extends State<UserProfile> {
-  List<String> _savedAddresses = [
-    "Address 1",
-    "Address 2",
-    "Address 3"
-  ];
+  List<String> _savedAddresses = ["Address 1", "Address 2", "Address 3"];
 
   TextEditingController _addressController = TextEditingController();
 
@@ -78,7 +76,8 @@ class UserProfileState extends State<UserProfile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // FOR NAME
-                  Text("Name", style: TextStyle(fontFamily: "Poppins", fontSize: 16)),
+                  Text("Name",
+                      style: TextStyle(fontFamily: "Poppins", fontSize: 16)),
                   Container(
                     width: double.infinity,
                     child: Padding(
@@ -95,7 +94,8 @@ class UserProfileState extends State<UserProfile> {
                     ),
                   ),
                   SizedBox(height: 10),
-                  Text("Email", style: TextStyle(fontFamily: "Poppins", fontSize: 16)),
+                  Text("Email",
+                      style: TextStyle(fontFamily: "Poppins", fontSize: 16)),
                   Container(
                     width: double.infinity,
                     child: Padding(
@@ -112,7 +112,8 @@ class UserProfileState extends State<UserProfile> {
                     ),
                   ),
                   SizedBox(height: 10),
-                  Text("Contact number", style: TextStyle(fontFamily: "Poppins", fontSize: 16)),
+                  Text("Contact number",
+                      style: TextStyle(fontFamily: "Poppins", fontSize: 16)),
                   Container(
                     width: double.infinity,
                     child: Padding(
@@ -129,11 +130,13 @@ class UserProfileState extends State<UserProfile> {
                     ),
                   ),
                   SizedBox(height: 10),
-                  Text("Saved addresses", style: TextStyle(fontFamily: "Poppins", fontSize: 16)),
+                  Text("Saved addresses",
+                      style: TextStyle(fontFamily: "Poppins", fontSize: 16)),
                   // Iterate over addresses
                   ListView.separated(
                     padding: EdgeInsets.zero,
-                    separatorBuilder: (BuildContext context, int index) => SizedBox(height: 10),
+                    separatorBuilder: (BuildContext context, int index) =>
+                        SizedBox(height: 10),
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: _savedAddresses.length,
@@ -144,7 +147,8 @@ class UserProfileState extends State<UserProfile> {
                           padding: EdgeInsets.all(15),
                           child: Text(
                             _savedAddresses[index],
-                            style: TextStyle(fontFamily: "Poppins", fontSize: 16),
+                            style:
+                                TextStyle(fontFamily: "Poppins", fontSize: 16),
                           ),
                         ),
                         decoration: BoxDecoration(
@@ -169,7 +173,10 @@ class UserProfileState extends State<UserProfile> {
                       onPressed: _showAddAddressDialog,
                       child: const Text(
                         'Add another address',
-                        style: TextStyle(color: Colors.white, fontFamily: "Poppins", fontSize: 20),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "Poppins",
+                            fontSize: 20),
                       ),
                     ),
                   ),
@@ -184,10 +191,15 @@ class UserProfileState extends State<UserProfile> {
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        context.read<UserAuthProvider>().signOut();
+                      },
                       child: const Text(
                         'Log out',
-                        style: TextStyle(color: Colors.white, fontFamily: "Poppins", fontSize: 20),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "Poppins",
+                            fontSize: 20),
                       ),
                     ),
                   ),
