@@ -39,4 +39,22 @@ class FirebaseDonorAPI {
     }
     return null;
   }
+
+// get all donations that the donor has sent
+  Future<List<DonationModel>?> getAllDonations(String donorId) async {
+    try {
+      List<DonationModel> donations = [];
+      final snapshots = await db
+          .collection("donationModels")
+          .where("donorId", isEqualTo: donorId)
+          .get();
+      for (var snapshot in snapshots.docs) {
+        donations.add(DonationModel.fromJson(snapshot.data()));
+      }
+      return donations;
+    } on FirebaseException catch (e) {
+      print("Error in ${e.code}: ${e.message}");
+    }
+    return null;
+  }
 }

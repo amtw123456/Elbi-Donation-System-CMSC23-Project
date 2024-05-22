@@ -1,6 +1,8 @@
 class DonationModel {
   String? id;
   String? donatorId;
+  // which organization would it be sent to
+  String? organizationId;
   // could be 'Food', 'Clothes', 'Cash', 'Necessities', or others
   List<String>? categories;
   // string that could be a pickup or dropoff
@@ -20,6 +22,7 @@ class DonationModel {
   DonationModel(
       {this.id,
       this.donatorId,
+      this.organizationId,
       this.categories,
       this.isPickupOrDropoff,
       this.weight,
@@ -33,6 +36,7 @@ class DonationModel {
     return DonationModel(
       id: json['id'],
       donatorId: json['donatorId'],
+      organizationId: json['organizationId'],
       categories: json['categories'],
       isPickupOrDropoff: json['isPickupOrDropoff'],
       weight: json['weight'],
@@ -47,6 +51,7 @@ class DonationModel {
     return {
       'id': donationModel.id,
       'donatorId': donationModel.donatorId,
+      'organizationId': donationModel.organizationId,
       'categories': donationModel.categories,
       'isPickupOrDropoff': donationModel.isPickupOrDropoff,
       'weight': donationModel.weight,
