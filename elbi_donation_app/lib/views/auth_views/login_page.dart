@@ -98,19 +98,14 @@ class _LoginPageState extends State<LoginPage> {
                                 borderRadius: BorderRadius.circular(2),
                               )),
                           onPressed: () async {
-                            // TODO: do the authentication here
-                            if (await context
-                                    .read<UserAuthProvider>()
-                                    .authService
-                                    .signIn(emailController.text,
-                                        passwordController.text) ==
-                                'Success') {
-                              Navigator.pop(context);
-                            } else {
+                            // TODO: add verification if the login is successful
+                            await context.read<UserAuthProvider>().signIn(
+                                emailController.text, passwordController.text);
+                            if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Invalid User Credentials')),
-                              );
+                                  const SnackBar(
+                                      content:
+                                          Text('Successfully logged in!')));
                             }
                           },
                           child: const Text('Login',
