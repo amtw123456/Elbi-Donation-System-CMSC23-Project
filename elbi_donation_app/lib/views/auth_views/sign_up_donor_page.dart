@@ -230,7 +230,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                   firstName: firstNameController.text,
                                   lastName: lastNameController.text,
                                   username: usernameController.text,
-                                  orgName: "",
+                                  orgName: organizationNameController.text,
                                   email: emailController.text,
                                   address: addressController.text,
                                   contactNumber: contactNumberController.text,
