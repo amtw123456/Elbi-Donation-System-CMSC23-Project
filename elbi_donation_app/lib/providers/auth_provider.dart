@@ -19,18 +19,18 @@ class UserAuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> signUp(String email, String password) async {
-    await authService.signUp(email, password);
-    notifyListeners();
+  Future<Map<String, dynamic>> signUp(String email, String password) async {
+    final result = await authService.signUp(email, password);
+    return result;
   }
 
-  Future<void> signIn(String email, String password) async {
-    await authService.signIn(email, password);
-    notifyListeners();
+  Future<Map<String, dynamic>> signIn(String email, String password) async {
+    final result = await authService.signIn(email, password);
+    return result;
   }
 
-  Future<void> signOut() async {
-    await authService.signOut();
-    notifyListeners();
+  Future<Map<String, dynamic>> signOut() async {
+    final result = await authService.signOut();
+    return result;
   }
 }
