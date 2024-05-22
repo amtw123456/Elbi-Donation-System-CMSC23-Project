@@ -211,6 +211,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text('Successful!')),
                               );
+                              // TODO: just do the authentication here
                             }
                           },
                           child: const Text(
