@@ -42,4 +42,18 @@ class DonationModel {
       isCancelled: json['isCancelled'],
     );
   }
+
+  Map<String, dynamic> toJson(DonationModel donationModel) {
+    return {
+      'id': donationModel.id,
+      'donatorId': donationModel.donatorId,
+      'categories': donationModel.categories,
+      'isPickupOrDropoff': donationModel.isPickupOrDropoff,
+      'weight': donationModel.weight,
+      'dateTime': donationModel.dateTime,
+      'pickupAddresses': donationModel.pickupAddresses,
+      'contactNo': donationModel.contactNo,
+      'isCancelled': donationModel.isCancelled
+    };
+  }
 }
