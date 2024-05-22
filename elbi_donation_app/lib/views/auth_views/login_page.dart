@@ -2,6 +2,9 @@ import 'package:elbi_donation_app/views/auth_views/sign_up_donor_page.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 
+import 'package:provider/provider.dart';
+import '../../providers/auth_provider.dart';
+
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
@@ -89,8 +92,21 @@ class LoginPage extends StatelessWidget {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(2),
                               )),
-                          onPressed: () {
+                          onPressed: () async {
                             // TODO: do the authentication here
+                            if (await context
+                                    .read<UserAuthProvider>()
+                                    .authService
+                                    .signIn(emailController.text,
+                                        passwordController.text) ==
+                                'Success') {
+                              Navigator.pop(context);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('Invalid User Credentials')),
+                              );
+                            }
                           },
                           child: const Text('Login',
                               style: TextStyle(
