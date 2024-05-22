@@ -1,6 +1,9 @@
 import 'package:elbi_donation_app/views/auth_views/sign_up_org_page.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
+import 'package:provider/provider.dart';
+import '../../providers/auth_provider.dart';
+import '../../providers/user_provider.dart';
 
 class SignUpDonorPage extends StatefulWidget {
   const SignUpDonorPage({super.key});
@@ -204,7 +207,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(2),
                               )),
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               // If the form is valid, display a snackbar. In the real world,
                               // you'd often call a server or save the information in a database.
@@ -212,6 +215,11 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                 const SnackBar(content: Text('Successful!')),
                               );
                               // TODO: just do the authentication here
+                              await context
+                                  .read<UserAuthProvider>()
+                                  .authService
+                                  .signUp(emailController.text,
+                                      passwordController.text);
                             }
                           },
                           child: const Text(
