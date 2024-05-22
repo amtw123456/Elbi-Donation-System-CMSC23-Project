@@ -11,14 +11,31 @@ class UserAuthProvider with ChangeNotifier {
 
   UserAuthProvider() {
     authService = FirebaseAuthAPI();
-    fetchUser();
+    fetchAuthentication();
   }
 
-  void fetchUser() {
+  void fetchAuthentication() {
     _userStream = authService.fetchUser();
+
+    notifyListeners();
+  }
+
+  // void fetchUser() {
+  //   _userStream = authService.fetchUser();
+  // }
+
+  Future<void> signUp(String email, String password) async {
+    await authService.signUp(email, password);
+    notifyListeners();
+  }
+
+  Future<void> signIn(String email, String password) async {
+    await authService.signIn(email, password);
+    notifyListeners();
   }
 
   Future<void> signOut() async {
     await authService.signOut();
+    notifyListeners();
   }
 }
