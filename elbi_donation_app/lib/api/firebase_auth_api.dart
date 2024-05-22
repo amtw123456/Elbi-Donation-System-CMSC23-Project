@@ -18,9 +18,9 @@ class FirebaseAuthAPI {
 
   Future<String?> signUp(String email, String password) async {
     try {
-      await auth.createUserWithEmailAndPassword(
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      return ('Success');
+      return userCredential.user?.uid;
     } on FirebaseException catch (e) {
       if (e.code == 'email-already-in-use') {
         return ('The account already exists for that email.');
