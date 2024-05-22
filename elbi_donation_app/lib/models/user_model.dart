@@ -4,7 +4,8 @@ class UserModel {
   String? id;
   String? firstName;
   String? lastName;
-  String? username; // can be used for org name
+  String? username;
+  String? orgName;
   String email;
   String? address;
   String? contactNumber;
@@ -15,6 +16,7 @@ class UserModel {
       this.firstName,
       this.lastName,
       this.username,
+      this.orgName,
       required this.email,
       this.address,
       this.contactNumber,
@@ -27,6 +29,7 @@ class UserModel {
       firstName: json['firstName'],
       lastName: json['lastName'],
       username: json['username'],
+      orgName: json['orgName'],
       email: json['email'],
       address: json['address'],
       contactNumber: json['contactNumber'],
@@ -45,6 +48,7 @@ class UserModel {
       'firstName': userModel.firstName,
       'lastName': userModel.lastName,
       'username': userModel.username,
+      'orgName': userModel.orgName,
       'email': userModel.email,
       'address': userModel.address,
       'contactNumber': userModel.contactNumber,
