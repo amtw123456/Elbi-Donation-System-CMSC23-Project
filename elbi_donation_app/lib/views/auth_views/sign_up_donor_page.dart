@@ -116,6 +116,20 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                       ),
                     ),
                   ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: TextFormField(
+                      obscureText: true,
+                      validator: ValidationBuilder().minLength(8).build(),
+                      decoration: const InputDecoration(
+                        hintText: 'Password',
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                        ),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 20),
                   CheckboxListTile(
                     title: const Text('Want to sign up as an organization?'),

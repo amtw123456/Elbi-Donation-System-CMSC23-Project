@@ -40,7 +40,10 @@ class LandingPage extends StatelessWidget {
                   ])),
                   Text(
                     'Make a difference. Together.',
-                    style: TextStyle(fontSize: 16, color: Colors.white, fontFamily: "Poppins"),
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontFamily: "Poppins"),
                   )
                 ],
               ),
@@ -58,24 +61,26 @@ class LandingPage extends StatelessWidget {
                         builder: (context) => const SignUpDonorPage()));
                   },
                   child: const Text('Get Started',
-                      style: TextStyle(color: Color(0xff4cba8b), fontFamily: "Poppins"))),
+                      style: TextStyle(
+                          color: Color(0xff4cba8b), fontFamily: "Poppins"))),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             SizedBox(
               height: 50,
               width: double.infinity,
               child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: Colors.white),
+                      side: const BorderSide(color: Colors.white),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4))),
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const LoginPage()));
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => LoginPage()));
                   },
                   child: const Text(
                     'I already have an account',
-                    style: TextStyle(color: Colors.white, fontFamily: "Poppins"),
+                    style:
+                        TextStyle(color: Colors.white, fontFamily: "Poppins"),
                   )),
             ),
           ],
