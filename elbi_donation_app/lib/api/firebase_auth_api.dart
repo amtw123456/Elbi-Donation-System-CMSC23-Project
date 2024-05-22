@@ -16,33 +16,49 @@ class FirebaseAuthAPI {
     return auth.currentUser;
   }
 
-  Future<String?> signUp(String email, String password) async {
+  Future<Map<String, dynamic>> signUp(String email, String password) async {
     try {
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      return userCredential.user?.uid;
+      return {'success': true, 'uid': userCredential.user?.uid};
     } on FirebaseException catch (e) {
       if (e.code == 'email-already-in-use') {
-        return ('The account already exists for that email.');
+        return {
+          'success': false,
+          'error': 'The account already exists for that email.'
+        };
+      } else {
+        return {
+          'success': false,
+          'error': 'Firebase Error: ${e.code} : ${e.message}'
+        };
       }
-      return ('Firebase Error: ${e.code} : ${e.message}');
     } catch (e) {
-      return ('Error: $e');
+      return {'success': false, 'error': 'Error: $e'};
     }
   }
 
-  Future<String?> signIn(String email, String password) async {
+  Future<Map<String, dynamic>> signIn(String email, String password) async {
     try {
-      await auth.signInWithEmailAndPassword(email: email, password: password);
-      return 'Success';
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      return {'success': true, 'uid': userCredential.user?.uid};
     } on FirebaseException catch (e) {
-      return ('Firebase Error: ${e.code} : ${e.message}');
+      return {
+        'success': false,
+        'error': 'Firebase Error: ${e.code} : ${e.message}'
+      };
     } catch (e) {
-      return ('Error: $e');
+      return {'success': false, 'error': 'Error: $e'};
     }
   }
 
-  Future<void> signOut() async {
-    await auth.signOut();
+  Future<Map<String, dynamic>> signOut() async {
+    try {
+      await auth.signOut();
+      return {'success': true, 'error': 'Logout successful.'};
+    } catch (e) {
+      return {'success': false, 'error': 'Error: $e'};
+    }
   }
 }
