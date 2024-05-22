@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../models/user_model.dart';
@@ -15,7 +16,8 @@ class SignUpDonorPage extends StatefulWidget {
 }
 
 class _SignUpDonorPageState extends State<SignUpDonorPage> {
-  bool _showAdditionalFields = false;
+  // for showing if it's going to be an organization
+  bool _isOrganization = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -169,15 +171,15 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                   const SizedBox(height: 20),
                   CheckboxListTile(
                     title: const Text('Want to sign up as an organization?'),
-                    value: _showAdditionalFields,
+                    value: _isOrganization,
                     onChanged: (bool? value) {
                       setState(() {
-                        _showAdditionalFields = value ?? false;
+                        _isOrganization = value ?? false;
                       });
                     },
                   ),
                   const SizedBox(height: 20),
-                  if (_showAdditionalFields) ...[
+                  if (_isOrganization) ...[
                     Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: TextFormField(
@@ -211,22 +213,13 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                               )),
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              // If the form is valid, display a snackbar. In the real world,
-                              // you'd often call a server or save the information in a database.
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Successful!')),
-                              );
                               // TODO: just do the authentication here
-                              String? userId = await context
-                                  .read<UserAuthProvider>()
-                                  .authService
-                                  .signUp(emailController.text,
-                                      passwordController.text);
+                              await context.read<UserAuthProvider>().signUp(
+                                  emailController.text,
+                                  passwordController.text);
 
-                              print(userId);
-
-                              UserModel user = UserModel(
-                                  id: userId,
+                              UserModel userModel = UserModel(
+                                  id: const Uuid().v4(),
                                   firstName: firstNameController.text,
                                   lastName: lastNameController.text,
                                   username: usernameController.text,
@@ -234,14 +227,17 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                   email: emailController.text,
                                   address: addressController.text,
                                   contactNumber: contactNumberController.text,
-                                  type: "");
+                                  type: _isOrganization
+                                      ? "organization"
+                                      : "donor",
+                                  isApprovedByAdmin:
+                                      _isOrganization ? false : null);
 
-                              await context
-                                  .read<UserProvider>()
-                                  .firebaseService
-                                  .addUserModel(
-                                    user.toJson(user),
-                                  );
+                              if (context.mounted) {
+                                context
+                                    .read<UserProvider>()
+                                    .addUserModel(userModel);
+                              }
                             }
                           },
                           child: const Text(
