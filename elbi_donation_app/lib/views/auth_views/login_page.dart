@@ -1,24 +1,34 @@
+import 'package:elbi_donation_app/components/navigation_helper.dart';
+import 'package:elbi_donation_app/providers/user_provider.dart';
 import 'package:elbi_donation_app/views/auth_views/sign_up_donor_page.dart';
+
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  // for loading buttons
+  bool _isLoading = false;
 
-  // @override
-  // void dispose() {
-  //   emailController.dispose();
-  //   passwordController.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,25 +103,67 @@ class LoginPage extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(2),
                               )),
                           onPressed: () async {
-                            // TODO: do the authentication here
-                            if (await context
+                            if (_formKey.currentState!.validate()) {
+                              try {
+                                Map<String, dynamic> result;
+                                // start loading
+                                setState(() {
+                                  _isLoading = true;
+                                });
+
+                                result = await context
                                     .read<UserAuthProvider>()
-                                    .authService
                                     .signIn(emailController.text,
-                                        passwordController.text) ==
-                                'Success') {
-                              Navigator.pop(context);
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Invalid User Credentials')),
-                              );
+                                        passwordController.text);
+
+                                if (!result['success']) {
+                                  throw result['error'];
+                                }
+
+                                // finish loading
+                                setState(() {
+                                  _isLoading = false;
+                                });
+
+                                if (context.mounted) {
+                                  final id = result['uid'];
+                                  final future = context
+                                      .read<UserProvider>()
+                                      .getUserModel(id);
+
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          NavigationHelper(future: future)));
+                                }
+                              } catch (e) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text(e.toString()),
+                                    backgroundColor: Colors.red,
+                                  ));
+                                }
+
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                              }
                             }
                           },
-                          child: const Text('Login',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "Poppins")))),
+                          child: _isLoading
+                              ? Container(
+                                  width: 20,
+                                  height: 20,
+                                  padding: const EdgeInsets.all(4),
+                                  child: const CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : const Text('Login',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "Poppins")))),
                 ],
               ),
             ),

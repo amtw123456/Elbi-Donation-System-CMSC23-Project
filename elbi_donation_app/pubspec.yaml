@@ -22,6 +22,7 @@ dependencies:
   cloud_firestore: ^4.17.3
   form_validator: ^2.1.1
   provider: ^6.1.2
+  uuid: ^4.4.0
 
 dev_dependencies:
   flutter_test:

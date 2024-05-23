@@ -1,5 +1,7 @@
-import 'package:elbi_donation_app/views/auth_views/sign_up_org_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:elbi_donation_app/components/navigation_helper.dart';
+import 'package:elbi_donation_app/views/admin_views/admin_profile.dart';
+import 'package:elbi_donation_app/views/org_views/org_home_page.dart';
+import 'package:elbi_donation_app/views/user_views/user_router.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +17,10 @@ class SignUpDonorPage extends StatefulWidget {
 }
 
 class _SignUpDonorPageState extends State<SignUpDonorPage> {
-  bool _showAdditionalFields = false;
+  // for showing if it's going to be an organization
+  bool _isOrganization = false;
+  // for loading buttons
+  bool _isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -169,15 +174,15 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                   const SizedBox(height: 20),
                   CheckboxListTile(
                     title: const Text('Want to sign up as an organization?'),
-                    value: _showAdditionalFields,
+                    value: _isOrganization,
                     onChanged: (bool? value) {
                       setState(() {
-                        _showAdditionalFields = value ?? false;
+                        _isOrganization = value ?? false;
                       });
                     },
                   ),
                   const SizedBox(height: 20),
-                  if (_showAdditionalFields) ...[
+                  if (_isOrganization) ...[
                     Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: TextFormField(
@@ -211,44 +216,100 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                               )),
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              // If the form is valid, display a snackbar. In the real world,
-                              // you'd often call a server or save the information in a database.
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Successful!')),
-                              );
-                              // TODO: just do the authentication here
-                              String? userId = await context
-                                  .read<UserAuthProvider>()
-                                  .authService
-                                  .signUp(emailController.text,
-                                      passwordController.text);
+                              try {
+                                Map<String, dynamic> result;
+                                // start loading
+                                setState(() {
+                                  _isLoading = true;
+                                });
 
-                              print(userId);
+                                result = await context
+                                    .read<UserAuthProvider>()
+                                    .signUp(emailController.text,
+                                        passwordController.text);
 
-                              UserModel user = UserModel(
-                                  id: userId,
-                                  firstName: firstNameController.text,
-                                  lastName: lastNameController.text,
-                                  username: usernameController.text,
-                                  orgName: organizationNameController.text,
-                                  email: emailController.text,
-                                  address: addressController.text,
-                                  contactNumber: contactNumberController.text,
-                                  type: "");
+                                if (!result['success']) {
+                                  throw result['error'];
+                                }
 
-                              await context
-                                  .read<UserProvider>()
-                                  .firebaseService
-                                  .addUserModel(
-                                    user.toJson(user),
-                                  );
+                                String id = result['uid'];
+                                UserModel userModel = UserModel(
+                                    id: id,
+                                    firstName: firstNameController.text,
+                                    lastName: lastNameController.text,
+                                    username: usernameController.text,
+                                    orgName: organizationNameController.text,
+                                    email: emailController.text,
+                                    address: addressController.text,
+                                    contactNumber: contactNumberController.text,
+                                    type: _isOrganization ? "org" : "donor",
+                                    isApprovedByAdmin:
+                                        _isOrganization ? false : null);
+
+                                if (context.mounted) {
+                                  result = await context
+                                      .read<UserProvider>()
+                                      .addUserModel(userModel);
+                                }
+
+                                if (!result['success']) {
+                                  throw result['error'];
+                                }
+
+                                // finish loading
+                                setState(() {
+                                  _isLoading = false;
+                                });
+
+                                if (context.mounted) {
+                                  if (userModel.type == 'org') {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const OrgHomePage()));
+                                  } else if (userModel.type == 'donor') {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const UserRouter()));
+                                  } else if (userModel.type == 'admin') {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AdminProfile()));
+                                  } else {
+                                    throw 'Routing error.';
+                                  }
+                                }
+                              } catch (e) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text(e.toString()),
+                                    backgroundColor: Colors.red,
+                                  ));
+                                }
+
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                              }
                             }
                           },
-                          child: const Text(
-                            'Sign up',
-                            style: TextStyle(
-                                color: Colors.white, fontFamily: "Poppins"),
-                          ))),
+                          child: _isLoading
+                              ? Container(
+                                  width: 20,
+                                  height: 20,
+                                  padding: const EdgeInsets.all(4),
+                                  child: const CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : const Text('Login',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "Poppins")))),
                   const SizedBox(
                     height: 20,
                   ),

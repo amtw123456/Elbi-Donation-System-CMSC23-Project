@@ -4,36 +4,52 @@ import 'package:elbi_donation_app/models/user_model.dart';
 class FirebaseUserAPI {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
 
-  // make
-  Future<String> addUserModel(Map<String, dynamic> userModel) async {
+  // make sure that the id is already present
+  // (the id should be the same as the auth id)
+  Future<Map<String, dynamic>> addUserModel(
+      Map<String, dynamic> userModel) async {
     try {
       await db.collection("userModels").doc(userModel['id']).set(userModel);
 
-      return "Successfully added!";
+      return {'success': true, 'message': "Successfully added!"};
     } on FirebaseException catch (e) {
-      return "Error in ${e.code}: ${e.message}";
+      return {
+        'success': false,
+        'error': 'Firebase Error: ${e.code} : ${e.message}'
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Error: $e'};
     }
   }
 
-  Future<String> deleteUserModel(String id) async {
+  Future<Map<String, dynamic>> deleteUserModel(String id) async {
     try {
       await db.collection("userModels").doc(id).delete();
 
-      return "Successfully deleted!";
+      return {'success': true, 'message': "Successfully deleted!"};
     } on FirebaseException catch (e) {
-      return "Error in ${e.code}: ${e.message}";
+      return {
+        'success': false,
+        'error': 'Firebase Error: ${e.code} : ${e.message}'
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Error: $e'};
     }
   }
 
-  Future<UserModel?> getUserModel(String id) async {
+  Future<Map<String, dynamic>> getUserModel(String id) async {
     try {
       final doc = await db.collection("userModels").doc(id).get();
       UserModel userModel =
           UserModel.fromJson(doc.data() as Map<String, dynamic>);
-      return userModel;
+      return {'success': true, 'userModel': userModel};
     } on FirebaseException catch (e) {
-      print("Error in ${e.code}: ${e.message}");
+      return {
+        'success': false,
+        'error': 'Firebase Error: ${e.code} : ${e.message}'
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Error: $e'};
     }
-    return null;
   }
 }

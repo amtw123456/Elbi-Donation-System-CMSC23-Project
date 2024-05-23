@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:elbi_donation_app/api/firebase_auth_api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,26 +16,21 @@ class UserAuthProvider with ChangeNotifier {
 
   void fetchAuthentication() {
     _userStream = authService.fetchUser();
-
     notifyListeners();
   }
 
-  // void fetchUser() {
-  //   _userStream = authService.fetchUser();
-  // }
-
-  Future<void> signUp(String email, String password) async {
-    await authService.signUp(email, password);
-    notifyListeners();
+  Future<Map<String, dynamic>> signUp(String email, String password) async {
+    final result = await authService.signUp(email, password);
+    return result;
   }
 
-  Future<void> signIn(String email, String password) async {
-    await authService.signIn(email, password);
-    notifyListeners();
+  Future<Map<String, dynamic>> signIn(String email, String password) async {
+    final result = await authService.signIn(email, password);
+    return result;
   }
 
-  Future<void> signOut() async {
-    await authService.signOut();
-    notifyListeners();
+  Future<Map<String, dynamic>> signOut() async {
+    final result = await authService.signOut();
+    return result;
   }
 }

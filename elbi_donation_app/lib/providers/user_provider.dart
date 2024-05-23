@@ -5,20 +5,19 @@ import 'package:flutter/material.dart';
 class UserProvider with ChangeNotifier {
   FirebaseUserAPI firebaseService = FirebaseUserAPI();
 
-  void addUserModel(UserModel userModel) async {
-    String message =
+  Future<Map<String, dynamic>> addUserModel(UserModel userModel) async {
+    final result =
         await firebaseService.addUserModel(userModel.toJson(userModel));
-    print(message);
-    notifyListeners();
+    return result;
   }
 
-  void deleteUserModel(String id) async {
-    await firebaseService.deleteUserModel(id);
-    notifyListeners();
+  Future<Map<String, dynamic>> deleteUserModel(String id) async {
+    final result = await firebaseService.deleteUserModel(id);
+    return result;
   }
 
-  Future<UserModel?> getUserModel(String id) async {
-    UserModel? userModel = await firebaseService.getUserModel(id);
-    return userModel;
+  Future<Map<String, dynamic>> getUserModel(String id) async {
+    final result = await firebaseService.getUserModel(id);
+    return result;
   }
 }

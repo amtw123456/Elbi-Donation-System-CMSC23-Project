@@ -1,10 +1,11 @@
+import 'package:elbi_donation_app/components/navigation_helper.dart';
+import 'package:elbi_donation_app/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 
 import 'package:elbi_donation_app/views/auth_views/landing.dart';
-import 'package:elbi_donation_app/views/user_views/user_router.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -35,9 +36,14 @@ class _HomePageState extends State<HomePage> {
             );
           } else if (!snapshot.hasData) {
             return const LandingPage();
+          } else {
+            // first fetch the information of the user before doing the user router
+            final id = snapshot.data!.uid;
+            final future = context.read<UserProvider>().getUserModel(id);
+            // then return the helper here
+            return NavigationHelper(future: future);
           }
-          // if user is logged in, display the scaffold containing the streambuilder for the todos
-          return const UserRouter();
+          // return const UserRouter();
         });
   }
 }

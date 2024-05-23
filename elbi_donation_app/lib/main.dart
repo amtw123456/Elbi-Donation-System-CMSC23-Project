@@ -1,6 +1,3 @@
-import 'package:elbi_donation_app/views/admin_views/admin_router.dart';
-import 'package:elbi_donation_app/views/auth_views/landing.dart';
-import 'package:elbi_donation_app/views/user_views/user_router.dart';
 import 'package:elbi_donation_app/views/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +19,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: ((context) => UserAuthProvider())),
         ChangeNotifierProvider(create: ((context) => UserProvider()))
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
