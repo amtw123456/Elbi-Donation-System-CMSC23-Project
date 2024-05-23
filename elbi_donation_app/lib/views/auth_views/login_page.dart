@@ -1,9 +1,5 @@
-import 'package:elbi_donation_app/models/user_model.dart';
-import 'package:elbi_donation_app/providers/user_provider.dart';
-import 'package:elbi_donation_app/views/admin_views/admin_profile.dart';
 import 'package:elbi_donation_app/views/auth_views/sign_up_donor_page.dart';
-import 'package:elbi_donation_app/views/org_views/org_home_page.dart';
-import 'package:elbi_donation_app/views/user_views/user_home_page.dart';
+
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 
@@ -120,41 +116,6 @@ class _LoginPageState extends State<LoginPage> {
 
                                 if (!result['success']) {
                                   throw result['error'];
-                                }
-
-                                // then get the data
-                                String id = result['uid'];
-                                if (context.mounted) {
-                                  result = await context
-                                      .read<UserProvider>()
-                                      .getUserModel(id);
-                                }
-
-                                if (!result['success']) {
-                                  throw result['error'];
-                                }
-
-                                // route depending on the user type
-                                UserModel userModel = result['userModel'];
-                                if (context.mounted) {
-                                  if (userModel.type == 'org') {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const OrgHomePage()));
-                                  } else if (userModel.type == 'donor') {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const UserHomePage()));
-                                  } else if (userModel.type == 'admin') {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const AdminProfile()));
-                                  } else {
-                                    throw 'Error: User type inconsistency, cannot route.';
-                                  }
                                 }
 
                                 // finish loading

@@ -1,5 +1,3 @@
-import 'package:elbi_donation_app/views/org_views/org_home_page.dart';
-import 'package:elbi_donation_app/views/user_views/user_home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:provider/provider.dart';
@@ -252,23 +250,6 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
 
                                 if (!result['success']) {
                                   throw result['error'];
-                                }
-
-                                // route depending on the user type
-                                if (context.mounted) {
-                                  if (userModel.type == 'org') {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const OrgHomePage()));
-                                  } else if (userModel.type == 'donor') {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const UserHomePage()));
-                                  } else {
-                                    throw 'Error: User type inconsistency, cannot route.';
-                                  }
                                 }
 
                                 // finish loading
