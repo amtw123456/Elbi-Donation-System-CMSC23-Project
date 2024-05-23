@@ -1,3 +1,5 @@
+import 'package:elbi_donation_app/views/org_views/org_home_page.dart';
+import 'package:elbi_donation_app/views/user_views/user_home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:provider/provider.dart';
@@ -232,9 +234,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                     email: emailController.text,
                                     address: addressController.text,
                                     contactNumber: contactNumberController.text,
-                                    type: _isOrganization
-                                        ? "organization"
-                                        : "donor",
+                                    type: _isOrganization ? "org" : "donor",
                                     isApprovedByAdmin:
                                         _isOrganization ? false : null);
 
@@ -247,10 +247,30 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                     throw result['error'];
                                   }
                                 }
+
+                                // route depending on the user type
+                                if (context.mounted) {
+                                  if (userModel.type == 'org') {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const OrgHomePage()));
+                                  } else if (userModel.type == 'donor') {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const UserHomePage()));
+                                  } else {
+                                    throw 'Error: User type inconsistency, cannot route.';
+                                  }
+                                }
                               } catch (e) {
                                 if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text(e.toString())));
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text(e.toString()),
+                                    backgroundColor: Colors.red,
+                                  ));
                                 }
                               }
                             }
