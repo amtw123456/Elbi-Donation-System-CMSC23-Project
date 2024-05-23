@@ -224,8 +224,9 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                   throw result['error'];
                                 }
 
+                                String id = result['uid'];
                                 UserModel userModel = UserModel(
-                                    id: const Uuid().v4(),
+                                    id: id,
                                     firstName: firstNameController.text,
                                     lastName: lastNameController.text,
                                     username: usernameController.text,

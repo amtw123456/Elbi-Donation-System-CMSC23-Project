@@ -147,11 +147,13 @@ class _LoginPageState extends State<LoginPage> {
                                 }
                               }
                             } catch (e) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                content: Text('Successfully logged in!'),
-                                backgroundColor: Colors.red,
-                              ));
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text(e.toString()),
+                                  backgroundColor: Colors.red,
+                                ));
+                              }
                             }
                           },
                           child: const Text('Login',
