@@ -213,7 +213,6 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                               )),
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              // TODO: just do the authentication here
                               try {
                                 Map<String, dynamic> result;
                                 result = await context
@@ -242,10 +241,10 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                   result = await context
                                       .read<UserProvider>()
                                       .addUserModel(userModel);
+                                }
 
-                                  if (!result['success']) {
-                                    throw result['error'];
-                                  }
+                                if (!result['success']) {
+                                  throw result['error'];
                                 }
 
                                 // route depending on the user type

@@ -9,6 +9,7 @@ class UserModel {
   String email;
   String? address;
   String? contactNumber;
+  // this could be 'admin', 'org', or 'donor'
   String? type; // this refers to the user type
   bool? isApprovedByAdmin; // approval first if they're an org
 
