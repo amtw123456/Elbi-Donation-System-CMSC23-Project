@@ -3,7 +3,6 @@ import 'package:elbi_donation_app/views/user_views/user_home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../models/user_model.dart';
@@ -18,6 +17,8 @@ class SignUpDonorPage extends StatefulWidget {
 class _SignUpDonorPageState extends State<SignUpDonorPage> {
   // for showing if it's going to be an organization
   bool _isOrganization = false;
+  // for loading buttons
+  bool _isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -215,6 +216,11 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                             if (_formKey.currentState!.validate()) {
                               try {
                                 Map<String, dynamic> result;
+                                // start loading
+                                setState(() {
+                                  _isLoading = true;
+                                });
+
                                 result = await context
                                     .read<UserAuthProvider>()
                                     .signUp(emailController.text,
@@ -264,6 +270,11 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                     throw 'Error: User type inconsistency, cannot route.';
                                   }
                                 }
+
+                                // finish loading
+                                setState(() {
+                                  _isLoading = false;
+                                });
                               } catch (e) {
                                 if (context.mounted) {
                                   ScaffoldMessenger.of(context)
@@ -272,14 +283,27 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                     backgroundColor: Colors.red,
                                   ));
                                 }
+
+                                setState(() {
+                                  _isLoading = false;
+                                });
                               }
                             }
                           },
-                          child: const Text(
-                            'Sign up',
-                            style: TextStyle(
-                                color: Colors.white, fontFamily: "Poppins"),
-                          ))),
+                          child: _isLoading
+                              ? Container(
+                                  width: 20,
+                                  height: 20,
+                                  padding: const EdgeInsets.all(4),
+                                  child: const CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : const Text('Login',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "Poppins")))),
                   const SizedBox(
                     height: 20,
                   ),
