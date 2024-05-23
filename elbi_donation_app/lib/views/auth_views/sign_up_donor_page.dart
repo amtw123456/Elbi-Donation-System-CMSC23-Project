@@ -1,3 +1,4 @@
+import 'package:elbi_donation_app/components/navigation_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:provider/provider.dart';
@@ -256,6 +257,17 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                 setState(() {
                                   _isLoading = false;
                                 });
+
+                                if (context.mounted) {
+                                  final id = result['uid'];
+                                  final future = context
+                                      .read<UserProvider>()
+                                      .getUserModel(id);
+
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          NavigationHelper(future: future)));
+                                }
                               } catch (e) {
                                 if (context.mounted) {
                                   ScaffoldMessenger.of(context)
