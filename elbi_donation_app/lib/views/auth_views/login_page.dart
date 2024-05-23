@@ -22,6 +22,8 @@ class _LoginPageState extends State<LoginPage> {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  // for loading buttons
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -103,63 +105,91 @@ class _LoginPageState extends State<LoginPage> {
                                 borderRadius: BorderRadius.circular(2),
                               )),
                           onPressed: () async {
-                            try {
-                              Map<String, dynamic> result;
+                            if (_formKey.currentState!.validate()) {
+                              try {
+                                Map<String, dynamic> result;
+                                // start loading
+                                setState(() {
+                                  _isLoading = true;
+                                });
 
-                              result = await context
-                                  .read<UserAuthProvider>()
-                                  .signIn(emailController.text,
-                                      passwordController.text);
-
-                              if (!result['success']) {
-                                throw result['error'];
-                              }
-
-                              // then get the data
-                              String id = result['uid'];
-                              if (context.mounted) {
                                 result = await context
-                                    .read<UserProvider>()
-                                    .getUserModel(id);
-                              }
+                                    .read<UserAuthProvider>()
+                                    .signIn(emailController.text,
+                                        passwordController.text);
 
-                              if (!result['success']) {
-                                throw result['error'];
-                              }
-
-                              // route depending on the user type
-                              UserModel userModel = result['userModel'];
-                              if (context.mounted) {
-                                if (userModel.type == 'org') {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const OrgHomePage()));
-                                } else if (userModel.type == 'donor') {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const UserHomePage()));
-                                } else if (userModel.type == 'admin') {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AdminProfile()));
-                                } else {
-                                  throw 'Error: User type inconsistency, cannot route.';
+                                if (!result['success']) {
+                                  throw result['error'];
                                 }
-                              }
-                            } catch (e) {
-                              if (context.mounted) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content: Text(e.toString()),
-                                  backgroundColor: Colors.red,
-                                ));
+
+                                // then get the data
+                                String id = result['uid'];
+                                if (context.mounted) {
+                                  result = await context
+                                      .read<UserProvider>()
+                                      .getUserModel(id);
+                                }
+
+                                if (!result['success']) {
+                                  throw result['error'];
+                                }
+
+                                // route depending on the user type
+                                UserModel userModel = result['userModel'];
+                                if (context.mounted) {
+                                  if (userModel.type == 'org') {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const OrgHomePage()));
+                                  } else if (userModel.type == 'donor') {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const UserHomePage()));
+                                  } else if (userModel.type == 'admin') {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AdminProfile()));
+                                  } else {
+                                    throw 'Error: User type inconsistency, cannot route.';
+                                  }
+                                }
+
+                                // finish loading
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                              } catch (e) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text(e.toString()),
+                                    backgroundColor: Colors.red,
+                                  ));
+                                }
+
+                                setState(() {
+                                  _isLoading = false;
+                                });
                               }
                             }
                           },
-                          child: const Text('Login',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "Poppins")))),
+                          child: _isLoading
+                              ? Container(
+                                  width: 20,
+                                  height: 20,
+                                  padding: const EdgeInsets.all(4),
+                                  child: const CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : const Text('Login',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "Poppins")))),
                 ],
               ),
             ),
