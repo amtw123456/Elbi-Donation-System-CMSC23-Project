@@ -5,13 +5,15 @@ class UserModel {
   String? firstName;
   String? lastName;
   String? username;
-  String? orgName;
   String email;
   String? address;
   String? contactNumber;
   // this could be 'admin', 'org', or 'donor'
   String? type; // this refers to the user type
+  // for orgs only
   bool? isApprovedByAdmin; // approval first if they're an org
+  String? orgName;
+  String? status; // status for donations if open or close
 
   UserModel(
       {this.id,

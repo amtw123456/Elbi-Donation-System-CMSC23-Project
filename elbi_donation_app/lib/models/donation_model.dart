@@ -18,6 +18,8 @@ class DonationModel {
   String? contactNo;
   // donations could be cancelled
   bool? isCancelled;
+  // pending, confirmed, scheduled(scheduled for pick up), complete, or canceled
+  String? status;
 
   DonationModel(
       {this.id,
