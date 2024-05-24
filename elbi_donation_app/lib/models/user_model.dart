@@ -14,6 +14,7 @@ class UserModel {
   bool? isApprovedByAdmin; // approval first if they're an org
   String? orgName;
   String? status; // status for donations if open or close
+  String? orgDescription; // description of the org
 
   UserModel(
       {this.id,
@@ -26,7 +27,8 @@ class UserModel {
       this.contactNumber,
       this.type,
       this.isApprovedByAdmin,
-      this.status});
+      this.status,
+      this.orgDescription});
 
   // Factory constructor to instantiate object from json format
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -41,7 +43,8 @@ class UserModel {
         contactNumber: json['contactNumber'],
         type: json['type'],
         isApprovedByAdmin: json['isApprovedByAdmin'],
-        status: json['status']);
+        status: json['status'],
+        orgDescription: json['orgDescription']);
   }
 
   static List<UserModel> fromJsonArray(String jsonData) {
@@ -61,7 +64,8 @@ class UserModel {
       'contactNumber': userModel.contactNumber,
       'type': userModel.type,
       'isApprovedByAdmin': userModel.isApprovedByAdmin,
-      'status': userModel.status
+      'status': userModel.status,
+      'orgDescription': userModel.orgDescription
     };
   }
 }
