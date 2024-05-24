@@ -4,6 +4,10 @@ import 'package:elbi_donation_app/models/user_model.dart';
 class FirebaseUserAPI {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
 
+  final Stream<QuerySnapshot> _organizationsStream =
+      db.collection('userModels').snapshots();
+  Stream<QuerySnapshot> get orgStream => _organizationsStream;
+
   // make sure that the id is already present
   // (the id should be the same as the auth id)
   Future<Map<String, dynamic>> addUserModel(
