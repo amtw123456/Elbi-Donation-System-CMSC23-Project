@@ -20,4 +20,9 @@ class UserProvider with ChangeNotifier {
     final result = await firebaseService.getUserModel(id);
     return result;
   }
+
+  Future<Map<String, dynamic>> getOrganizations() async {
+    final result = await firebaseService.getOrganizations();
+    return result;
+  }
 }

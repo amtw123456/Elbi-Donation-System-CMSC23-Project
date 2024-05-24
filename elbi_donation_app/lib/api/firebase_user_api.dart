@@ -52,4 +52,26 @@ class FirebaseUserAPI {
       return {'success': false, 'error': 'Error: $e'};
     }
   }
+
+  // view all organizations
+  Future<Map<String, dynamic>> getOrganizations() async {
+    try {
+      List<UserModel> orgs = [];
+      final snapshots = await db
+          .collection("userModels")
+          .where("type", isEqualTo: "org")
+          .get();
+      for (var snapshot in snapshots.docs) {
+        orgs.add(UserModel.fromJson(snapshot.data()));
+      }
+      return {'success': true, 'orgs': orgs};
+    } on FirebaseException catch (e) {
+      return {
+        'success': false,
+        'error': 'Firebase Error: ${e.code} : ${e.message}'
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Error: $e'};
+    }
+  }
 }
