@@ -25,7 +25,8 @@ class UserModel {
       this.address,
       this.contactNumber,
       this.type,
-      this.isApprovedByAdmin});
+      this.isApprovedByAdmin,
+      this.status});
 
   // Factory constructor to instantiate object from json format
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -39,7 +40,8 @@ class UserModel {
         address: json['address'],
         contactNumber: json['contactNumber'],
         type: json['type'],
-        isApprovedByAdmin: json['isApprovedByAdmin']);
+        isApprovedByAdmin: json['isApprovedByAdmin'],
+        status: json['status']);
   }
 
   static List<UserModel> fromJsonArray(String jsonData) {
@@ -58,7 +60,8 @@ class UserModel {
       'address': userModel.address,
       'contactNumber': userModel.contactNumber,
       'type': userModel.type,
-      'isApprovedByAdmin': userModel.isApprovedByAdmin
+      'isApprovedByAdmin': userModel.isApprovedByAdmin,
+      'status': userModel.status
     };
   }
 }

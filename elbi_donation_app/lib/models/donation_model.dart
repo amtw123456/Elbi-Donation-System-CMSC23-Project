@@ -31,7 +31,8 @@ class DonationModel {
       this.dateTime,
       this.pickupAddresses,
       this.contactNo,
-      this.isCancelled = false});
+      this.isCancelled = false,
+      this.status});
 
   // Factory constructor to instantiate object from json format
   factory DonationModel.fromJson(Map<String, dynamic> json) {
@@ -46,6 +47,7 @@ class DonationModel {
       pickupAddresses: json['pickupAddresses'],
       contactNo: json['contactNo'],
       isCancelled: json['isCancelled'],
+      status: json['status'],
     );
   }
 
@@ -60,7 +62,8 @@ class DonationModel {
       'dateTime': donationModel.dateTime,
       'pickupAddresses': donationModel.pickupAddresses,
       'contactNo': donationModel.contactNo,
-      'isCancelled': donationModel.isCancelled
+      'isCancelled': donationModel.isCancelled,
+      'status': donationModel.status
     };
   }
 }
