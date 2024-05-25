@@ -187,6 +187,12 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                       selectedStatus = newValue!;
                     });
                   },
+                  validator: (value) {
+                    if (value == null){
+                      return 'Please input the status';
+                    }
+                    return null;  
+                  },
                   items: statuses.map((String status) {
                     return DropdownMenuItem<String>(
                       value: status,
@@ -213,6 +219,12 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                       selectedDrive = newValue!;
                     });
                   },
+                  validator: (value) {
+                    if (value == null){
+                      return 'Please choose a drive';
+                    }
+                    return null;
+                  },
                   items: drives.map((String drive) {
                     return DropdownMenuItem<String>(
                       value: drive,
@@ -232,7 +244,12 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()){
+                        print(selectedStatus);
+                        print(selectedDrive);
+                      }
+                    },
                     child: const Text(
                       'Confirm',
                       style: TextStyle(color: Colors.white, fontFamily: "Poppins", fontSize: 20),

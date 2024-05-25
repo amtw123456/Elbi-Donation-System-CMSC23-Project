@@ -10,6 +10,9 @@ class AddDonationDrive extends StatefulWidget {
 class _AddDonationDriveState extends State<AddDonationDrive> {
   final _formKey = GlobalKey<FormState>();
 
+  String? driveName;
+  String? driveDescription;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +43,17 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                     Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: TextFormField(
+                        onChanged: (value) {
+                          setState(() {
+                            driveName = value;
+                          });
+                        },
+                        validator: (value) {
+                          if(value == null || value.isEmpty){
+                            return 'Please enter a drive name';
+                          }
+                          return null;
+                        },
                         decoration: InputDecoration(
                           hintText: 'Donation drive name',
                           hintStyle: TextStyle(
@@ -57,6 +71,17 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                     Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty){
+                            return 'Please enter a drive description';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            driveDescription = value;
+                          });
+                        },
                         decoration: InputDecoration(
                           hintText: 'Description',
                           hintStyle: TextStyle(
@@ -84,7 +109,12 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                       borderRadius: BorderRadius.all(Radius.circular(5)),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    if(_formKey.currentState!.validate()){
+                      print(driveName);
+                      print(driveDescription);
+                    }
+                  },
                   child: const Text(
                     'Confirm',
                     style: TextStyle(

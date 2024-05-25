@@ -1,6 +1,8 @@
 import 'package:elbi_donation_app/components/navigation_helper.dart';
 import 'package:elbi_donation_app/views/admin_views/admin_profile.dart';
+import 'package:elbi_donation_app/views/admin_views/admin_router.dart';
 import 'package:elbi_donation_app/views/org_views/org_home_page.dart';
+import 'package:elbi_donation_app/views/org_views/org_router.dart';
 import 'package:elbi_donation_app/views/user_views/user_router.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
@@ -266,7 +268,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const OrgHomePage()));
+                                                const OrgRouter()));
                                   } else if (userModel.type == 'donor') {
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
@@ -276,7 +278,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const AdminProfile()));
+                                                const AdminRouter()));
                                   } else {
                                     throw 'Routing error.';
                                   }
