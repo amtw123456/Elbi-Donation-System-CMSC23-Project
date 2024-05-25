@@ -1,4 +1,5 @@
 import 'package:elbi_donation_app/providers/user_provider.dart';
+import 'package:elbi_donation_app/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:elbi_donation_app/views/user_views/user_organization_donation_details_page.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,9 @@ class _UserHomePageState extends State<UserHomePage> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
+    final userId = context.read<UserAuthProvider>().user?.uid;
     final futureOrgList = context.read<UserProvider>().getOrganizations();
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8F8F8),
       body: Padding(
@@ -25,12 +28,31 @@ class _UserHomePageState extends State<UserHomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 40),
-            const Text("Hello, userName 👋",
-                style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 32,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF37A980))),
+            FutureBuilder<Map<String, dynamic>>(
+              future: context.read<UserProvider>().getUserModel(userId!),
+              builder: (BuildContext context,
+                  AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (snapshot.hasData) {
+                  final userInformation = snapshot.data!;
+                  final userName = userInformation['userModel'].username;
+                  return Text(
+                    "Hello, $userName 👋",
+                    style: const TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 32,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF37A980),
+                    ),
+                  );
+                } else {
+                  return Text('No data available');
+                }
+              },
+            ),
             const Text("Here are some organizations that might interest you",
                 style: TextStyle(fontFamily: 'Poppins', fontSize: 16)),
             const SizedBox(
