@@ -24,91 +24,114 @@ class _UserHomePageState extends State<UserHomePage> {
       backgroundColor: const Color(0xFFF8F8F8),
       body: Padding(
         padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 40),
-            FutureBuilder<Map<String, dynamic>>(
-              future: context.read<UserProvider>().getUserModel(userId!),
-              builder: (BuildContext context,
-                  AsyncSnapshot<Map<String, dynamic>> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else if (snapshot.hasData) {
-                  final userInformation = snapshot.data!;
-                  final userName = userInformation['userModel'].username;
-                  return Text(
-                    "Hello, $userName 👋",
-                    style: const TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 32,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF37A980),
-                    ),
-                  );
-                } else {
-                  return Text('No data available');
-                }
-              },
-            ),
-            const Text("Here are some organizations that might interest you",
-                style: TextStyle(fontFamily: 'Poppins', fontSize: 16)),
-            const SizedBox(
-              height: 20,
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    FutureBuilder<dynamic>(
-                        future: futureOrgList,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            if (snapshot.data!['success']) {
-                              final organizations = snapshot.data!['orgs'];
-                              return ListView.separated(
-                                separatorBuilder:
-                                    (BuildContext context, int index) =>
-                                        const SizedBox(height: 25),
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: organizations.length,
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    UserOrganizationDetails(
-                                                      organization:
-                                                          organizations[index],
-                                                    )));
+        child: FutureBuilder<Map<String, dynamic>>(
+          future: context.read<UserProvider>().getUserModel(userId!),
+          builder: (BuildContext context,
+              AsyncSnapshot<Map<String, dynamic>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else if (snapshot.hasData) {
+              final userInformation = snapshot.data!;
+              print(userInformation); // Print the snapshot data
+              final userName = userInformation[
+                  'firstname']; // Assuming the user's name is stored under 'firstname' key
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 40),
+                  FutureBuilder<Map<String, dynamic>>(
+                    future: context.read<UserProvider>().getUserModel(userId!),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else if (snapshot.hasData) {
+                        final userInformation = snapshot.data!;
+                        final userName = userInformation['userModel'].username;
+                        return Text(
+                          "Hello, $userName 👋",
+                          style: const TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 32,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF37A980),
+                          ),
+                        );
+                      } else {
+                        return Text('No data available');
+                      }
+                    },
+                  ),
+                  const Text(
+                      "Here are some organizations that might interest you",
+                      style: TextStyle(fontFamily: 'Poppins', fontSize: 16)),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          FutureBuilder<dynamic>(
+                              future: futureOrgList,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  if (snapshot.data!['success']) {
+                                    final organizations =
+                                        snapshot.data!['orgs'];
+                                    return ListView.separated(
+                                      separatorBuilder:
+                                          (BuildContext context, int index) =>
+                                              const SizedBox(height: 25),
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: organizations.length,
+                                      itemBuilder: (context, index) {
+                                        return GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          UserOrganizationDetails(
+                                                            organization:
+                                                                organizations[
+                                                                    index],
+                                                          )));
+                                            },
+                                            child: OrganizationCard(
+                                                organization:
+                                                    organizations[index]));
                                       },
-                                      child: OrganizationCard(
-                                          organization: organizations[index]));
-                                },
-                              );
-                            } else {
-                              return const Text('No organizations yet!');
-                            }
-                          } else if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          } else {
-                            return const SizedBox(
-                              width: 60,
-                              height: 60,
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                        })
-                  ],
-                ),
-              ),
-            )
-          ],
+                                    );
+                                  } else {
+                                    return const Text('No organizations yet!');
+                                  }
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  return const SizedBox(
+                                    width: 60,
+                                    height: 60,
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                              })
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              );
+            } else {
+              return Text('No data available');
+            }
+          },
         ),
       ),
     );
