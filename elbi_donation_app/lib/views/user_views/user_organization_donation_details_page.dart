@@ -1,16 +1,18 @@
+import 'package:elbi_donation_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:elbi_donation_app/views/user_views/user_donate_goods_page.dart';
 
 class UserOrganizationDetails extends StatefulWidget {
-  const UserOrganizationDetails({super.key});
+  UserOrganizationDetails({super.key, required this.organization});
+
+  UserModel organization;
 
   @override
   State<UserOrganizationDetails> createState() =>
       _UserOrganizationDetailsState();
 }
 
-class _UserOrganizationDetailsState
-    extends State<UserOrganizationDetails> {
+class _UserOrganizationDetailsState extends State<UserOrganizationDetails> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -18,7 +20,10 @@ class _UserOrganizationDetailsState
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true, // Add this line to center the title
-        title: Text("Details", style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w700),),
+        title: const Text(
+          "Details",
+          style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w700),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(
@@ -30,7 +35,7 @@ class _UserOrganizationDetailsState
             Container(
               width: double.infinity,
               height: screenHeight / 3,
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 border: Border.all(
                   color: Colors.grey,
@@ -38,27 +43,27 @@ class _UserOrganizationDetailsState
                 ),
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              child: Text(
+              child: const Text(
                 "This container takes the maximum width available and has borders.",
               ),
             ),
             Text(
-              "Organization Title here.",
-              style: TextStyle(
+              widget.organization.orgName!,
+              style: const TextStyle(
                 fontFamily: 'Poppins',
                 color: Colors.black,
                 fontSize: 24.0, // Adjust the font size as needed
               ),
             ),
             Text(
-              "Contact Number.",
-              style: TextStyle(
+              widget.organization.contactNumber!,
+              style: const TextStyle(
                 fontFamily: 'Poppins',
                 color: Colors.grey,
                 fontSize: 12.0,
               ),
             ),
-            Expanded(
+            const Expanded(
               child: Column(
                 children: [
                   Text(
@@ -73,24 +78,28 @@ class _UserOrganizationDetailsState
               ),
             ),
             SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.all(10),
-                    backgroundColor: Color(0xFF37A980),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => DonateGoodsPage()));   
-                  },
-                  child: const Text(
-                    'Donate now',
-                    style: TextStyle(color: Colors.white, fontFamily: "Poppins", fontSize: 20),
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.all(10),
+                  backgroundColor: const Color(0xFF37A980),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
                   ),
                 ),
-              )
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DonateGoodsPage()));
+                },
+                child: const Text(
+                  'Donate now',
+                  style: TextStyle(
+                      color: Colors.white, fontFamily: "Poppins", fontSize: 20),
+                ),
+              ),
+            )
           ],
         ),
       ),
