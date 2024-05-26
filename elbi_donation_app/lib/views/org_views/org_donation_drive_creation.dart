@@ -49,7 +49,7 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                           });
                         },
                         validator: (value) {
-                          if(value == null || value.isEmpty){
+                          if (value == null || value.isEmpty) {
                             return 'Please enter a drive name';
                           }
                           return null;
@@ -57,9 +57,7 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                         decoration: InputDecoration(
                           hintText: 'Donation drive name',
                           hintStyle: TextStyle(
-                            fontFamily: 'Poppins', 
-                            color: Color(0XFFD2D2D2)
-                          ),
+                              fontFamily: 'Poppins', color: Color(0XFFD2D2D2)),
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
                             borderSide: BorderSide(color: Color(0XFFD2D2D2)),
@@ -72,7 +70,7 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: TextFormField(
                         validator: (value) {
-                          if (value == null || value.isEmpty){
+                          if (value == null || value.isEmpty) {
                             return 'Please enter a drive description';
                           }
                           return null;
@@ -85,9 +83,7 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                         decoration: InputDecoration(
                           hintText: 'Description',
                           hintStyle: TextStyle(
-                            fontFamily: 'Poppins', 
-                            color: Color(0XFFD2D2D2)
-                          ),
+                              fontFamily: 'Poppins', color: Color(0XFFD2D2D2)),
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
                             borderSide: BorderSide(color: Color(0XFFD2D2D2)),
@@ -110,7 +106,7 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                     ),
                   ),
                   onPressed: () {
-                    if(_formKey.currentState!.validate()){
+                    if (_formKey.currentState!.validate()) {
                       print(driveName);
                       print(driveDescription);
                     }
@@ -118,10 +114,9 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                   child: const Text(
                     'Confirm',
                     style: TextStyle(
-                      color: Colors.white, 
-                      fontFamily: "Poppins", 
-                      fontSize: 20
-                    ),
+                        color: Colors.white,
+                        fontFamily: "Poppins",
+                        fontSize: 20),
                   ),
                 ),
               )
