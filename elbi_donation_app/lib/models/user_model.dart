@@ -5,52 +5,46 @@ class UserModel {
   String? firstName;
   String? lastName;
   String? username;
-  String? email;
+  String email;
   String? address;
   String? contactNumber;
-  String? type;
-  bool? isApprovedByAdmin;
+  // this could be 'admin', 'org', or 'donor'
+  String? type; // this refers to the user type
+  // for orgs only
+  bool? isApprovedByAdmin; // approval first if they're an org
   String? orgName;
-  String? status;
-  String? orgDescription;
-  List<String>
-      organizationDonationDrivesList; // Adjusted to have a default empty list
+  String? status; // status for donations if open or close
+  String? orgDescription; // description of the org
 
-  UserModel({
-    this.id,
-    this.firstName,
-    this.lastName,
-    this.username,
-    this.orgName,
-    required this.email,
-    this.address,
-    this.contactNumber,
-    this.type,
-    this.isApprovedByAdmin,
-    this.status,
-    List<String>?
-        organizationDonationDrivesList, // Updated parameter to accept null
-    this.orgDescription,
-  }) : organizationDonationDrivesList =
-            organizationDonationDrivesList ?? []; // Set default value
+  UserModel(
+      {this.id,
+      this.firstName,
+      this.lastName,
+      this.username,
+      this.orgName,
+      required this.email,
+      this.address,
+      this.contactNumber,
+      this.type,
+      this.isApprovedByAdmin,
+      this.status,
+      this.orgDescription});
 
+  // Factory constructor to instantiate object from json format
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'],
-      firstName: json['firstName'],
-      lastName: json['lastName'],
-      username: json['username'],
-      orgName: json['orgName'],
-      email: json['email'],
-      address: json['address'],
-      contactNumber: json['contactNumber'],
-      type: json['type'],
-      isApprovedByAdmin: json['isApprovedByAdmin'],
-      status: json['status'],
-      orgDescription: json['orgDescription'],
-      organizationDonationDrivesList:
-          List<String>.from(json['organizationDonationDrivesList'] ?? []),
-    );
+        id: json['id'],
+        firstName: json['firstName'],
+        lastName: json['lastName'],
+        username: json['username'],
+        orgName: json['orgName'],
+        email: json['email'],
+        address: json['address'],
+        contactNumber: json['contactNumber'],
+        type: json['type'],
+        isApprovedByAdmin: json['isApprovedByAdmin'],
+        status: json['status'],
+        orgDescription: json['orgDescription']);
   }
 
   static List<UserModel> fromJsonArray(String jsonData) {
@@ -58,21 +52,20 @@ class UserModel {
     return data.map<UserModel>((dynamic d) => UserModel.fromJson(d)).toList();
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson(UserModel userModel) {
     return {
-      'id': id,
-      'firstName': firstName,
-      'lastName': lastName,
-      'username': username,
-      'orgName': orgName,
-      'email': email,
-      'address': address,
-      'contactNumber': contactNumber,
-      'type': type,
-      'isApprovedByAdmin': isApprovedByAdmin,
-      'status': status,
-      'orgDescription': orgDescription,
-      'organizationDonationDrivesList': organizationDonationDrivesList,
+      'id': userModel.id,
+      'firstName': userModel.firstName,
+      'lastName': userModel.lastName,
+      'username': userModel.username,
+      'orgName': userModel.orgName,
+      'email': userModel.email,
+      'address': userModel.address,
+      'contactNumber': userModel.contactNumber,
+      'type': userModel.type,
+      'isApprovedByAdmin': userModel.isApprovedByAdmin,
+      'status': userModel.status,
+      'orgDescription': userModel.orgDescription
     };
   }
 }
