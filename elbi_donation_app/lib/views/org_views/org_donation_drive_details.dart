@@ -107,58 +107,58 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
                     ),
                   ),
                   SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.all(10),
-                              backgroundColor: Color(0xFF37A980),
-                              shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
-                              )),
-                          onPressed: () {
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              builder: (context) => Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.75,
-                                  decoration: new BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: new BorderRadius.only(
-                                      topLeft: const Radius.circular(25.0),
-                                      topRight: const Radius.circular(25.0),
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(10),
+                          backgroundColor: Color(0xFF37A980),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                          )),
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (context) => Container(
+                              height: MediaQuery.of(context).size.height * 0.75,
+                              decoration: new BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: new BorderRadius.only(
+                                  topLeft: const Radius.circular(25.0),
+                                  topRight: const Radius.circular(25.0),
+                                ),
+                              ),
+                              child: SingleChildScrollView(
+                                  child: Padding(
+                                padding: EdgeInsets.all(30),
+                                child: Column(
+                                  children: [
+                                    ListView.separated(
+                                      separatorBuilder:
+                                          (BuildContext context, int index) =>
+                                              SizedBox(height: 25),
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: 5,
+                                      itemBuilder: (context, index) {
+                                        return DonationCard();
+                                      },
                                     ),
-                                  ),
-                                  child: SingleChildScrollView(
-                                      child: Padding(
-                                    padding: EdgeInsets.all(30),
-                                    child: Column(
-                                      children: [
-                                        ListView.separated(
-                                          separatorBuilder:
-                                              (BuildContext context,
-                                                      int index) =>
-                                                  SizedBox(height: 25),
-                                          shrinkWrap: true,
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          itemCount: 5,
-                                          itemBuilder: (context, index) {
-                                            return DonationCard();
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ))),
-                            );
-                          },
-                          child: const Text('View Donations',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "Poppins",
-                                  fontSize: 20)))),
+                                  ],
+                                ),
+                              ))),
+                        );
+                      },
+                      child: const Text(
+                        'View Donations',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "Poppins",
+                            fontSize: 20),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             );
