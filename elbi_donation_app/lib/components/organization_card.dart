@@ -31,11 +31,22 @@ class _OrganizationCardState extends State<OrganizationCard> {
         children: [
           // image container
           Container(
-            height: 250,
-            padding: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-                color: Colors.green, borderRadius: BorderRadius.circular(8)),
-          ),
+              height: 250,
+              width: 500,
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                  color: Colors.green, borderRadius: BorderRadius.circular(8)),
+              child: widget.organization.proofOfLegitimacyImageUrlLink != null
+                  ? Container(
+                      width: double.infinity, // Fill the width of the parent
+                      height: double.infinity, // Fill the height of the parent
+                      child: Image.network(
+                        widget.organization.proofOfLegitimacyImageUrlLink!,
+                        fit: BoxFit
+                            .cover, // Make the image cover the entire container
+                      ),
+                    )
+                  : Center(child: Text("Empty"))),
           Text(widget.organization.orgName!,
               style: const TextStyle(fontFamily: "Poppins", fontSize: 20)),
           const Text('An organization ready to receive your help.'),

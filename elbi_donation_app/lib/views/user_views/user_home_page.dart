@@ -94,14 +94,15 @@ class _UserHomePageState extends State<UserHomePage> {
                                         return GestureDetector(
                                             onTap: () {
                                               Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          UserOrganizationDetails(
-                                                            organization:
-                                                                organizations[
-                                                                    index],
-                                                          )));
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      UserOrganizationDetails(
+                                                    organization:
+                                                        organizations[index],
+                                                  ),
+                                                ),
+                                              );
                                             },
                                             child: OrganizationCard(
                                                 organization:
