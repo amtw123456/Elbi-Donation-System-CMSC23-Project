@@ -24,26 +24,39 @@ class _OrgHomePageState extends State<OrgHomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 40),
-            Text("Hello, userName 👋", style: TextStyle(fontFamily: 'Poppins', fontSize: 32, fontWeight: FontWeight.w700, color: Color(0xFF37A980))),
-            Text("Here are some organizations that might interest you", style: TextStyle(fontFamily: 'Poppins', fontSize: 16)),
-            SizedBox(height: 20,),
+            Text("Hello, userName 👋",
+                style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 32,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF37A980))),
+            Text("Here are the recent donations made by users:",
+                style: TextStyle(fontFamily: 'Poppins', fontSize: 16)),
+            SizedBox(
+              height: 20,
+            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     ListView.separated(
                       padding: EdgeInsets.zero,
-                      separatorBuilder: (BuildContext context, int index) => SizedBox(height: 25),
+                      separatorBuilder: (BuildContext context, int index) =>
+                          SizedBox(height: 25),
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: 5,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => OrgDonationDetails()));                          
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        OrgDonationDetails()));
                           },
                           child: DonationCard(),
-                        ); 
+                        );
                       },
                     ),
                   ],
