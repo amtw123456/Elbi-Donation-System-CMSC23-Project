@@ -62,20 +62,6 @@ class UserProfileState extends State<UserProfile> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 35),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Username",
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      fontSize: 32,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF37A980),
-                    ),
-                  ),
-                ],
-              ),
               FutureBuilder<Map<String, dynamic>>(
                 future: context.read<UserProvider>().getUserModel(userId!),
                 builder: (BuildContext context,
@@ -91,6 +77,20 @@ class UserProfileState extends State<UserProfile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // FOR NAME
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              userInformation.username,
+                              style: TextStyle(
+                                fontFamily: "Poppins",
+                                fontSize: 32,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFF37A980),
+                              ),
+                            ),
+                          ],
+                        ),
                         const Text("Name",
                             style:
                                 TextStyle(fontFamily: "Poppins", fontSize: 16)),
@@ -105,7 +105,9 @@ class UserProfileState extends State<UserProfile> {
                           child: Padding(
                             padding: const EdgeInsets.all(15),
                             child: Text(
-                              userInformation.username,
+                              userInformation.firstName +
+                                  " " +
+                                  userInformation.lastName,
                               style: const TextStyle(
                                   fontFamily: "Poppins", fontSize: 16),
                             ),
