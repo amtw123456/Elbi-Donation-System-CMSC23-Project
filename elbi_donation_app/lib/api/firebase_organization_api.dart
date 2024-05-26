@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elbi_donation_app/models/donation_drive_model.dart';
 
-class FirebaseUserAPI {
+class fireBaseOrganizationAPI {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
 
   final Stream<QuerySnapshot> _donationDriveStreams =
       db.collection('donationDriveModels').snapshots();
-  Stream<QuerySnapshot> get orgStream => _donationDriveStreams;
+  Stream<QuerySnapshot> get donationDriveStream => _donationDriveStreams;
 
   // make sure that the id is already present
   // (the id should be the same as the auth id)
