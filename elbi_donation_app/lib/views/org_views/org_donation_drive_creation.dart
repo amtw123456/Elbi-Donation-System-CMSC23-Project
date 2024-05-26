@@ -1,4 +1,10 @@
+import 'package:elbi_donation_app/providers/organization_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:elbi_donation_app/providers/user_provider.dart';
+import 'package:elbi_donation_app/providers/auth_provider.dart';
+import 'package:elbi_donation_app/models/donation_drive_model.dart';
+import 'package:elbi_donation_app/functions/misc.dart';
 
 class AddDonationDrive extends StatefulWidget {
   const AddDonationDrive({Key? key}) : super(key: key);
@@ -15,6 +21,7 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
 
   @override
   Widget build(BuildContext context) {
+    final userId = context.read<UserAuthProvider>().user?.uid;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -105,10 +112,22 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                       borderRadius: BorderRadius.all(Radius.circular(5)),
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       print(driveName);
                       print(driveDescription);
+
+                      DonationDriveModel donationDriveModel =
+                          DonationDriveModel(
+                        id: generateRandomString(28),
+                        organizationId: userId,
+                        donationDriveName: driveName,
+                        donationDriveDescription: driveDescription,
+                      );
+
+                      await context
+                          .read<OrganizationProvider>()
+                          .addDonationDriveModel(donationDriveModel);
                     }
                   },
                   child: const Text(
