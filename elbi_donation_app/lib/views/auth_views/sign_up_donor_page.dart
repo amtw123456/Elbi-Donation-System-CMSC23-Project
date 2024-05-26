@@ -1,3 +1,5 @@
+import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:elbi_donation_app/components/navigation_helper.dart';
@@ -32,6 +34,9 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
   final _formKey = GlobalKey<FormState>();
 
   File? _selectedImage;
+
+  XFile? file;
+  String imageUrl = '';
 
   // controllers
   final TextEditingController firstNameController = TextEditingController();
@@ -213,7 +218,10 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                   IconButton.outlined(
                     onPressed: () async {
                       if (await Permission.storage.request().isGranted) {
-                        _pickImageFromGallery();
+                        // _pickImageFromGallery();
+
+                        file = await ImagePicker()
+                            .pickImage(source: ImageSource.gallery);
                       } else {
                         // Permission is not granted. Handle the scenario accordingly.
                         showDialog(
@@ -311,6 +319,24 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                               }
 
                               String id = result['uid'];
+
+                              Reference referenceRoot =
+                                  FirebaseStorage.instance.ref();
+
+                              Reference referenceDirImages =
+                                  referenceRoot.child('images');
+
+                              Reference referenceImageToUpload =
+                                  referenceDirImages
+                                      .child('$id-proofOfLegitimacyImage');
+
+                              try {
+                                await referenceImageToUpload
+                                    .putFile(File(file!.path));
+                                imageUrl = await referenceImageToUpload
+                                    .getDownloadURL();
+                              } catch (error) {}
+
                               UserModel userModel = UserModel(
                                   id: id,
                                   firstName: firstNameController.text,
@@ -322,6 +348,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                   contactNumber: contactNumberController.text,
                                   organizationDriveList: [],
                                   type: _isOrganization ? "org" : "donor",
+                                  proofOfLegitimacyImageUrlLink: imageUrl,
                                   isApprovedByAdmin:
                                       _isOrganization ? false : null);
 
