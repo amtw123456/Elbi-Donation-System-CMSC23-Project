@@ -39,7 +39,8 @@ class OrgDonationDrivePageState extends State<OrgDonationDrivePage> {
         builder: (BuildContext context,
             AsyncSnapshot<Map<String, dynamic>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            // return const Center(child: CircularProgressIndicator());
+            return Container(); // return an empty container instead so that loading icon wont overlap on other loading icons
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else if (snapshot.hasData) {
