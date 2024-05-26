@@ -219,7 +219,6 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                     onPressed: () async {
                       if (await Permission.storage.request().isGranted) {
                         // _pickImageFromGallery();
-
                         file = await ImagePicker()
                             .pickImage(source: ImageSource.gallery);
                       } else {
@@ -255,7 +254,8 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                   IconButton.outlined(
                     onPressed: () async {
                       if (await Permission.camera.request().isGranted) {
-                        _pickImageFromCamera();
+                        file = await ImagePicker()
+                            .pickImage(source: ImageSource.camera);
                       } else {
                         // Permission is not granted. Handle the scenario accordingly.
                         showDialog(
@@ -320,22 +320,24 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
 
                               String id = result['uid'];
 
-                              Reference referenceRoot =
-                                  FirebaseStorage.instance.ref();
+                              if (_isOrganization) {
+                                Reference referenceRoot =
+                                    FirebaseStorage.instance.ref();
 
-                              Reference referenceDirImages =
-                                  referenceRoot.child('images');
+                                Reference referenceDirImages =
+                                    referenceRoot.child('images');
 
-                              Reference referenceImageToUpload =
-                                  referenceDirImages
-                                      .child('$id-proofOfLegitimacyImage');
+                                Reference referenceImageToUpload =
+                                    referenceDirImages
+                                        .child('$id-proofOfLegitimacyImage');
 
-                              try {
-                                await referenceImageToUpload
-                                    .putFile(File(file!.path));
-                                imageUrl = await referenceImageToUpload
-                                    .getDownloadURL();
-                              } catch (error) {}
+                                try {
+                                  await referenceImageToUpload
+                                      .putFile(File(file!.path));
+                                  imageUrl = await referenceImageToUpload
+                                      .getDownloadURL();
+                                } catch (error) {}
+                              }
 
                               UserModel userModel = UserModel(
                                   id: id,
