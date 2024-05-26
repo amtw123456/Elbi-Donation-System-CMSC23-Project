@@ -57,6 +57,34 @@ class FirebaseUserAPI {
     }
   }
 
+  Future<Map<String, dynamic>> updateUserModel(
+      String id, Map<String, dynamic> updates) async {
+    try {
+      // Update the document with the given id
+      if (updates['organizationDriveList'] != null) {
+        // Use FieldValue.arrayUnion for organizationDriveList
+        updates['organizationDriveList'] = FieldValue.arrayUnion(
+            updates['organizationDriveList'] is List
+                ? updates['organizationDriveList']
+                : [updates['organizationDriveList']]);
+      }
+
+      await FirebaseFirestore.instance
+          .collection("userModels")
+          .doc(id)
+          .update(updates);
+
+      return {'success': true, 'message': "Successfully updated!"};
+    } on FirebaseException catch (e) {
+      return {
+        'success': false,
+        'error': 'Firebase Error: ${e.code} : ${e.message}'
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Error: $e'};
+    }
+  }
+
   // view all organizations
   Future<Map<String, dynamic>> getOrganizations() async {
     try {
