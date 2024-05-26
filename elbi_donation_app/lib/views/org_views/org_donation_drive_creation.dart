@@ -128,6 +128,7 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                       await context
                           .read<OrganizationProvider>()
                           .addDonationDriveModel(donationDriveModel);
+                      Navigator.pop(context);
                     }
                   },
                   child: const Text(
