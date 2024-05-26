@@ -59,14 +59,17 @@ class OrgDonationDrivePageState extends State<OrgDonationDrivePage> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           child: DonationDriveCard(
-                              donationDriveId: organizationDriveIds[index]),
+                            donationDriveId: organizationDriveIds[index],
+                          ),
                           onTap: () {
                             Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            OrgDonationDriveDetails()))
-                                .then((_) => setState(() {}));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OrgDonationDriveDetails(
+                                  donationDriveId: organizationDriveIds[index],
+                                ),
+                              ),
+                            ).then((_) => setState(() {}));
                           },
                         );
                       },
