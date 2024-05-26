@@ -16,6 +16,12 @@ class UserProvider with ChangeNotifier {
     return result;
   }
 
+  Future<Map<String, dynamic>> updateUserModel(
+      String id, Map<String, dynamic> updates) async {
+    final result = await firebaseService.updateUserModel(id, updates);
+    return result;
+  }
+
   Future<Map<String, dynamic>> deleteUserModel(String id) async {
     final result = await firebaseService.deleteUserModel(id);
     return result;

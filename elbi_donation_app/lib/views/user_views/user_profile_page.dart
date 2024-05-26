@@ -21,7 +21,6 @@ class UserProfileState extends State<UserProfile> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        final userId = context.read<UserAuthProvider>().user?.uid;
         return AlertDialog(
           title: const Text("Add Address"),
           content: TextField(

@@ -244,6 +244,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                     email: emailController.text,
                                     address: addressController.text,
                                     contactNumber: contactNumberController.text,
+                                    organizationDriveList: [],
                                     type: _isOrganization ? "org" : "donor",
                                     isApprovedByAdmin:
                                         _isOrganization ? false : null);

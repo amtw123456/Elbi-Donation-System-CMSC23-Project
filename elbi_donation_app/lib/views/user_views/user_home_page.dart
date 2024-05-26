@@ -35,8 +35,7 @@ class _UserHomePageState extends State<UserHomePage> {
             } else if (snapshot.hasData) {
               final userInformation = snapshot.data!;
               print(userInformation); // Print the snapshot data
-              final userName = userInformation[
-                  'firstname']; // Assuming the user's name is stored under 'firstname' key
+              // Assuming the user's name is stored under 'firstname' key
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

@@ -11,7 +11,6 @@ class DonateGoodsPage extends StatefulWidget {
 }
 
 class _DonateGoodsPageState extends State<DonateGoodsPage> {
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   List<String> _selectedDonationType = [];
@@ -22,7 +21,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
   String? _selectedAddress;
   int? _selectedContactNum;
 
-  bool? dropOffSelected = false; 
+  bool? dropOffSelected = false;
 
   String noTypeSelected = '';
 
@@ -49,7 +48,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
   void _onModeOfDeliverySelected(String modeOfDelivery) {
     setState(() {
       _selectedModeOfDelivery = modeOfDelivery;
-      if (modeOfDelivery == 'Drop off'){
+      if (modeOfDelivery == 'Drop off') {
         dropOffSelected = true;
         _selectedAddress = null;
         _selectedContactNum = null;
@@ -59,13 +58,13 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
     });
   }
 
-  void _updateDonationWeight(String weight){
+  void _updateDonationWeight(String weight) {
     setState(() {
       _selectedWeight = double.tryParse(weight);
     });
   }
 
-  void _onContactNumSelected(String number){
+  void _onContactNumSelected(String number) {
     setState(() {
       _selectedContactNum = int.tryParse(number);
     });
@@ -107,7 +106,6 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
         backgroundColor: Colors.white,
         appBar: AppBar(
           centerTitle: true,
@@ -192,16 +190,19 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                       ),
                     ],
                   ),
-                  Text(noTypeSelected, style: TextStyle(color: Colors.red[900]),),
+                  Text(
+                    noTypeSelected,
+                    style: TextStyle(color: Colors.red[900]),
+                  ),
                   const SizedBox(height: 20),
                   const Text('Mode of delivery'),
                   const SizedBox(height: 10),
-  // MODE OF DELIVERY
+                  // MODE OF DELIVERY
                   DropdownButtonFormField<String>(
                     decoration: const InputDecoration(
                       hintText: 'Mode of delivery',
                       hintStyle: TextStyle(
-                          fontFamily: 'Poppins', 
+                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.normal,
                           color: Color(0XFFD2D2D2)),
                       fillColor: Colors.white,
@@ -226,14 +227,17 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                       return DropdownMenuItem<String>(
                         value: modeOfDelivery,
                         child: Text(modeOfDelivery,
-                            style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.normal)),
+                            style: const TextStyle(
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.normal)),
                       );
                     }).toList(),
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: TextFormField(
-                      style: TextStyle(fontFamily: 'Poppins', color: Colors.black),
+                      style:
+                          TextStyle(fontFamily: 'Poppins', color: Colors.black),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter the weight';
@@ -246,7 +250,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                       decoration: const InputDecoration(
                         hintText: 'Donation weight',
                         hintStyle: TextStyle(
-                            fontFamily: 'Poppins', 
+                            fontFamily: 'Poppins',
                             fontWeight: FontWeight.normal,
                             color: Color(0XFFD2D2D2)),
                         fillColor: Colors.white,
@@ -258,7 +262,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                       onChanged: _updateDonationWeight,
                     ),
                   ),
-  // DATE AND TIME SELECTOR
+                  // DATE AND TIME SELECTOR
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -266,8 +270,8 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                         child: TextFormField(
                           readOnly: true,
                           onTap: () => _selectDate(context),
-                          validator:(value) {
-                            if(_selectedDate == null){
+                          validator: (value) {
+                            if (_selectedDate == null) {
                               return 'Please choose a date';
                             }
                             return null;
@@ -277,14 +281,16 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                                 ? 'Select Date'
                                 : '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}',
                             hintStyle: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontFamily: 'Poppins',
-                              color: _selectedDate == null ? Color(0XFFD2D2D2) : Colors.black 
-                            ),
+                                fontWeight: FontWeight.normal,
+                                fontFamily: 'Poppins',
+                                color: _selectedDate == null
+                                    ? Color(0XFFD2D2D2)
+                                    : Colors.black),
                             fillColor: Colors.white,
                             border: const OutlineInputBorder(
                               borderSide: BorderSide(color: Color(0XFFD2D2D2)),
-                              borderRadius: BorderRadius.all(Radius.circular(4)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4)),
                             ),
                           ),
                         ),
@@ -294,8 +300,8 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                         child: TextFormField(
                           readOnly: true,
                           onTap: () => _selectTime(context),
-                          validator:(value) {
-                            if(_selectedTime == null){
+                          validator: (value) {
+                            if (_selectedTime == null) {
                               return 'Please choose a time';
                             }
                             return null;
@@ -306,14 +312,15 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                                 : '${_selectedTime!.hour}:${_selectedTime!.minute}',
                             hintStyle: TextStyle(
                                 fontWeight: FontWeight.normal,
-                                fontFamily: 'Poppins', 
+                                fontFamily: 'Poppins',
                                 color: _selectedTime == null
-                                  ? Color(0XFFD2D2D2)
-                                  : Colors.black),
+                                    ? Color(0XFFD2D2D2)
+                                    : Colors.black),
                             fillColor: Colors.white,
                             border: const OutlineInputBorder(
                               borderSide: BorderSide(color: Color(0XFFD2D2D2)),
-                              borderRadius: BorderRadius.all(Radius.circular(4)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4)),
                             ),
                           ),
                         ),
@@ -321,14 +328,14 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                     ],
                   ),
                   const SizedBox(height: 10),
-  // ADDRESS SELECTOR
+                  // ADDRESS SELECTOR
                   Visibility(
                     visible: !dropOffSelected!,
                     child: DropdownButtonFormField<String>(
                       decoration: const InputDecoration(
                         hintText: 'Select Address',
                         hintStyle: TextStyle(
-                            fontFamily: 'Poppins', 
+                            fontFamily: 'Poppins',
                             fontWeight: FontWeight.normal,
                             color: Color(0XFFD2D2D2)),
                         fillColor: Colors.white,
@@ -353,35 +360,39 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                         return DropdownMenuItem<String>(
                           value: address,
                           child: Text(address,
-                              style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.normal, color: Colors.black)),
+                              style: const TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black)),
                         );
                       }).toList(),
                     ),
                   ),
-  // CONTACT NUMBER
+                  // CONTACT NUMBER
                   Visibility(
                     visible: !dropOffSelected!,
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: TextFormField(
                         validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a contact number';
-                              }
-                              if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
-                                return 'Please enter a valid number';
-                              }
-                              if (value.length != 11) {
-                                return 'Contact number must be 10 digits long';
-                              }
-                              return null;
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a contact number';
+                          }
+                          if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                            return 'Please enter a valid number';
+                          }
+                          if (value.length != 11) {
+                            return 'Contact number must be 10 digits long';
+                          }
+                          return null;
                         },
-                        style: TextStyle(fontFamily: 'Poppins', color: Colors.black),
+                        style: TextStyle(
+                            fontFamily: 'Poppins', color: Colors.black),
                         decoration: const InputDecoration(
                           hintText: 'Contact number',
                           hintStyle: TextStyle(
                               fontFamily: 'Poppins',
-                              fontWeight: FontWeight.normal, 
+                              fontWeight: FontWeight.normal,
                               color: Color(0XFFD2D2D2)),
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
@@ -394,7 +405,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                     ),
                   ),
                   const SizedBox(height: 16.0),
-  // SUBMIT BUTTON
+                  // SUBMIT BUTTON
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
@@ -406,7 +417,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                         ),
                       ),
                       onPressed: () {
-                        if(_selectedDonationType.isEmpty){
+                        if (_selectedDonationType.isEmpty) {
                           setState(() {
                             noTypeSelected = 'Please choose a donation type';
                           });
@@ -415,26 +426,27 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                             noTypeSelected = '';
                           });
                         }
-                        if(_formKey.currentState!.validate()){
+                        if (_formKey.currentState!.validate()) {
                           print(_selectedDonationType);
                           print(_selectedModeOfDelivery);
                           print(_selectedWeight);
-                          print(DateFormat('dd/MM/yyyy').format(_selectedDate!));
+                          print(
+                              DateFormat('dd/MM/yyyy').format(_selectedDate!));
                           print(formatTimeOfDay(_selectedTime!));
                           print(_selectedAddress);
                           print(_selectedContactNum);
-                          }
+                        }
 
-                          Map<String, dynamic> donationDetails = {
-                            'donationTypes': _selectedDonationType,
-                            'modeOfDelivery': _selectedModeOfDelivery,
-                            'donationWeight': _selectedWeight,
-                            'date': DateFormat('dd/MM/yyyy').format(_selectedDate!),
-                            'time': formatTimeOfDay(_selectedTime!),
-                            'address': _selectedAddress,
-                            'contactNumber': _selectedContactNum
-                          };
-                          
+                        Map<String, dynamic> donationDetails = {
+                          'donationTypes': _selectedDonationType,
+                          'modeOfDelivery': _selectedModeOfDelivery,
+                          'donationWeight': _selectedWeight,
+                          'date':
+                              DateFormat('dd/MM/yyyy').format(_selectedDate!),
+                          'time': formatTimeOfDay(_selectedTime!),
+                          'address': _selectedAddress,
+                          'contactNumber': _selectedContactNum
+                        };
                       },
                       child: const Text(
                         'Confirm',
