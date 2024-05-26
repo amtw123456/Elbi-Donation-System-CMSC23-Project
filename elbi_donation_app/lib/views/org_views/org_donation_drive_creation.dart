@@ -138,6 +138,7 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                       await context
                           .read<UserProvider>()
                           .updateUserModel(userId!, updates);
+
                       Navigator.pop(context);
                     }
                   },

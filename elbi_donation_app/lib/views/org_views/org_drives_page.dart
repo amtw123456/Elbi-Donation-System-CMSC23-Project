@@ -17,10 +17,8 @@ class OrgDonationDrivePage extends StatefulWidget {
 }
 
 class OrgDonationDrivePageState extends State<OrgDonationDrivePage> {
-  @override
   Widget build(BuildContext context) {
-    final userId = context.read<UserAuthProvider>().user?.uid;
-
+    String? userId = context.read<UserAuthProvider>().user?.uid ?? "";
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -64,10 +62,11 @@ class OrgDonationDrivePageState extends State<OrgDonationDrivePage> {
                               donationDriveId: organizationDriveIds[index]),
                           onTap: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        OrgDonationDriveDetails()));
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            OrgDonationDriveDetails()))
+                                .then((_) => setState(() {}));
                           },
                         );
                       },
@@ -82,9 +81,11 @@ class OrgDonationDrivePageState extends State<OrgDonationDrivePage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => AddDonationDrive()));
+        onPressed: () async {
+          final value = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddDonationDrive()),
+          ).then((_) => setState(() {}));
         },
         child: Icon(
           Icons.add,
