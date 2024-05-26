@@ -43,9 +43,10 @@ class _UserOrganizationDetailsState extends State<UserOrganizationDetails> {
                 ),
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              child: const Text(
-                "This container takes the maximum width available and has borders.",
-              ),
+              child: widget.organization.proofOfLegitimacyImageUrlLink != null
+                  ? Image.network(
+                      widget.organization.proofOfLegitimacyImageUrlLink!)
+                  : Text("Empty"),
             ),
             Text(
               widget.organization.orgName!,
