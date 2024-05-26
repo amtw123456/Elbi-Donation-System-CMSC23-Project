@@ -3,11 +3,11 @@ import 'package:elbi_donation_app/api/firebase_organization_api.dart';
 import 'package:elbi_donation_app/models/donation_drive_model.dart';
 import 'package:flutter/material.dart';
 
-class UserProvider with ChangeNotifier {
-  FirebaseUserAPI firebaseService = FirebaseUserAPI();
-  late final Stream<QuerySnapshot> orgStream;
-  UserProvider() {
-    orgStream = firebaseService.orgStream;
+class OrganizationProvider with ChangeNotifier {
+  fireBaseOrganizationAPI firebaseService = fireBaseOrganizationAPI();
+  late final Stream<QuerySnapshot> donationDriveStream;
+  OrganizationProvider() {
+    donationDriveStream = firebaseService.donationDriveStream;
   }
 
   Future<Map<String, dynamic>> addDonationDriveModel(
