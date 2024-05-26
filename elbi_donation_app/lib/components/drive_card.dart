@@ -1,8 +1,14 @@
 import 'package:elbi_donation_app/views/admin_views/admin_org_details.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:elbi_donation_app/providers/organization_provider.dart';
+import 'package:elbi_donation_app/providers/auth_provider.dart';
+import 'package:elbi_donation_app/models/donation_drive_model.dart';
 
 class DonationDriveCard extends StatefulWidget {
-  const DonationDriveCard({super.key});
+  final String donationDriveId;
+
+  const DonationDriveCard({required this.donationDriveId, super.key});
 
   @override
   State<DonationDriveCard> createState() => _DonationDriveCardState();
@@ -11,33 +17,56 @@ class DonationDriveCard extends StatefulWidget {
 class _DonationDriveCardState extends State<DonationDriveCard> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 400,
-      padding: EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(
-          color: Colors.grey,
-          width: 1.0,
-        ),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // image container
-          Container(
-            height: 250,
+    return FutureBuilder<Map<String, dynamic>>(
+      future: context
+          .read<OrganizationProvider>()
+          .getDonationDriveModel(widget.donationDriveId),
+      builder:
+          (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else if (snapshot.hasData) {
+          final donationDriveDetails = snapshot.data!;
+          return Container(
+            width: double.infinity,
+            height: 400,
             padding: EdgeInsets.all(16.0),
             decoration: BoxDecoration(
-                color: Colors.green, borderRadius: BorderRadius.circular(8)),
-          ),
-          Text('Donation drive name here',
-              style: TextStyle(fontFamily: "Poppins", fontSize: 20)),
-          Text('A short description here. One or two sentences maybe?'),
-        ],
-      ),
+              color: Colors.white,
+              border: Border.all(
+                color: Colors.grey,
+                width: 1.0,
+              ),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // image container
+                Container(
+                  height: 250,
+                  padding: EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(8)),
+                ),
+                Text(
+                    donationDriveDetails['donationDriveModel']
+                        .donationDriveName,
+                    style: TextStyle(fontFamily: "Poppins", fontSize: 20)),
+                Text(
+                  donationDriveDetails['donationDriveModel']
+                      .donationDriveDescription,
+                ),
+              ],
+            ),
+          );
+        } else {
+          return Text('No data available');
+        }
+      },
     );
   }
 }
