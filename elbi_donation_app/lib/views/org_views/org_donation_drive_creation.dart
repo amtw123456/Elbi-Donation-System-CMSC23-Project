@@ -117,9 +117,11 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                       print(driveName);
                       print(driveDescription);
 
+                      String? donationDriveString = generateRandomString(28);
+
                       DonationDriveModel donationDriveModel =
                           DonationDriveModel(
-                        id: generateRandomString(28),
+                        id: donationDriveString,
                         organizationId: userId,
                         donationDriveName: driveName,
                         donationDriveDescription: driveDescription,
@@ -128,6 +130,14 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                       await context
                           .read<OrganizationProvider>()
                           .addDonationDriveModel(donationDriveModel);
+                      Map<String, dynamic> updates = {
+                        'organizationDriveList': donationDriveString,
+                        // Add other fields you want to update
+                      };
+
+                      await context
+                          .read<UserProvider>()
+                          .updateUserModel(userId!, updates);
                       Navigator.pop(context);
                     }
                   },
