@@ -1,4 +1,5 @@
 import 'package:elbi_donation_app/components/drive_card.dart';
+import 'package:elbi_donation_app/providers/organization_provider.dart';
 import 'package:elbi_donation_app/views/org_views/org_donation_drive_creation.dart';
 import 'package:elbi_donation_app/views/org_views/org_donation_drive_details.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,8 @@ class OrgDonationDrivePageState extends State<OrgDonationDrivePage> {
                       itemCount: organizationDriveIds.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
-                          child: DonationDriveCard(),
+                          child: DonationDriveCard(
+                              donationDriveId: organizationDriveIds[index]),
                           onTap: () {
                             Navigator.push(
                                 context,
