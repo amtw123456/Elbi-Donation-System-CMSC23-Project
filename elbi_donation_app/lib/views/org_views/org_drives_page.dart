@@ -45,39 +45,44 @@ class OrgDonationDrivePageState extends State<OrgDonationDrivePage> {
             final userInformation = snapshot.data!;
             final organizationDriveIds =
                 userInformation['userModel'].organizationDriveList;
-            return SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.all(30),
-                child: Column(
-                  children: [
-                    ListView.separated(
-                      separatorBuilder: (BuildContext context, int index) =>
-                          SizedBox(height: 25),
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: organizationDriveIds.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          child: DonationDriveCard(
-                            donationDriveId: organizationDriveIds[index],
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => OrgDonationDriveDetails(
+            return organizationDriveIds.length == 0
+                ? Center(child: Text("No Donation Drives yet!"))
+                : SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.all(30),
+                      child: Column(
+                        children: [
+                          ListView.separated(
+                            separatorBuilder:
+                                (BuildContext context, int index) =>
+                                    SizedBox(height: 25),
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: organizationDriveIds.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                child: DonationDriveCard(
                                   donationDriveId: organizationDriveIds[index],
                                 ),
-                              ),
-                            ).then((_) => setState(() {}));
-                          },
-                        );
-                      },
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          OrgDonationDriveDetails(
+                                        donationDriveId:
+                                            organizationDriveIds[index],
+                                      ),
+                                    ),
+                                  ).then((_) => setState(() {}));
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-            );
+                  );
           } else {
             return Text('No data available');
           }

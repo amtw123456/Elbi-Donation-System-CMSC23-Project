@@ -13,6 +13,7 @@ class UserModel {
   String? orgName;
   String? status;
   String? orgDescription;
+  String? proofOfLegitimacyImageUrlLink;
   List<String>? organizationDriveList; // New list field
 
   UserModel({
@@ -28,6 +29,7 @@ class UserModel {
     this.isApprovedByAdmin,
     this.status,
     this.orgDescription,
+    this.proofOfLegitimacyImageUrlLink,
     this.organizationDriveList, // Add organizationDriveList to the constructor
   });
 
@@ -45,6 +47,7 @@ class UserModel {
       isApprovedByAdmin: json['isApprovedByAdmin'],
       status: json['status'],
       orgDescription: json['orgDescription'],
+      proofOfLegitimacyImageUrlLink: json['proofOfLegitimacyImageUrlLink'],
       organizationDriveList: json['organizationDriveList'] != null
           ? List<String>.from(json['organizationDriveList'])
           : null, // Parse organizationDriveList from JSON
@@ -71,6 +74,7 @@ class UserModel {
       'isApprovedByAdmin': isApprovedByAdmin,
       'status': status,
       'orgDescription': orgDescription,
+      'proofOfLegitimacyImageUrlLink': proofOfLegitimacyImageUrlLink,
       'organizationDriveList':
           organizationDriveList, // Include organizationDriveList in JSON
     };
