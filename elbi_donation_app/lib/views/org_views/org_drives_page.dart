@@ -17,8 +17,16 @@ class OrgDonationDrivePageState extends State<OrgDonationDrivePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Donation Drives', style: TextStyle(fontFamily: 'Poppins', fontSize: 24, fontWeight: FontWeight.w700)),
+        title: Text(
+          'Donation Drives',
+          style: TextStyle(
+            fontFamily: 'Poppins',
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -26,7 +34,8 @@ class OrgDonationDrivePageState extends State<OrgDonationDrivePage> {
           child: Column(
             children: [
               ListView.separated(
-                separatorBuilder: (BuildContext context, int index) => SizedBox(height: 25),
+                separatorBuilder: (BuildContext context, int index) =>
+                    SizedBox(height: 25),
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: 5,
@@ -34,20 +43,27 @@ class OrgDonationDrivePageState extends State<OrgDonationDrivePage> {
                   return GestureDetector(
                     child: DonationDriveCard(),
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => OrgDonationDriveDetails()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OrgDonationDriveDetails()));
                     },
                   );
                 },
               ),
             ],
-          ), 
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => AddDonationDrive()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AddDonationDrive()));
         },
-        child: Icon(Icons.add, color: Color(0xFF37A980),),
+        child: Icon(
+          Icons.add,
+          color: Color(0xFF37A980),
+        ),
         backgroundColor: Colors.white,
         shape: CircleBorder(),
       ),
