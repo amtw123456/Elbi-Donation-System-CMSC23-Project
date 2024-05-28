@@ -85,6 +85,23 @@ class FirebaseUserAPI {
     }
   }
 
+  Future<Map<String, dynamic>> removeDonationDriveModelFromUserModel(
+      String userId, String driveId) async {
+    try {
+      await db.collection("userModels").doc(userId).update({
+        'organizationDriveList': FieldValue.arrayRemove([driveId])
+      });
+      return {'success': true, 'message': "Successfully updated!"};
+    } on FirebaseException catch (e) {
+      return {
+        'success': false,
+        'error': 'Firebase Error: ${e.code} : ${e.message}'
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Error: $e'};
+    }
+  }
+
   // view all organizations
   Future<Map<String, dynamic>> getOrganizations() async {
     try {
@@ -97,6 +114,27 @@ class FirebaseUserAPI {
         orgs.add(UserModel.fromJson(snapshot.data()));
       }
       return {'success': true, 'orgs': orgs};
+    } on FirebaseException catch (e) {
+      return {
+        'success': false,
+        'error': 'Firebase Error: ${e.code} : ${e.message}'
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> getDonors() async {
+    try {
+      List<UserModel> donors = [];
+      final snapshots = await db
+          .collection("userModels")
+          .where("type", isEqualTo: "donor")
+          .get();
+      for (var snapshot in snapshots.docs) {
+        donors.add(UserModel.fromJson(snapshot.data()));
+      }
+      return {'success': true, 'donors': donors};
     } on FirebaseException catch (e) {
       return {
         'success': false,

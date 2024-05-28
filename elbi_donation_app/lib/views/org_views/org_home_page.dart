@@ -43,14 +43,14 @@ class _OrgHomePageState extends State<OrgHomePage> {
                 children: [
                   SizedBox(height: 40),
                   Text("Hello, $userName 👋",
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: 32,
                           fontWeight: FontWeight.w700,
                           color: Color(0xFF37A980))),
                   Row(
                     children: [
-                      Text(
+                      const Text(
                         "Verification status: ",
                       ),
                       Text(

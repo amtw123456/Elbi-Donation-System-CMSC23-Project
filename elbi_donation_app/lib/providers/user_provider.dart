@@ -36,4 +36,17 @@ class UserProvider with ChangeNotifier {
     final result = await firebaseService.getOrganizations();
     return result;
   }
+
+  Future<Map<String, dynamic>> getDonors() async {
+    final result = await firebaseService.getDonors();
+    return result;
+  }
+
+  Future<Map<String, dynamic>> removeDonationDriveModelFromUserModel(
+      String userid, String driveid) async {
+    final result = await firebaseService.removeDonationDriveModelFromUserModel(
+        userid, driveid);
+    notifyListeners();
+    return result;
+  }
 }
