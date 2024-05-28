@@ -48,8 +48,19 @@ class _OrgHomePageState extends State<OrgHomePage> {
                           fontSize: 32,
                           fontWeight: FontWeight.w700,
                           color: Color(0xFF37A980))),
-                  Text(
-                      "Verification status: ${verificationStatus ? 'Verified' : 'Unverified'}"),
+                  Row(
+                    children: [
+                      Text(
+                        "Verification status: ",
+                      ),
+                      Text(
+                        "${verificationStatus ? 'Verified' : 'Unverified'}",
+                        style: TextStyle(
+                          color: verificationStatus ? Colors.green : Colors.red,
+                        ),
+                      ),
+                    ],
+                  ),
                   Text("Here are the recent donations made by users:",
                       style: TextStyle(fontFamily: 'Poppins', fontSize: 16)),
                   SizedBox(
