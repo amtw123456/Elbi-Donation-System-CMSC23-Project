@@ -24,6 +24,16 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
 
   final List<String> _modeOfDelivery = ['Drop off', 'Pick up'];
 
+  // buttons
+  Map<String, bool> buttonToggleStatus = {
+    'clothes': false,
+    'food': false,
+    'electronics': false,
+    'cash': false,
+    'furniture': false,
+    'others': false
+  };
+
   void _onDonationTypeSelected(String donationType) {
     setState(() {
       _selectedDonationType.add(donationType);
@@ -34,6 +44,16 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
     setState(() {
       _selectedDonationType.remove(donationType);
     });
+  }
+
+  // handle donation type buttons
+  void _onDonationTypeToggle(String donationType) {
+    buttonToggleStatus[donationType] = !buttonToggleStatus[donationType]!;
+    if (buttonToggleStatus[donationType]!) {
+      _onDonationTypeSelected(donationType);
+    } else {
+      _onDonationTypeRemoved(donationType);
+    }
   }
 
   void _onModeOfDeliverySelected(String modeOfDelivery) {
@@ -102,14 +122,14 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                       iconData: DonationIcons.tshirt,
                       label: 'Clothes',
                       onPressed: (selected) {
-                        if (selected) _onDonationTypeSelected('Clothes');
+                        _onDonationTypeToggle('clothes');
                       },
                     ),
                     DonationContainer(
                       iconData: DonationIcons.food,
                       label: 'Food',
                       onPressed: (selected) {
-                        if (selected) _onDonationTypeSelected('Food');
+                        _onDonationTypeToggle('food');
                       },
                     ),
                   ],
@@ -122,14 +142,14 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                       iconData: DonationIcons.mobile,
                       label: 'Electronics',
                       onPressed: (selected) {
-                        if (selected) _onDonationTypeSelected('Electronics');
+                        _onDonationTypeToggle('electronics');
                       },
                     ),
                     DonationContainer(
                       iconData: DonationIcons.money_bill_alt,
                       label: 'Cash',
                       onPressed: (selected) {
-                        if (selected) _onDonationTypeSelected('Cash');
+                        _onDonationTypeToggle('cash');
                       },
                     ),
                   ],
@@ -142,14 +162,14 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                       iconData: DonationIcons.bed,
                       label: 'Furniture',
                       onPressed: (selected) {
-                        if (selected) _onDonationTypeSelected('Furniture');
+                        _onDonationTypeToggle('furniture');
                       },
                     ),
                     DonationContainer(
                       iconData: DonationIcons.dot_3,
                       label: 'Others',
                       onPressed: (selected) {
-                        if (selected) _onDonationTypeSelected('Others');
+                        _onDonationTypeToggle('others');
                       },
                     ),
                   ],

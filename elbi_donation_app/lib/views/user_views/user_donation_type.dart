@@ -6,24 +6,36 @@ class DonationContainer extends StatefulWidget {
   final String label;
   final Function(bool) onPressed;
 
-  const DonationContainer({required this.iconData, required this.label, required this.onPressed, Key? key}) : super(key: key);
+  const DonationContainer(
+      {required this.iconData,
+      required this.label,
+      required this.onPressed,
+      super.key});
 
   @override
   _DonationContainerState createState() => _DonationContainerState();
 }
 
 class _DonationContainerState extends State<DonationContainer> {
-  Color _iconColor = const Color(0XFFD2D2D2); 
+  Color _iconColor = const Color(0XFFD2D2D2);
   Color _backgroundColor = Colors.white;
   Color _textColor = const Color(0XFFD2D2D2);
   Color _borderColor = const Color(0XFFD2D2D2);
 
   void _changeColor() {
     setState(() {
-      _borderColor = _borderColor == const Color(0XFFD2D2D2) ? const Color(0xFF37A980) : const Color(0XFFD2D2D2);
-      _backgroundColor = _backgroundColor == Colors.white ? const Color(0xFF37A980) : Colors.white;
-      _iconColor = _iconColor == const Color(0XFFD2D2D2) ? Colors.white : const Color(0XFFD2D2D2);
-      _textColor = _textColor == const Color(0XFFD2D2D2) ? Colors.white : const Color(0XFFD2D2D2);
+      _borderColor = _borderColor == const Color(0XFFD2D2D2)
+          ? const Color(0xFF37A980)
+          : const Color(0XFFD2D2D2);
+      _backgroundColor = _backgroundColor == Colors.white
+          ? const Color(0xFF37A980)
+          : Colors.white;
+      _iconColor = _iconColor == const Color(0XFFD2D2D2)
+          ? Colors.white
+          : const Color(0XFFD2D2D2);
+      _textColor = _textColor == const Color(0XFFD2D2D2)
+          ? Colors.white
+          : const Color(0XFFD2D2D2);
     });
     widget.onPressed(true);
   }
@@ -48,17 +60,17 @@ class _DonationContainerState extends State<DonationContainer> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: 
-                  widget.label == 'Clothes' 
-                  ? const EdgeInsets.only(right: 26.0) 
-                  : widget.label == 'Cash' 
-                  ? const EdgeInsets.only(right: 19.0) 
-                  : widget.label == 'Furniture'
-                  ? const EdgeInsets.only(right: 18)
-                  : EdgeInsets.zero,
+              padding: widget.label == 'Clothes'
+                  ? const EdgeInsets.only(right: 26.0)
+                  : widget.label == 'Cash'
+                      ? const EdgeInsets.only(right: 19.0)
+                      : widget.label == 'Furniture'
+                          ? const EdgeInsets.only(right: 18)
+                          : EdgeInsets.zero,
               child: Icon(widget.iconData, size: 75, color: _iconColor),
             ),
-            Text(widget.label, style: TextStyle(fontFamily: 'Poppins', color: _textColor)),
+            Text(widget.label,
+                style: TextStyle(fontFamily: 'Poppins', color: _textColor)),
           ],
         ),
       ),
