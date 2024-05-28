@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+import 'package:elbi_donation_app/providers/user_provider.dart';
+import 'package:elbi_donation_app/providers/auth_provider.dart';
+import 'package:elbi_donation_app/providers/organization_provider.dart';
+
 class OrgDonationDetails extends StatefulWidget {
   const OrgDonationDetails({Key? key}) : super(key: key);
 
@@ -41,15 +46,40 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
     'Canceled'
   ];
 
-  List<String> drives = [
-    'Drive 1',
-    'Drive 2',
-    'Drive 3',
-  ];
-  String selectedDrive = 'Drive 1';
+  List<String> drives = [];
+  String selectedDrive = '-';
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchDonationDriveModels();
+  }
+
+  Future<void> _fetchDonationDriveModels() async {
+    final userId = context.read<UserAuthProvider>().user?.uid;
+    final userInformation =
+        await context.read<UserProvider>().getUserModel(userId!);
+    final List<dynamic> organizationDriveList =
+        userInformation['userModel'].organizationDriveList;
+    List<String> items = [];
+    for (String donationDriveId in organizationDriveList) {
+      final donationDriveModel = await context
+          .read<OrganizationProvider>()
+          .getDonationDriveModel(donationDriveId);
+      items.add(donationDriveModel['donationDriveModel'].donationDriveName);
+    }
+    setState(() {
+      if (organizationDriveList.length != 0) {
+        drives = items;
+        selectedDrive = items[0];
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final userId = context.read<UserAuthProvider>().user?.uid;
+
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -246,6 +276,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                       );
                     }).toList(),
                   ),
+
                   SizedBox(height: 10),
                   Text("Assign donation drive",
                       style: TextStyle(
@@ -253,6 +284,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                           color: Color(0xFF37A980),
                           fontSize: 16)),
                   // DROPDOWN FOR DONATION DRIVE
+
                   DropdownButtonFormField<String>(
                     decoration: InputDecoration(
                       // hintText: 'Pe',
@@ -275,10 +307,10 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                       }
                       return null;
                     },
-                    items: drives.map((String drive) {
+                    items: drives.map((String donationDriveId) {
                       return DropdownMenuItem<String>(
-                        value: drive,
-                        child: Text(drive,
+                        value: donationDriveId,
+                        child: Text(donationDriveId,
                             style: TextStyle(fontFamily: 'Poppins')),
                       );
                     }).toList(),

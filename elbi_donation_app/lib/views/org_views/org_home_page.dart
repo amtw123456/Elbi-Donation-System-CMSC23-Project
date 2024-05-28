@@ -36,6 +36,8 @@ class _OrgHomePageState extends State<OrgHomePage> {
             } else if (snapshot.hasData) {
               final userInformation = snapshot.data!;
               final userName = userInformation['userModel'].username;
+              final verificationStatus =
+                  userInformation['userModel'].isApprovedByAdmin;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -46,6 +48,19 @@ class _OrgHomePageState extends State<OrgHomePage> {
                           fontSize: 32,
                           fontWeight: FontWeight.w700,
                           color: Color(0xFF37A980))),
+                  Row(
+                    children: [
+                      Text(
+                        "Verification status: ",
+                      ),
+                      Text(
+                        "${verificationStatus ? 'Verified' : 'Unverified'}",
+                        style: TextStyle(
+                          color: verificationStatus ? Colors.green : Colors.red,
+                        ),
+                      ),
+                    ],
+                  ),
                   Text("Here are the recent donations made by users:",
                       style: TextStyle(fontFamily: 'Poppins', fontSize: 16)),
                   SizedBox(

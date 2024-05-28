@@ -214,66 +214,68 @@ class UserProfileState extends State<UserProfile> {
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.all(10),
-                                backgroundColor: Colors.red,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5)),
-                                ),
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.all(10),
+                              backgroundColor: Colors.red,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
                               ),
-                              onPressed: () async {
-                                try {
-                                  // start loading
-                                  setState(() {
-                                    _isLoading = true;
-                                  });
-                                  final result = await context
-                                      .read<UserAuthProvider>()
-                                      .signOut();
-                                  if (!result['success']) {
-                                    throw result['error'];
-                                  }
-
-                                  if (context.mounted) {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const LandingPage()));
-                                  }
-
-                                  // end loading
-                                  setState(() {
-                                    _isLoading = false;
-                                  });
-                                } catch (e) {
-                                  if (context.mounted) {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: Text(e.toString()),
-                                      backgroundColor: Colors.red,
-                                    ));
-                                  }
-
-                                  setState(() {
-                                    _isLoading = false;
-                                  });
+                            ),
+                            onPressed: () async {
+                              try {
+                                // start loading
+                                setState(() {
+                                  _isLoading = true;
+                                });
+                                final result = await context
+                                    .read<UserAuthProvider>()
+                                    .signOut();
+                                if (!result['success']) {
+                                  throw result['error'];
                                 }
-                              },
-                              child: _isLoading
-                                  ? Container(
-                                      width: 20,
-                                      height: 20,
-                                      padding: const EdgeInsets.all(4),
-                                      child: const CircularProgressIndicator(
+
+                                if (context.mounted) {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LandingPage()));
+                                }
+
+                                // end loading
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                              } catch (e) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text(e.toString()),
+                                    backgroundColor: Colors.red,
+                                  ));
+                                }
+
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                              }
+                            },
+                            child: _isLoading
+                                ? Container(
+                                    width: 20,
+                                    height: 20,
+                                    padding: const EdgeInsets.all(4),
+                                    child: const CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : const Text(
+                                    'Log Out',
+                                    style: TextStyle(
                                         color: Colors.white,
-                                        strokeWidth: 2,
-                                      ),
-                                    )
-                                  : const Text('Log Out',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: "Poppins"))),
+                                        fontFamily: "Poppins"),
+                                  ),
+                          ),
                         ),
                       ],
                     );

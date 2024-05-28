@@ -41,7 +41,7 @@ class _UserHomePageState extends State<UserHomePage> {
                 children: [
                   const SizedBox(height: 40),
                   FutureBuilder<Map<String, dynamic>>(
-                    future: context.read<UserProvider>().getUserModel(userId!),
+                    future: context.read<UserProvider>().getUserModel(userId),
                     builder: (BuildContext context,
                         AsyncSnapshot<Map<String, dynamic>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -92,21 +92,25 @@ class _UserHomePageState extends State<UserHomePage> {
                                       itemCount: organizations.length,
                                       itemBuilder: (context, index) {
                                         return GestureDetector(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      UserOrganizationDetails(
-                                                    organization:
-                                                        organizations[index],
-                                                  ),
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    UserOrganizationDetails(
+                                                  organization:
+                                                      organizations[index],
                                                 ),
-                                              );
-                                            },
-                                            child: OrganizationCard(
-                                                organization:
-                                                    organizations[index]));
+                                              ),
+                                            );
+                                          },
+                                          child: OrganizationCard(
+                                            organization: organizations[index],
+                                            userType:
+                                                userInformation['userModel']
+                                                    .type,
+                                          ),
+                                        );
                                       },
                                     );
                                   } else {
