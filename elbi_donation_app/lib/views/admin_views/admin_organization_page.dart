@@ -1,11 +1,13 @@
 import 'package:elbi_donation_app/components/organization_card.dart';
 import 'package:elbi_donation_app/providers/user_provider.dart';
-import 'package:elbi_donation_app/views/admin_views/admin_nav_bar.dart';
-import 'package:elbi_donation_app/views/admin_views/admin_org_details.dart';
-import 'package:elbi_donation_app/views/admin_views/admin_signups_page.dart';
+
 import 'package:elbi_donation_app/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'package:elbi_donation_app/views/admin_views/admin_nav_bar.dart';
+import 'package:elbi_donation_app/views/admin_views/admin_org_details.dart';
+import 'package:elbi_donation_app/views/admin_views/admin_signups_page.dart';
 
 class AdminOrganizationPage extends StatefulWidget {
   const AdminOrganizationPage({super.key});
@@ -55,56 +57,55 @@ class _AdminOrganizationPageState extends State<AdminOrganizationPage> {
                       child: Column(
                         children: [
                           FutureBuilder<dynamic>(
-                              future: futureOrgList,
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  if (snapshot.data!['success']) {
-                                    final organizations =
-                                        snapshot.data!['orgs'];
-                                    return ListView.separated(
-                                      separatorBuilder:
-                                          (BuildContext context, int index) =>
-                                              const SizedBox(height: 25),
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      itemCount: organizations.length,
-                                      itemBuilder: (context, index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    AdminOrganizationDetails(
-                                                  organization:
-                                                      organizations[index],
-                                                ),
+                            future: futureOrgList,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                if (snapshot.data!['success']) {
+                                  final organizations = snapshot.data!['orgs'];
+                                  return ListView.separated(
+                                    separatorBuilder:
+                                        (BuildContext context, int index) =>
+                                            const SizedBox(height: 25),
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemCount: organizations.length,
+                                    itemBuilder: (context, index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AdminOrganizationDetails(
+                                                organization:
+                                                    organizations[index],
                                               ),
-                                            ).then((_) => setState(() {}));
-                                          },
-                                          child: OrganizationCard(
-                                              organization:
-                                                  organizations[index],
-                                              userType:
-                                                  userInformation['userModel']
-                                                      .type),
-                                        );
-                                      },
-                                    );
-                                  } else {
-                                    return const Text('No organizations yet!');
-                                  }
-                                } else if (snapshot.hasError) {
-                                  return Text('Error: ${snapshot.error}');
-                                } else {
-                                  return const SizedBox(
-                                    width: 60,
-                                    height: 60,
-                                    child: CircularProgressIndicator(),
+                                            ),
+                                          ).then((_) => setState(() {}));
+                                        },
+                                        child: OrganizationCard(
+                                            organization: organizations[index],
+                                            userType:
+                                                userInformation['userModel']
+                                                    .type),
+                                      );
+                                    },
                                   );
+                                } else {
+                                  return const Text('No organizations yet!');
                                 }
-                              })
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else {
+                                return const SizedBox(
+                                  width: 60,
+                                  height: 60,
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            },
+                          ),
                         ],
                       ),
                     ),
