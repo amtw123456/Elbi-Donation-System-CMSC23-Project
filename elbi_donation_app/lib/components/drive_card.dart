@@ -60,6 +60,63 @@ class _DonationDriveCardState extends State<DonationDriveCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // image container
+                Align(
+                  alignment: Alignment.topRight,
+                  child: GestureDetector(
+                    onTap: () {
+                      // Handle tap event here
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text(''),
+                            content: SizedBox(
+                              width: 400.0,
+                              height: 120,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text(
+                                    'Are you sure you want to delete this donation drive?',
+                                  ),
+                                  SizedBox(height: 20), // Add some spacing
+                                  Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            // Handle the button press action
+                                            Navigator.of(context)
+                                                .pop(); // Close the dialog
+                                          },
+                                          child: const Text('Delete'),
+                                        ),
+                                        SizedBox(width: 10), // Add some spacing
+                                        ElevatedButton(
+                                          child: const Text('Close'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    child: const Icon(
+                      Icons.close,
+                      size: 25.0, // Adjust size as needed
+                      color: Colors.grey, // Adjust color as needed
+                    ),
+                  ),
+                ),
                 Container(
                   height: 250,
                   padding: EdgeInsets.all(16.0),
