@@ -76,7 +76,10 @@ class _AdminOrganizationPageState extends State<AdminOrganizationPage> {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    AdminOrganizationDetails(),
+                                                    AdminOrganizationDetails(
+                                                  organization:
+                                                      organizations[index],
+                                                ),
                                               ),
                                             );
                                           },
