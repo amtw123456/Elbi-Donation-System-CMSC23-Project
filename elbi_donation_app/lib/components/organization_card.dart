@@ -50,21 +50,23 @@ class _OrganizationCardState extends State<OrganizationCard> {
           Text(widget.organization.orgName!,
               style: const TextStyle(fontFamily: "Poppins", fontSize: 20)),
           const Text('An organization ready to receive your help.'),
-          Row(
-            children: [
-              Text(
-                "Verification status: ",
-              ),
-              Text(
-                "${widget.organization.isApprovedByAdmin! ? 'Verified' : 'Unverified'}",
-                style: TextStyle(
-                  color: widget.organization.isApprovedByAdmin!
-                      ? Colors.green
-                      : Colors.red,
-                ),
-              ),
-            ],
-          ),
+          widget.organization.type! == 'admin'
+              ? Row(
+                  children: [
+                    Text(
+                      "Verification status: ",
+                    ),
+                    Text(
+                      "${widget.organization.isApprovedByAdmin! ? 'Verified' : 'Unverified'}",
+                      style: TextStyle(
+                        color: widget.organization.isApprovedByAdmin!
+                            ? Colors.green
+                            : Colors.red,
+                      ),
+                    ),
+                  ],
+                )
+              : Container(),
         ],
       ),
     );
