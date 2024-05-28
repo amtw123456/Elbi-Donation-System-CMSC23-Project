@@ -81,7 +81,7 @@ class _AdminOrganizationPageState extends State<AdminOrganizationPage> {
                                                       organizations[index],
                                                 ),
                                               ),
-                                            );
+                                            ).then((_) => setState(() {}));
                                           },
                                           child: OrganizationCard(
                                               organization:
