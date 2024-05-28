@@ -85,6 +85,23 @@ class FirebaseUserAPI {
     }
   }
 
+  Future<Map<String, dynamic>> removeDonationDriveModelFromUserModel(
+      String userId, String driveId) async {
+    try {
+      await db.collection("userModels").doc(userId).update({
+        'organizationDriveList': FieldValue.arrayRemove([driveId])
+      });
+      return {'success': true, 'message': "Successfully updated!"};
+    } on FirebaseException catch (e) {
+      return {
+        'success': false,
+        'error': 'Firebase Error: ${e.code} : ${e.message}'
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Error: $e'};
+    }
+  }
+
   // view all organizations
   Future<Map<String, dynamic>> getOrganizations() async {
     try {
