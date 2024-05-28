@@ -17,7 +17,7 @@ class AdminOrganizationPage extends StatefulWidget {
 class _AdminOrganizationPageState extends State<AdminOrganizationPage> {
   @override
   Widget build(BuildContext context) {
-    final futureOrgList = context.read()<UserProvider>().getOrganizations();
+    final futureOrgList = context.read<UserProvider>().getOrganizations();
     return Scaffold(
       backgroundColor: const Color(0xFFF8F8F8),
       body: Padding(
