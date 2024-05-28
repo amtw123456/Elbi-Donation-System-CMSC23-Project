@@ -17,11 +17,21 @@ class OrgDonationDrivePage extends StatefulWidget {
 }
 
 class OrgDonationDrivePageState extends State<OrgDonationDrivePage> {
+  bool shouldReload = false; // State variable to trigger a reload
+
+  void handleDeletion() {
+    // Callback function to handle deletion
+    setState(() {
+      // Trigger a rebuild of the parent widget
+      shouldReload = !shouldReload;
+    });
+  }
+
   Widget build(BuildContext context) {
     String? userId = context.read<UserAuthProvider>().user?.uid ?? "";
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Donation Drives',
           style: TextStyle(
             fontFamily: 'Poppins',
@@ -62,9 +72,10 @@ class OrgDonationDrivePageState extends State<OrgDonationDrivePage> {
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 child: DonationDriveCard(
-                                  organizationId: userId,
-                                  donationDriveId: organizationDriveIds[index],
-                                ),
+                                    organizationId: userId,
+                                    donationDriveId:
+                                        organizationDriveIds[index],
+                                    onDeletion: handleDeletion),
                                 onTap: () {
                                   Navigator.push(
                                     context,

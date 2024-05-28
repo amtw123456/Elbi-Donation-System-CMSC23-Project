@@ -9,9 +9,13 @@ import 'package:elbi_donation_app/models/donation_drive_model.dart';
 class DonationDriveCard extends StatefulWidget {
   final String donationDriveId;
   final String organizationId;
+  final VoidCallback? onDeletion;
 
   const DonationDriveCard(
-      {required this.donationDriveId, required this.organizationId, super.key});
+      {required this.donationDriveId,
+      required this.organizationId,
+      required this.onDeletion,
+      super.key});
 
   @override
   State<DonationDriveCard> createState() => _DonationDriveCardState();
@@ -91,7 +95,7 @@ class _DonationDriveCardState extends State<DonationDriveCard> {
                                         ElevatedButton(
                                           onPressed: () async {
                                             // Handle the button press action
-                                            context
+                                            await context
                                                 .read<OrganizationProvider>()
                                                 .deleteDonationDriveModel(
                                                     widget.donationDriveId);
@@ -104,6 +108,8 @@ class _DonationDriveCardState extends State<DonationDriveCard> {
 
                                             Navigator.of(context)
                                                 .pop(); // Close the dialog
+
+                                            widget.onDeletion?.call();
                                           },
                                           child: const Text('Delete'),
                                         ),
