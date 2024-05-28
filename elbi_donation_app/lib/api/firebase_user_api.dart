@@ -106,4 +106,25 @@ class FirebaseUserAPI {
       return {'success': false, 'error': 'Error: $e'};
     }
   }
+
+  Future<Map<String, dynamic>> getDonors() async {
+    try {
+      List<UserModel> donors = [];
+      final snapshots = await db
+          .collection("userModels")
+          .where("type", isEqualTo: "donor")
+          .get();
+      for (var snapshot in snapshots.docs) {
+        donors.add(UserModel.fromJson(snapshot.data()));
+      }
+      return {'success': true, 'donors': donors};
+    } on FirebaseException catch (e) {
+      return {
+        'success': false,
+        'error': 'Firebase Error: ${e.code} : ${e.message}'
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Error: $e'};
+    }
+  }
 }
