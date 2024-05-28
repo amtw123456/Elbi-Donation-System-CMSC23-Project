@@ -64,26 +64,40 @@ class AdminOrganizationDetailsState extends State<AdminOrganizationDetails> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(10),
-                      backgroundColor: Color(0xFF37A980),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                      )),
+                  style: widget.organization.isApprovedByAdmin!
+                      ? ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(10),
+                          backgroundColor: Color.fromARGB(255, 226, 12, 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                          ))
+                      : ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(10),
+                          backgroundColor: Color(0xFF37A980),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(5),
+                            ),
+                          ),
+                        ),
                   onPressed: () async {
                     print(widget.organization.id);
                     Map<String, dynamic> updates = {
-                      'isApprovedByAdmin': true,
+                      'isApprovedByAdmin':
+                          !widget.organization.isApprovedByAdmin!,
                       // Add other fields you want to update
                     };
 
                     await context
                         .read<UserProvider>()
                         .updateUserModel(widget.organization.id!, updates);
+                    Navigator.of(context).pop();
                   },
-                  child: const Text(
-                    'Verify',
-                    style: TextStyle(
+                  child: Text(
+                    widget.organization.isApprovedByAdmin!
+                        ? 'Unverify'
+                        : "Verify",
+                    style: const TextStyle(
                         color: Colors.white,
                         fontFamily: "Poppins",
                         fontSize: 20),
@@ -95,11 +109,12 @@ class AdminOrganizationDetailsState extends State<AdminOrganizationDetails> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(10),
-                      backgroundColor: Color(0xFF37A980),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                      )),
+                    padding: EdgeInsets.all(10),
+                    backgroundColor: Color(0xFF37A980),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                    ),
+                  ),
                   onPressed: () {
                     showModalBottomSheet(
                       context: context,
