@@ -2,13 +2,16 @@ import 'package:elbi_donation_app/views/admin_views/admin_org_details.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:elbi_donation_app/providers/organization_provider.dart';
+import 'package:elbi_donation_app/providers/user_provider.dart';
 import 'package:elbi_donation_app/providers/auth_provider.dart';
 import 'package:elbi_donation_app/models/donation_drive_model.dart';
 
 class DonationDriveCard extends StatefulWidget {
   final String donationDriveId;
+  final String organizationId;
 
-  const DonationDriveCard({required this.donationDriveId, super.key});
+  const DonationDriveCard(
+      {required this.donationDriveId, required this.organizationId, super.key});
 
   @override
   State<DonationDriveCard> createState() => _DonationDriveCardState();
@@ -86,8 +89,19 @@ class _DonationDriveCardState extends State<DonationDriveCard> {
                                           MainAxisAlignment.center,
                                       children: [
                                         ElevatedButton(
-                                          onPressed: () {
+                                          onPressed: () async {
                                             // Handle the button press action
+                                            context
+                                                .read<OrganizationProvider>()
+                                                .deleteDonationDriveModel(
+                                                    widget.donationDriveId);
+
+                                            context
+                                                .read<UserProvider>()
+                                                .removeDonationDriveModelFromUserModel(
+                                                    widget.organizationId,
+                                                    widget.donationDriveId);
+
                                             Navigator.of(context)
                                                 .pop(); // Close the dialog
                                           },

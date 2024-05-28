@@ -62,6 +62,7 @@ class OrgDonationDrivePageState extends State<OrgDonationDrivePage> {
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 child: DonationDriveCard(
+                                  organizationId: userId,
                                   donationDriveId: organizationDriveIds[index],
                                 ),
                                 onTap: () {
