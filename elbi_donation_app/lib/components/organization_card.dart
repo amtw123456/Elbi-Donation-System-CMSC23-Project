@@ -3,9 +3,11 @@ import 'package:elbi_donation_app/views/admin_views/admin_org_details.dart';
 import 'package:flutter/material.dart';
 
 class OrganizationCard extends StatefulWidget {
-  OrganizationCard({super.key, required this.organization});
+  OrganizationCard(
+      {super.key, required this.organization, required this.userType});
 
   UserModel organization;
+  String userType;
 
   @override
   State<OrganizationCard> createState() => _OrganizationCardState();
@@ -50,7 +52,7 @@ class _OrganizationCardState extends State<OrganizationCard> {
           Text(widget.organization.orgName!,
               style: const TextStyle(fontFamily: "Poppins", fontSize: 20)),
           const Text('An organization ready to receive your help.'),
-          widget.organization.type! == 'admin'
+          widget.userType == 'admin'
               ? Row(
                   children: [
                     Text(
