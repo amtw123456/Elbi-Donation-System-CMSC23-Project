@@ -3,7 +3,6 @@ import 'package:elbi_donation_app/providers/user_provider.dart';
 import 'package:elbi_donation_app/views/admin_views/admin_nav_bar.dart';
 import 'package:elbi_donation_app/views/admin_views/admin_org_details.dart';
 import 'package:elbi_donation_app/views/admin_views/admin_signups_page.dart';
-import 'package:elbi_donation_app/views/user_views/user_organization_donation_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -56,18 +55,19 @@ class _AdminOrganizationPageState extends State<AdminOrganizationPage> {
                                 itemCount: organizations.length,
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    UserOrganizationDetails(
-                                                      organization:
-                                                          organizations[index],
-                                                    )));
-                                      },
-                                      child: OrganizationCard(
-                                          organization: organizations[index]));
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              AdminOrganizationDetails(),
+                                        ),
+                                      );
+                                    },
+                                    child: OrganizationCard(
+                                      organization: organizations[index],
+                                    ),
+                                  );
                                 },
                               );
                             } else {
