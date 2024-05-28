@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:elbi_donation_app/models/user_model.dart';
 import '../../components/donation_card.dart';
+import 'package:provider/provider.dart';
+import 'package:elbi_donation_app/providers/user_provider.dart';
 
 class AdminOrganizationDetails extends StatefulWidget {
   AdminOrganizationDetails({super.key, required this.organization});
@@ -68,7 +70,17 @@ class AdminOrganizationDetailsState extends State<AdminOrganizationDetails> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                       )),
-                  onPressed: () {},
+                  onPressed: () async {
+                    print(widget.organization.id);
+                    Map<String, dynamic> updates = {
+                      'isApprovedByAdmin': true,
+                      // Add other fields you want to update
+                    };
+
+                    await context
+                        .read<UserProvider>()
+                        .updateUserModel(widget.organization.id!, updates);
+                  },
                   child: const Text(
                     'Verify',
                     style: TextStyle(
