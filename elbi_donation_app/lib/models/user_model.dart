@@ -6,7 +6,7 @@ class UserModel {
   String? lastName;
   String? username;
   String email;
-  String? address;
+  List<String>? address;
   String? contactNumber;
   String? type;
   bool? isApprovedByAdmin;
@@ -41,13 +41,16 @@ class UserModel {
       username: json['username'],
       orgName: json['orgName'],
       email: json['email'],
-      address: json['address'],
+
       contactNumber: json['contactNumber'],
       type: json['type'],
       isApprovedByAdmin: json['isApprovedByAdmin'],
       status: json['status'],
       orgDescription: json['orgDescription'],
       proofOfLegitimacyImageUrlLink: json['proofOfLegitimacyImageUrlLink'],
+      address: json['organizationDriveList'] != null
+          ? List<String>.from(json['organizationDriveList'])
+          : null,
       organizationDriveList: json['organizationDriveList'] != null
           ? List<String>.from(json['organizationDriveList'])
           : null, // Parse organizationDriveList from JSON
