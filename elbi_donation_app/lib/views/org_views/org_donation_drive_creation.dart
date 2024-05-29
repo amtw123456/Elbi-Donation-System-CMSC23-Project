@@ -97,6 +97,8 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                             driveDescription = value;
                           });
                         },
+                        minLines: 9,
+                        maxLines: 10,
                         decoration: InputDecoration(
                           hintText: 'Description',
                           hintStyle: TextStyle(
