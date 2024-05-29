@@ -6,7 +6,8 @@ class UserModel {
   String? lastName;
   String? username;
   String email;
-  String? address;
+  List<String>? address;
+  List<String>? donationsList;
   String? contactNumber;
   String? type;
   bool? isApprovedByAdmin;
@@ -24,6 +25,7 @@ class UserModel {
     this.orgName,
     required this.email,
     this.address,
+    this.donationsList,
     this.contactNumber,
     this.type,
     this.isApprovedByAdmin,
@@ -41,13 +43,18 @@ class UserModel {
       username: json['username'],
       orgName: json['orgName'],
       email: json['email'],
-      address: json['address'],
+
       contactNumber: json['contactNumber'],
       type: json['type'],
       isApprovedByAdmin: json['isApprovedByAdmin'],
       status: json['status'],
       orgDescription: json['orgDescription'],
       proofOfLegitimacyImageUrlLink: json['proofOfLegitimacyImageUrlLink'],
+      donationsList: json['donationsList'] != null
+          ? List<String>.from(json['donationsList'])
+          : null,
+      address:
+          json['address'] != null ? List<String>.from(json['address']) : null,
       organizationDriveList: json['organizationDriveList'] != null
           ? List<String>.from(json['organizationDriveList'])
           : null, // Parse organizationDriveList from JSON
@@ -69,6 +76,7 @@ class UserModel {
       'orgName': orgName,
       'email': email,
       'address': address,
+      'donationsList': donationsList,
       'contactNumber': contactNumber,
       'type': type,
       'isApprovedByAdmin': isApprovedByAdmin,

@@ -66,35 +66,35 @@ class _OrgHomePageState extends State<OrgHomePage> {
                   SizedBox(
                     height: 20,
                   ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          ListView.separated(
-                            padding: EdgeInsets.zero,
-                            separatorBuilder:
-                                (BuildContext context, int index) =>
-                                    SizedBox(height: 25),
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: 5,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              OrgDonationDetails()));
-                                },
-                                child: DonationCard(),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  // Expanded(
+                  //   child: SingleChildScrollView(
+                  //     child: Column(
+                  //       children: [
+                  //         ListView.separated(
+                  //           padding: EdgeInsets.zero,
+                  //           separatorBuilder:
+                  //               (BuildContext context, int index) =>
+                  //                   SizedBox(height: 25),
+                  //           shrinkWrap: true,
+                  //           physics: NeverScrollableScrollPhysics(),
+                  //           itemCount: 5,
+                  //           itemBuilder: (context, index) {
+                  //             return GestureDetector(
+                  //               onTap: () {
+                  //                 Navigator.push(
+                  //                     context,
+                  //                     MaterialPageRoute(
+                  //                         builder: (context) =>
+                  //                             OrgDonationDetails()));
+                  //               },
+                  //               child: DonationCard(),
+                  //             );
+                  //           },
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               );
             } else {

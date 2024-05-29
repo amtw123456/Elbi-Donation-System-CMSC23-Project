@@ -1,10 +1,20 @@
+import 'package:elbi_donation_app/providers/donor_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'donation_icons_icons.dart';
 import 'user_donation_type.dart';
+import 'package:elbi_donation_app/functions/misc.dart';
+
+import 'package:elbi_donation_app/providers/user_provider.dart';
+import 'package:elbi_donation_app/models/donation_model.dart';
+import 'package:elbi_donation_app/providers/auth_provider.dart';
+import 'package:elbi_donation_app/providers/donor_provider.dart';
+import 'package:provider/provider.dart';
 
 class DonateGoodsPage extends StatefulWidget {
-  const DonateGoodsPage({super.key});
+  String? organizationId;
+
+  DonateGoodsPage({super.key, required this.organizationId});
 
   @override
   State<DonateGoodsPage> createState() => _DonateGoodsPageState();
@@ -105,6 +115,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final userId = context.read<UserAuthProvider>().user?.uid;
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -416,7 +427,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         if (_selectedDonationType.isEmpty) {
                           setState(() {
                             noTypeSelected = 'Please choose a donation type';
@@ -427,26 +438,53 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                           });
                         }
                         if (_formKey.currentState!.validate()) {
-                          print(_selectedDonationType);
-                          print(_selectedModeOfDelivery);
-                          print(_selectedWeight);
-                          print(
-                              DateFormat('dd/MM/yyyy').format(_selectedDate!));
-                          print(formatTimeOfDay(_selectedTime!));
-                          print(_selectedAddress);
-                          print(_selectedContactNum);
+                          // print(_selectedDonationType);
+                          // print(_selectedModeOfDelivery);
+                          // print(_selectedWeight);
+                          // print(
+                          //     DateFormat('dd/MM/yyyy').format(_selectedDate!));
+                          // print(formatTimeOfDay(_selectedTime!));
+                          // print(_selectedAddress);
+                          // print(_selectedContactNum);
                         }
 
-                        Map<String, dynamic> donationDetails = {
-                          'donationTypes': _selectedDonationType,
-                          'modeOfDelivery': _selectedModeOfDelivery,
-                          'donationWeight': _selectedWeight,
-                          'date':
-                              DateFormat('dd/MM/yyyy').format(_selectedDate!),
-                          'time': formatTimeOfDay(_selectedTime!),
-                          'address': _selectedAddress,
-                          'contactNumber': _selectedContactNum
+                        // Map<String, dynamic> donationDetails = {
+                        //   'donationTypes': _selectedDonationType,
+                        //   'modeOfDelivery': _selectedModeOfDelivery,
+                        //   'donationWeight': _selectedWeight,
+                        //   'date':
+                        //       DateFormat('dd/MM/yyyy').format(_selectedDate!),
+                        //   'time': formatTimeOfDay(_selectedTime!),
+                        //   'address': _selectedAddress,
+                        //   'contactNumber': _selectedContactNum
+                        // };
+                        String? donationId = generateRandomString(28);
+                        DonationModel donationDetails = DonationModel(
+                          categories: _selectedDonationType,
+                          id: donationId,
+                          donatorId: userId,
+                          contactNo: _selectedContactNum.toString(),
+                          organizationId: widget.organizationId,
+                          weight: _selectedWeight,
+                          pickupAddresses: _addresses,
+                          dateTime: DateFormat('dd/MM/yyyy').parse(
+                              DateFormat('dd/MM/yyyy').format(_selectedDate!)),
+                        );
+
+                        await context
+                            .read<DonorProvider>()
+                            .addDonationModel(donationDetails);
+
+                        Map<String, dynamic> updates = {
+                          'donationsList': donationId,
+                          // Add other fields you want to update
                         };
+
+                        await context
+                            .read<UserProvider>()
+                            .updateUserModel(userId!, updates);
+
+                        Navigator.pop(context);
                       },
                       child: const Text(
                         'Confirm',

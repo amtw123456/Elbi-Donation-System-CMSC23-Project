@@ -69,6 +69,14 @@ class FirebaseUserAPI {
                 : [updates['organizationDriveList']]);
       }
 
+      if (updates['donationsList'] != null) {
+        // Use FieldValue.arrayUnion for organizationDriveList
+        updates['donationsList'] = FieldValue.arrayUnion(
+            updates['donationsList'] is List
+                ? updates['donationsList']
+                : [updates['donationsList']]);
+      }
+
       await FirebaseFirestore.instance
           .collection("userModels")
           .doc(id)
