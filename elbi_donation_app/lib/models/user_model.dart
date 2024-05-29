@@ -48,9 +48,8 @@ class UserModel {
       status: json['status'],
       orgDescription: json['orgDescription'],
       proofOfLegitimacyImageUrlLink: json['proofOfLegitimacyImageUrlLink'],
-      address: json['organizationDriveList'] != null
-          ? List<String>.from(json['organizationDriveList'])
-          : null,
+      address:
+          json['address'] != null ? List<String>.from(json['address']) : null,
       organizationDriveList: json['organizationDriveList'] != null
           ? List<String>.from(json['organizationDriveList'])
           : null, // Parse organizationDriveList from JSON

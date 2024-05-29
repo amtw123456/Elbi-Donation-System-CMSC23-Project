@@ -474,6 +474,8 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                         await context
                             .read<DonorProvider>()
                             .addDonationModel(donationDetails);
+
+                        Navigator.pop(context);
                       },
                       child: const Text(
                         'Confirm',
