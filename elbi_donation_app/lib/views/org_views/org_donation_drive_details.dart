@@ -13,6 +13,7 @@ class OrgDonationDriveDetails extends StatefulWidget {
 }
 
 class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -24,6 +25,34 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
           "Details",
           style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w700),
         ),
+        actions: [
+          PopupMenuButton<int>(
+            icon: Icon(Icons.more_horiz), // three-dot menu icon
+            onSelected: (int result) {
+              if (result == 1){
+               context.read<OrganizationProvider>().getDonationDriveModel(widget.donationDriveId).then((donationDriveDetails) {
+                  OpenEditDialog(
+                    donationDriveDetails['donationDriveModel'].donationDriveName,
+                    donationDriveDetails['donationDriveModel'].donationDriveDescription,
+                  );
+                });
+              } else if (result == 2) {
+                // TODO: DO DELETE HERE
+              }
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
+              const PopupMenuItem<int>(
+                value: 1,
+                child: Text('Edit'),
+              ),
+              const PopupMenuItem<int>(
+                value: 2,
+                child: Text('Delete'),
+              ),
+            ],
+            color: Colors.white,
+          )
+        ],
       ),
       body: FutureBuilder<Map<String, dynamic>>(
         future: context
@@ -59,6 +88,7 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // TODO: ADD DONATION DRIVE IMAGE HERE
                   Container(
                     width: double.infinity,
                     height: screenHeight / 3,
@@ -81,14 +111,6 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
                       fontFamily: 'Poppins',
                       color: Colors.black,
                       fontSize: 24.0, // Adjust the font size as needed
-                    ),
-                  ),
-                  Text(
-                    "Contact Number.",
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      color: Colors.grey,
-                      fontSize: 12.0,
                     ),
                   ),
                   Expanded(
@@ -159,59 +181,59 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.all(10),
-                          backgroundColor: Color(0xFF37A980),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                          )),
-                      onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                          builder: (context) => Container(
-                              height: MediaQuery.of(context).size.height * 0.75,
-                              decoration: new BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: new BorderRadius.only(
-                                  topLeft: const Radius.circular(25.0),
-                                  topRight: const Radius.circular(25.0),
-                                ),
-                              ),
-                              child: SingleChildScrollView(
-                                  child: Padding(
-                                padding: EdgeInsets.all(30),
-                                child: Column(
-                                  children: [
-                                    ListView.separated(
-                                      separatorBuilder:
-                                          (BuildContext context, int index) =>
-                                              SizedBox(height: 25),
-                                      shrinkWrap: true,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      itemCount: 5,
-                                      itemBuilder: (context, index) {
-                                        return DonationCard();
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ))),
-                        );
-                      },
-                      child: const Text(
-                        'View Donations',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: "Poppins",
-                            fontSize: 20),
-                      ),
-                    ),
-                  ),
+                  // SizedBox(
+                  //   width: double.infinity,
+                  //   child: ElevatedButton(
+                  //     style: ElevatedButton.styleFrom(
+                  //         padding: EdgeInsets.all(10),
+                  //         backgroundColor: Color(0xFF37A980),
+                  //         shape: RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.all(Radius.circular(5)),
+                  //         )),
+                  //     onPressed: () {
+                  //       showModalBottomSheet(
+                  //         context: context,
+                  //         isScrollControlled: true,
+                  //         backgroundColor: Colors.transparent,
+                  //         builder: (context) => Container(
+                  //             height: MediaQuery.of(context).size.height * 0.75,
+                  //             decoration: new BoxDecoration(
+                  //               color: Colors.white,
+                  //               borderRadius: new BorderRadius.only(
+                  //                 topLeft: const Radius.circular(25.0),
+                  //                 topRight: const Radius.circular(25.0),
+                  //               ),
+                  //             ),
+                  //             child: SingleChildScrollView(
+                  //                 child: Padding(
+                  //               padding: EdgeInsets.all(30),
+                  //               child: Column(
+                  //                 children: [
+                  //                   ListView.separated(
+                  //                     separatorBuilder:
+                  //                         (BuildContext context, int index) =>
+                  //                             SizedBox(height: 25),
+                  //                     shrinkWrap: true,
+                  //                     physics: NeverScrollableScrollPhysics(),
+                  //                     itemCount: 5,
+                  //                     itemBuilder: (context, index) {
+                  //                       return DonationCard();
+                  //                     },
+                  //                   ),
+                  //                 ],
+                  //               ),
+                  //             ))),
+                  //       );
+                  //     },
+                  //     child: const Text(
+                  //       'View Donations',
+                  //       style: TextStyle(
+                  //           color: Colors.white,
+                  //           fontFamily: "Poppins",
+                  //           fontSize: 20),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             );
@@ -222,4 +244,129 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
       ),
     );
   }
+Future<void> OpenEditDialog(String name, String description) => showModalBottomSheet<void>(
+  
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    builder: (BuildContext context) {
+      final _formKey = GlobalKey<FormState>();
+      final screenHeight = MediaQuery.of(context).size.height;
+      final nameController = TextEditingController(text: name);
+      final descriptionController = TextEditingController(text: description);
+      return Container(
+        height: screenHeight * 0.75,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(25.0),
+            topRight: Radius.circular(25.0),
+          ),
+        ),
+        child: Form(
+          key: _formKey,
+          child: Padding(
+            padding: EdgeInsets.all(30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Edit drive details',
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 24.0,
+                  ),
+                ),
+                SizedBox(height: 20),
+                TextFormField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0XFFD2D2D2)),
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                TextFormField(
+                  controller: descriptionController,
+                  maxLines: 7,
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0XFFD2D2D2)),
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
+                    ),
+                  ),
+                ),
+                Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.all(10),
+                            backgroundColor: Colors.red[600],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                            ),
+                          ),
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              // TODO: ADD UPDATE LOGIC HERE
+                              Navigator.pop(context);
+                            }
+                          },
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: "Poppins",
+                                fontSize: 20),
+                          ),
+                        ),
+                      ), 
+                    ),
+                    SizedBox(width: 5,),
+                    Expanded(
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.all(10),
+                            backgroundColor: Color(0xFF37A980),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                            ),
+                          ),
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              // TODO: ADD UPDATE LOGIC HERE
+                              Navigator.pop(context);
+                            }
+                          },
+                          child: const Text(
+                            'Confirm',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: "Poppins",
+                                fontSize: 20),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ) 
+      );
+    },
+  );
 }
