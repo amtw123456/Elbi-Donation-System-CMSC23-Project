@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 class DonorProvider with ChangeNotifier {
   FirebaseDonorAPI firebaseService = FirebaseDonorAPI();
 
-  void addDonationModel(DonationModel donationModel) async {
-    String message = await firebaseService
+  Future<Map<String, dynamic>> addDonationModel(
+      DonationModel donationModel) async {
+    final result = await firebaseService
         .addDonationModel(donationModel.toJson(donationModel));
-    print(message);
-    notifyListeners();
+    return result;
   }
 
   void deleteDonationModel(String id) async {

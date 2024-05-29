@@ -5,16 +5,17 @@ class FirebaseDonorAPI {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
 
   // add a donation
-  Future<String> addDonationModel(Map<String, dynamic> donationModel) async {
+  Future<Map<String, dynamic>> addDonationModel(
+      Map<String, dynamic> donationModel) async {
     try {
       await db
           .collection("donationModels")
           .doc(donationModel['id'])
           .set(donationModel);
 
-      return "Successfully added!";
+      return {'success': true, 'message': "Successfully added!"};
     } on FirebaseException catch (e) {
-      return "Error in ${e.code}: ${e.message}";
+      return {'success': false, 'error': 'Error: $e'};
     }
   }
 
