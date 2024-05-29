@@ -97,9 +97,12 @@ class _UserOrganizationDetailsState extends State<UserOrganizationDetails> {
                 ),
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const DonateGoodsPage()));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DonateGoodsPage(
+                          organizationId: widget.organization.id!),
+                    ),
+                  );
                 },
                 child: const Text(
                   'Donate now',

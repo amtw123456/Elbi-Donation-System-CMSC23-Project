@@ -12,7 +12,9 @@ import 'package:elbi_donation_app/providers/donor_provider.dart';
 import 'package:provider/provider.dart';
 
 class DonateGoodsPage extends StatefulWidget {
-  const DonateGoodsPage({super.key});
+  String? organizationId;
+
+  DonateGoodsPage({super.key, required this.organizationId});
 
   @override
   State<DonateGoodsPage> createState() => _DonateGoodsPageState();
@@ -436,14 +438,14 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                           });
                         }
                         if (_formKey.currentState!.validate()) {
-                          print(_selectedDonationType);
-                          print(_selectedModeOfDelivery);
-                          print(_selectedWeight);
-                          print(
-                              DateFormat('dd/MM/yyyy').format(_selectedDate!));
-                          print(formatTimeOfDay(_selectedTime!));
-                          print(_selectedAddress);
-                          print(_selectedContactNum);
+                          // print(_selectedDonationType);
+                          // print(_selectedModeOfDelivery);
+                          // print(_selectedWeight);
+                          // print(
+                          //     DateFormat('dd/MM/yyyy').format(_selectedDate!));
+                          // print(formatTimeOfDay(_selectedTime!));
+                          // print(_selectedAddress);
+                          // print(_selectedContactNum);
                         }
 
                         // Map<String, dynamic> donationDetails = {
@@ -462,7 +464,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                           id: donationId,
                           donatorId: userId,
                           contactNo: _selectedContactNum.toString(),
-                          organizationId: null,
+                          organizationId: widget.organizationId,
                           weight: _selectedWeight,
                           pickupAddresses: _addresses,
                           dateTime: DateFormat('dd/MM/yyyy').parse(
