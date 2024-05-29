@@ -6,6 +6,13 @@ import 'package:elbi_donation_app/providers/auth_provider.dart';
 import 'package:elbi_donation_app/models/donation_drive_model.dart';
 import 'package:elbi_donation_app/functions/misc.dart';
 
+import 'package:firebase_storage/firebase_storage.dart';
+
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import 'dart:io';
+
 class AddDonationDrive extends StatefulWidget {
   const AddDonationDrive({Key? key}) : super(key: key);
 
@@ -18,6 +25,8 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
 
   String? driveName;
   String? driveDescription;
+
+  XFile? file;
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +107,123 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                           ),
                         ),
                       ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Upload a donation drive cover!',
+                          style: TextStyle(fontFamily: 'Poppins', fontSize: 16),
+                          textAlign: TextAlign.start,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        IconButton.outlined(
+                          onPressed: () async {
+                            if (await Permission.storage.request().isGranted) {
+                              // _pickImageFromGallery();
+                              file = await ImagePicker()
+                                  .pickImage(source: ImageSource.gallery);
+                              setState(() {});
+                            } else {
+                              // Permission is not granted. Handle the scenario accordingly.
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("storage Permission Required"),
+                                    content: Text(
+                                        "Please grant stroage permission in settings to enable storage access."),
+                                    actions: <Widget>[
+                                      ElevatedButton(
+                                        child: Text("CANCEL"),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("SETTINGS"),
+                                        onPressed: () {
+                                          openAppSettings(); // This will open the app settings where the user can enable permissions.
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                          },
+                          icon: const Icon(Icons.upload),
+                        ),
+                        IconButton.outlined(
+                          onPressed: () async {
+                            if (await Permission.camera.request().isGranted) {
+                              file = await ImagePicker()
+                                  .pickImage(source: ImageSource.camera);
+                            } else {
+                              // Permission is not granted. Handle the scenario accordingly.
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("Camera Permission Required"),
+                                    content: Text(
+                                        "Please grant camera permission in settings to enable camera access."),
+                                    actions: <Widget>[
+                                      ElevatedButton(
+                                        child: Text("CANCEL"),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("SETTINGS"),
+                                        onPressed: () {
+                                          openAppSettings(); // This will open the app settings where the user can enable permissions.
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                          },
+                          icon: const Icon(Icons.photo_camera),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 15),
+                    const Row(
+                      children: [
+                        Text(
+                          "Donation Drive Image:",
+                          style: TextStyle(fontFamily: 'Poppins', fontSize: 16),
+                          textAlign: TextAlign.start,
+                        ),
+                      ],
+                    ),
+                    Container(
+                      width: 400,
+                      height: 250,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
+                      ),
+                      child: file == null
+                          ? Center(
+                              child: Text('No image selected.'),
+                            )
+                          : Image.file(
+                              File(file!.path),
+                              width: 400,
+                              height: 300,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ],
                 ),
