@@ -118,6 +118,7 @@ class AdminOrganizationDetailsState extends State<AdminOrganizationDetails> {
                   ),
                   onPressed: () {
                     showModalBottomSheet(
+
                       context: context,
                       isScrollControlled: true,
                       backgroundColor: Colors.transparent,
@@ -130,51 +131,54 @@ class AdminOrganizationDetailsState extends State<AdminOrganizationDetails> {
                             topRight: const Radius.circular(25.0),
                           ),
                         ),
-                        child: ListView.separated(
-                          separatorBuilder: (BuildContext context, int index) =>
-                              SizedBox(height: 25),
-                          shrinkWrap: true,
-                          // physics: NeverScrollableScrollPhysics(),
-                          itemCount: widget.organization.donationsList!.length,
-                          itemBuilder: (context, index) {
-                            return FutureBuilder<Map<String, dynamic>>(
-                              future: context
-                                  .read<DonorProvider>()
-                                  .getDonationModel(widget
-                                      .organization.donationsList![index]),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<Map<String, dynamic>>
-                                      snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
-                                } else if (snapshot.hasError) {
-                                  return Text('Error: ${snapshot.error}');
-                                } else if (snapshot.hasData) {
-                                  final donationInformation =
-                                      snapshot.data!['donationModel'];
-                                  print("blue");
-                                  print(snapshot.data);
-                                  return GestureDetector(
-                                    child: DonationCard(
-                                      donationInformation: donationInformation,
-                                    ),
-                                    onTap: () {
-                                      // Navigator.push(
-                                      //     context,
-                                      //     MaterialPageRoute(
-                                      //         builder: (context) =>
-                                      //             OrgDonationDetails()));
-                                    },
-                                  );
-                                } else {
-                                  return Text('No data available');
-                                }
-                              },
-                            );
-                          },
-                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(16),
+                          child: ListView.separated(
+                            separatorBuilder: (BuildContext context, int index) =>
+                                SizedBox(height: 25),
+                            shrinkWrap: true,
+                            // physics: NeverScrollableScrollPhysics(),
+                            itemCount: widget.organization.donationsList!.length,
+                            itemBuilder: (context, index) {
+                              return FutureBuilder<Map<String, dynamic>>(
+                                future: context
+                                    .read<DonorProvider>()
+                                    .getDonationModel(widget
+                                        .organization.donationsList![index]),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<Map<String, dynamic>>
+                                        snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Center(
+                                        child: CircularProgressIndicator());
+                                  } else if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  } else if (snapshot.hasData) {
+                                    final donationInformation =
+                                        snapshot.data!['donationModel'];
+                                    print("blue");
+                                    print(snapshot.data);
+                                    return GestureDetector(
+                                      child: DonationCard(
+                                        donationInformation: donationInformation,
+                                      ),
+                                      onTap: () {
+                                        // Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //         builder: (context) =>
+                                        //             OrgDonationDetails()));
+                                      },
+                                    );
+                                  } else {
+                                    return Text('No data available');
+                                  }
+                                },
+                              );
+                            },
+                          ),
+                        ) 
                       ),
                     );
 
