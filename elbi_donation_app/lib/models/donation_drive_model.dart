@@ -5,6 +5,7 @@ class DonationDriveModel {
   String? organizationId;
   String? donationDriveName;
   String? donationDriveDescription;
+  String? donationDriveImageCover;
   List<DonationModel>? listOfDonationsId;
 
   DonationDriveModel({
@@ -12,6 +13,7 @@ class DonationDriveModel {
     this.organizationId,
     this.donationDriveName,
     this.donationDriveDescription,
+    this.donationDriveImageCover,
     List<DonationModel>? listOfDonationsId,
   }) : listOfDonationsId = listOfDonationsId ?? [];
 
@@ -22,6 +24,7 @@ class DonationDriveModel {
       organizationId: json['organizationId'],
       donationDriveName: json['donationDriveName'],
       donationDriveDescription: json['donationDriveDescription'],
+      donationDriveImageCover: json['donationDriveImageCover'],
       listOfDonationsId: (json['listOfDonationsId'] as List<dynamic>?)
           ?.map((item) => DonationModel.fromJson(item as Map<String, dynamic>))
           .toList(),
@@ -34,6 +37,7 @@ class DonationDriveModel {
       'organizationId': organizationId,
       'donationDriveName': donationDriveName,
       'donationDriveDescription': donationDriveDescription,
+      'donationDriveImageCover': donationDriveImageCover,
       'listOfDonationsId':
           listOfDonationsId?.map((item) => item.toJson(item)).toList(),
     };

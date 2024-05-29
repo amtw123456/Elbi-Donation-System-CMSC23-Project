@@ -59,6 +59,48 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Edit'), // Dialog title
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TextField(
+                                    decoration:
+                                        InputDecoration(labelText: 'Field 1'),
+                                  ),
+                                  TextField(
+                                    decoration:
+                                        InputDecoration(labelText: 'Field 2'),
+                                  ),
+                                ],
+                              ),
+                              actions: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pop(); // Close the dialog
+                                  },
+                                  child: Text('Save'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Icon(
+                        Icons.edit, // Replace with your desired icon
+                        color: Colors.green, // Adjust color as needed
+                        size: 20, // Adjust size as needed
+                      ),
+                    ),
+                  ),
                   Container(
                     width: double.infinity,
                     height: screenHeight / 3,
@@ -70,9 +112,21 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
                       ),
                       borderRadius: BorderRadius.circular(8.0),
                     ),
-                    child: Text(
-                      "This container takes the maximum width available and has borders.",
-                    ),
+                    child: donationDriveDetails['donationDriveModel']
+                                .donationDriveImageCover ==
+                            null
+                        ? Center(
+                            child: Text('No image available'),
+                          )
+                        : FittedBox(
+                            child: Image.network(
+                              donationDriveDetails['donationDriveModel']
+                                  .donationDriveImageCover!,
+                              width: 400,
+                              height: 250,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
                   ),
                   Text(
                     donationDriveDetails['donationDriveModel']
@@ -104,59 +158,6 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
                           ),
                         ),
                       ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.all(10),
-                          backgroundColor: Color(0xFF37A980),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                          )),
-                      onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                          builder: (context) => Container(
-                              height: MediaQuery.of(context).size.height * 0.75,
-                              decoration: new BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: new BorderRadius.only(
-                                  topLeft: const Radius.circular(25.0),
-                                  topRight: const Radius.circular(25.0),
-                                ),
-                              ),
-                              child: SingleChildScrollView(
-                                  child: Padding(
-                                padding: EdgeInsets.all(30),
-                                child: Column(
-                                  children: [
-                                    ListView.separated(
-                                      separatorBuilder:
-                                          (BuildContext context, int index) =>
-                                              SizedBox(height: 25),
-                                      shrinkWrap: true,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      itemCount: 5,
-                                      itemBuilder: (context, index) {
-                                        return DonationCard();
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ))),
-                        );
-                      },
-                      child: const Text(
-                        'View Donations',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: "Poppins",
-                            fontSize: 20),
-                      ),
                     ),
                   ),
                   SizedBox(
