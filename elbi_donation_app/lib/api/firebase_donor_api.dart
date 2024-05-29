@@ -29,16 +29,20 @@ class FirebaseDonorAPI {
     }
   }
 
-  Future<DonationModel?> getDonationModel(String id) async {
+  Future<Map<String, dynamic>> getDonationModel(String id) async {
     try {
       final doc = await db.collection("donationModels").doc(id).get();
       DonationModel donationModel =
           DonationModel.fromJson(doc.data() as Map<String, dynamic>);
-      return donationModel;
+      return {'success': true, 'donationModel': donationModel};
     } on FirebaseException catch (e) {
-      print("Error in ${e.code}: ${e.message}");
+      return {
+        'success': false,
+        'error': 'Firebase Error: ${e.code} : ${e.message}'
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Error: $e'};
     }
-    return null;
   }
 
 // get all donations that the donor has sent

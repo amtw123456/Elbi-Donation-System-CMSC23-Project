@@ -17,9 +17,9 @@ class DonorProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<DonationModel?> getDonationModel(String id) async {
-    DonationModel? donationModel = await firebaseService.getDonationModel(id);
-    return donationModel;
+  Future<Map<String, dynamic>> getDonationModel(String id) async {
+    final result = await firebaseService.getDonationModel(id);
+    return result;
   }
 
   Future<List<DonationModel>?> getAllDonations(String donorId) async {

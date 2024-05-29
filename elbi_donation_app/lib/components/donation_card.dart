@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:elbi_donation_app/models/donation_model.dart';
 
 class DonationCard extends StatefulWidget {
-  const DonationCard({super.key});
+  DonationModel donationInformation;
+
+  DonationCard({super.key, required this.donationInformation});
 
   @override
   State<DonationCard> createState() => _DonationCardState();
@@ -49,7 +52,7 @@ class _DonationCardState extends State<DonationCard> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Donor name here',
+                Text(widget.donationInformation.donatorId!,
                     style: TextStyle(fontFamily: 'Poppins')),
                 Container(
                   child: Text('Clothes',

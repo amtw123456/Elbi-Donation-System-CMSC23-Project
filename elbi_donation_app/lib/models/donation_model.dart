@@ -40,11 +40,15 @@ class DonationModel {
       id: json['id'],
       donatorId: json['donatorId'],
       organizationId: json['organizationId'],
-      categories: json['categories'],
+      categories: json['categories'] != null
+          ? List<String>.from(json['categories'])
+          : null,
       isPickupOrDropoff: json['isPickupOrDropoff'],
       weight: json['weight'],
-      dateTime: json['dateTime'],
-      pickupAddresses: json['pickupAddresses'],
+      dateTime: json['dateTime'].toDate(),
+      pickupAddresses: json['pickupAddresses'] != null
+          ? List<String>.from(json['pickupAddresses'])
+          : null,
       contactNo: json['contactNo'],
       isCancelled: json['isCancelled'],
       status: json['status'],
