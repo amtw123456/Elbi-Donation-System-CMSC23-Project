@@ -55,10 +55,8 @@ class _AdminDonorsPageState extends State<AdminDonorsPage> {
                               itemBuilder: (context, index) {
                                 return ListTile(
                                   leading: Icon(Icons.person),
-                                  title: Text(donors[index].firstName +
-                                      " " +
-                                      donors[index].lastName),
-                                  subtitle: Text(donors[index].email),
+                                  title: Text('${donors[index].firstName} ${donors[index].lastName}', style: TextStyle(fontFamily: 'Poppins'),),
+                                  subtitle: Text(donors[index].email, style: TextStyle(fontFamily: 'Poppins'),),
                                   trailing: Icon(Icons.arrow_forward),
                                   onTap: () {
                                     // Handle tap event
@@ -66,8 +64,18 @@ class _AdminDonorsPageState extends State<AdminDonorsPage> {
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          title: Text(donors[index].firstName),
-                                          content: Text('yellow'),
+                                          title: Text('${donors[index].username}'),
+                                          content: SingleChildScrollView(
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min, // Use min to make the Column fit its content
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text('${donors[index].firstName} ${donors[index].lastName}', style: TextStyle(fontFamily: 'Poppins')),
+                                                Text('${donors[index].email}', style: TextStyle(fontFamily: 'Poppins')),
+                                                Text('${donors[index].contactNumber}', style: TextStyle(fontFamily: 'Poppins')),
+                                              ],
+                                            ),
+                                          ),
                                           actions: <Widget>[
                                             TextButton(
                                               child: Text('Close'),
@@ -84,7 +92,7 @@ class _AdminDonorsPageState extends State<AdminDonorsPage> {
                               },
                             );
                           } else {
-                            return const Text('No organizations yet!');
+                            return const Text('No donors yet!');
                           }
                         } else if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');

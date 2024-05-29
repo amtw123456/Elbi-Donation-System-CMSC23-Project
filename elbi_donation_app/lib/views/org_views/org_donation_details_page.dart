@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:provider/provider.dart';
 import 'package:elbi_donation_app/providers/user_provider.dart';
@@ -26,6 +27,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
         itemCount: 5,
         itemBuilder: (BuildContext context, int index) {
           return Container(
+            // TODO: Add images array here
             width: 100,
             height: 100,
             margin: EdgeInsets.symmetric(horizontal: 5),
@@ -131,11 +133,11 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Category',
-                              style: TextStyle(fontFamily: 'Poppins')),
+                            style: TextStyle(fontFamily: 'Poppins')),
                           Text(widget.donationDetails.categories!.join(', '),
-                              style: TextStyle(
-                                  fontFamily: 'Poppins',
-                                  color: Color(0xFF818181))),
+                            style: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Color(0xFF818181))),
                         ],
                       ),
                       SizedBox(height: 20),
@@ -143,11 +145,11 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Weight',
-                              style: TextStyle(fontFamily: 'Poppins')),
+                            style: TextStyle(fontFamily: 'Poppins')),
                           Text(widget.donationDetails.weight.toString(),
-                              style: TextStyle(
-                                  fontFamily: 'Poppins',
-                                  color: Color(0xFF818181))),
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: Color(0xFF818181))),
                         ],
                       ),
                       SizedBox(height: 20),
@@ -155,11 +157,11 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Mode of delivery',
-                              style: TextStyle(fontFamily: 'Poppins')),
+                            style: TextStyle(fontFamily: 'Poppins')),
                           Text(widget.donationDetails.isPickupOrDropoff!,
-                              style: TextStyle(
-                                  fontFamily: 'Poppins',
-                                  color: Color(0xFF818181))),
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: Color(0xFF818181))),
                         ],
                       ),
                       SizedBox(height: 20),
@@ -174,8 +176,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                                         style:
                                             TextStyle(fontFamily: 'Poppins')),
                                     Text(
-                                        widget.donationDetails.dateTime
-                                            .toString(),
+                                      DateFormat('MM-dd-yyyy').format(widget.donationDetails.dateTime!),
                                         style: TextStyle(
                                             fontFamily: 'Poppins',
                                             color: Color(0xFF818181))),
@@ -189,10 +190,11 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                                     Text('Pickup time',
                                         style:
                                             TextStyle(fontFamily: 'Poppins')),
-                                    Text('10:10 AM',
-                                        style: TextStyle(
-                                            fontFamily: 'Poppins',
-                                            color: Color(0xFF818181))),
+                                    Text(
+                                      DateFormat.jm().format(widget.donationDetails.dateTime!),
+                                      style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        color: Color(0xFF818181))),
                                   ],
                                 ),
                                 SizedBox(height: 20),
@@ -215,15 +217,16 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                               children: [
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Drop off date',
-                                        style:
-                                            TextStyle(fontFamily: 'Poppins')),
-                                    Text('05/25/2024',
-                                        style: TextStyle(
-                                            fontFamily: 'Poppins',
-                                            color: Color(0xFF818181))),
+                                      style:
+                                      TextStyle(fontFamily: 'Poppins')),
+                                    Text(
+                                      DateFormat('MM-dd-yyyy').format(widget.donationDetails.dateTime!),
+                                      style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        color: Color(0xFF818181))),
                                   ],
                                 ),
                                 SizedBox(height: 20),
@@ -232,12 +235,13 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Drop off time',
-                                        style:
-                                            TextStyle(fontFamily: 'Poppins')),
-                                    Text('11:11 AM',
-                                        style: TextStyle(
-                                            fontFamily: 'Poppins',
-                                            color: Color(0xFF818181))),
+                                      style:
+                                        TextStyle(fontFamily: 'Poppins')),
+                                    Text(
+                                      DateFormat.jm().format(widget.donationDetails.dateTime!),
+                                      style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        color: Color(0xFF818181))),
                                   ],
                                 ),
                               ],
