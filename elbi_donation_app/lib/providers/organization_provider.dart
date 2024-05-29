@@ -19,8 +19,7 @@ class OrganizationProvider with ChangeNotifier {
 
   Future<Map<String, dynamic>> updateDonationDriveModel(
       String id, Map<String, dynamic> updates) async {
-    final result =
-        await firebaseService.updateOrganizationDonationDrives(id, updates);
+    final result = await firebaseService.updateDonationDrives(id, updates);
     return result;
   }
 

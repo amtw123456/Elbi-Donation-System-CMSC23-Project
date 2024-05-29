@@ -19,9 +19,11 @@ class DonationCard extends StatefulWidget {
 class _DonationCardState extends State<DonationCard> {
   @override
   Widget build(BuildContext context) {
-    final userId = context.read<UserAuthProvider>().user?.uid;
+    // final userId = context.read<UserAuthProvider>().user?.uid;
     return FutureBuilder<Map<String, dynamic>>(
-      future: context.read<UserProvider>().getUserModel(userId!),
+      future: context
+          .read<UserProvider>()
+          .getUserModel(widget.donationInformation.donatorId!),
       builder:
           (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {

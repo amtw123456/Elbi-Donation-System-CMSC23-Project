@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:elbi_donation_app/providers/user_provider.dart';
 import 'package:elbi_donation_app/providers/auth_provider.dart';
+import 'package:elbi_donation_app/providers/donor_provider.dart';
 import 'package:elbi_donation_app/views/user_views/user_organization_donation_details_page.dart';
 
 import '../../components/organization_card.dart';
@@ -34,10 +35,10 @@ class _OrgHomePageState extends State<OrgHomePage> {
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData) {
-              final userInformation = snapshot.data!;
-              final userName = userInformation['userModel'].username;
-              final verificationStatus =
-                  userInformation['userModel'].isApprovedByAdmin;
+              final userInformation = snapshot.data!['userModel'];
+              final userName = userInformation.username;
+              final verificationStatus = userInformation.isApprovedByAdmin;
+              print(userInformation.donationsList.length);
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -66,35 +67,62 @@ class _OrgHomePageState extends State<OrgHomePage> {
                   SizedBox(
                     height: 20,
                   ),
-                  // Expanded(
-                  //   child: SingleChildScrollView(
-                  //     child: Column(
-                  //       children: [
-                  //         ListView.separated(
-                  //           padding: EdgeInsets.zero,
-                  //           separatorBuilder:
-                  //               (BuildContext context, int index) =>
-                  //                   SizedBox(height: 25),
-                  //           shrinkWrap: true,
-                  //           physics: NeverScrollableScrollPhysics(),
-                  //           itemCount: 5,
-                  //           itemBuilder: (context, index) {
-                  //             return GestureDetector(
-                  //               onTap: () {
-                  //                 Navigator.push(
-                  //                     context,
-                  //                     MaterialPageRoute(
-                  //                         builder: (context) =>
-                  //                             OrgDonationDetails()));
-                  //               },
-                  //               child: DonationCard(),
-                  //             );
-                  //           },
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          ListView.separated(
+                            separatorBuilder:
+                                (BuildContext context, int index) =>
+                                    SizedBox(height: 25),
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: userInformation.donationsList.length,
+                            itemBuilder: (context, index) {
+                              print(userInformation.donationsList[index]);
+                              return FutureBuilder<Map<String, dynamic>>(
+                                future: context
+                                    .read<DonorProvider>()
+                                    .getDonationModel(
+                                        userInformation.donationsList[index]),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<Map<String, dynamic>>
+                                        snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Center(
+                                        child: CircularProgressIndicator());
+                                  } else if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  } else if (snapshot.hasData) {
+                                    final donationInformation =
+                                        snapshot.data!['donationModel'];
+                                    print("blue");
+                                    print(snapshot.data);
+                                    return GestureDetector(
+                                      child: DonationCard(
+                                        donationInformation:
+                                            donationInformation,
+                                      ),
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    OrgDonationDetails()));
+                                      },
+                                    );
+                                  } else {
+                                    return Text('No data available');
+                                  }
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               );
             } else {
