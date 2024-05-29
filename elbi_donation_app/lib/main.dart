@@ -6,6 +6,7 @@ import 'firebase_options.dart';
 import 'providers/auth_provider.dart';
 import 'providers/user_provider.dart';
 import 'providers/organization_provider.dart';
+import 'providers/donor_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +20,8 @@ Future<void> main() async {
         // ChangeNotifierProvider(create: ((context) => TodoListProvider())),
         ChangeNotifierProvider(create: ((context) => UserAuthProvider())),
         ChangeNotifierProvider(create: ((context) => UserProvider())),
-        ChangeNotifierProvider(create: ((context) => OrganizationProvider()))
+        ChangeNotifierProvider(create: ((context) => OrganizationProvider())),
+        ChangeNotifierProvider(create: ((context) => DonorProvider()))
       ],
       child: const MyApp(),
     ),
