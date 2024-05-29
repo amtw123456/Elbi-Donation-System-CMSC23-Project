@@ -32,8 +32,13 @@ class UserProvider with ChangeNotifier {
     return result;
   }
 
-  Future<Map<String, dynamic>> getOrganizations() async {
-    final result = await firebaseService.getOrganizations();
+  Future<Map<String, dynamic>> getAllOrganizations() async {
+    final result = await firebaseService.getAllOrganizations();
+    return result;
+  }
+
+  Future<Map<String, dynamic>> getAllVerifiedOrganizations() async {
+    final result = await firebaseService.getAllVerifiedOrganizations();
     return result;
   }
 

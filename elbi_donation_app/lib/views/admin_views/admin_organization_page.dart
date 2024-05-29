@@ -19,7 +19,7 @@ class AdminOrganizationPage extends StatefulWidget {
 class _AdminOrganizationPageState extends State<AdminOrganizationPage> {
   @override
   Widget build(BuildContext context) {
-    final futureOrgList = context.read<UserProvider>().getOrganizations();
+    final futureOrgList = context.read<UserProvider>().getAllOrganizations();
     print(futureOrgList);
     final userId = context.read<UserAuthProvider>().user?.uid;
     return Scaffold(
@@ -57,8 +57,9 @@ class _AdminOrganizationPageState extends State<AdminOrganizationPage> {
                       child: Column(
                         children: [
                           FutureBuilder<Map<String, dynamic>>(
-                            future:
-                                context.read<UserProvider>().getOrganizations(),
+                            future: context
+                                .read<UserProvider>()
+                                .getAllOrganizations(),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 if (snapshot.data!['success']) {

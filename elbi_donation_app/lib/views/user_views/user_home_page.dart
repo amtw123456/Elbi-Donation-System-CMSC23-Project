@@ -18,7 +18,8 @@ class _UserHomePageState extends State<UserHomePage> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final userId = context.read<UserAuthProvider>().user?.uid;
-    final futureOrgList = context.read<UserProvider>().getOrganizations();
+    final futureOrgList =
+        context.read<UserProvider>().getAllVerifiedOrganizations();
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8F8F8),
