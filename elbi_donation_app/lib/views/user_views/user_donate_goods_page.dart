@@ -461,6 +461,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                         String? donationId = generateRandomString(28);
                         DonationModel donationDetails = DonationModel(
                           categories: _selectedDonationType,
+                          isPickupOrDropoff: _selectedModeOfDelivery,
                           id: donationId,
                           donatorId: userId,
                           contactNo: _selectedContactNum.toString(),
@@ -475,14 +476,20 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                             .read<DonorProvider>()
                             .addDonationModel(donationDetails);
 
-                        Map<String, dynamic> updates = {
+                        Map<String, dynamic> userUpdates = {
                           'donationsList': donationId,
-                          // Add other fields you want to update
                         };
 
                         await context
                             .read<UserProvider>()
-                            .updateUserModel(userId!, updates);
+                            .updateUserModel(userId!, userUpdates);
+
+                        Map<String, dynamic> organizationUpdates = {
+                          'donationsList': donationId,
+                        };
+
+                        await context.read<UserProvider>().updateUserModel(
+                            widget.organizationId!, organizationUpdates);
 
                         Navigator.pop(context);
                       },

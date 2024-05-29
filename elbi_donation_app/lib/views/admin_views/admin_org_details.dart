@@ -3,6 +3,7 @@ import 'package:elbi_donation_app/models/user_model.dart';
 import '../../components/donation_card.dart';
 import 'package:provider/provider.dart';
 import 'package:elbi_donation_app/providers/user_provider.dart';
+import 'package:elbi_donation_app/providers/donor_provider.dart';
 
 class AdminOrganizationDetails extends StatefulWidget {
   AdminOrganizationDetails({super.key, required this.organization});
@@ -116,19 +117,67 @@ class AdminOrganizationDetailsState extends State<AdminOrganizationDetails> {
                     ),
                   ),
                   onPressed: () {
-                    // showModalBottomSheet(
-                    //   context: context,
-                    //   isScrollControlled: true,
-                    //   backgroundColor: Colors.transparent,
-                    //   builder: (context) => Container(
-                    //     height: MediaQuery.of(context).size.height * 0.75,
-                    //     decoration: new BoxDecoration(
-                    //       color: Colors.white,
-                    //       borderRadius: new BorderRadius.only(
-                    //         topLeft: const Radius.circular(25.0),
-                    //         topRight: const Radius.circular(25.0),
-                    //       ),
-                    //     ),
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) => Container(
+                        height: MediaQuery.of(context).size.height * 0.75,
+                        decoration: new BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: new BorderRadius.only(
+                            topLeft: const Radius.circular(25.0),
+                            topRight: const Radius.circular(25.0),
+                          ),
+                        ),
+                        child: ListView.separated(
+                          separatorBuilder: (BuildContext context, int index) =>
+                              SizedBox(height: 25),
+                          shrinkWrap: true,
+                          // physics: NeverScrollableScrollPhysics(),
+                          itemCount: widget.organization.donationsList!.length,
+                          itemBuilder: (context, index) {
+                            return FutureBuilder<Map<String, dynamic>>(
+                              future: context
+                                  .read<DonorProvider>()
+                                  .getDonationModel(widget
+                                      .organization.donationsList![index]),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<Map<String, dynamic>>
+                                      snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else if (snapshot.hasData) {
+                                  final donationInformation =
+                                      snapshot.data!['donationModel'];
+                                  print("blue");
+                                  print(snapshot.data);
+                                  return GestureDetector(
+                                    child: DonationCard(
+                                      donationInformation: donationInformation,
+                                    ),
+                                    onTap: () {
+                                      // Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //         builder: (context) =>
+                                      //             OrgDonationDetails()));
+                                    },
+                                  );
+                                } else {
+                                  return Text('No data available');
+                                }
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    );
+
                     //     child: SingleChildScrollView(
                     //       child: Padding(
                     //         padding: EdgeInsets.all(30),

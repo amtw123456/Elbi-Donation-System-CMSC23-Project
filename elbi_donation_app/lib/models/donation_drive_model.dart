@@ -6,7 +6,7 @@ class DonationDriveModel {
   String? donationDriveName;
   String? donationDriveDescription;
   String? donationDriveImageCover;
-  List<DonationModel>? listOfDonationsId;
+  List<String>? listOfDonationsId;
 
   DonationDriveModel({
     this.id,
@@ -14,21 +14,20 @@ class DonationDriveModel {
     this.donationDriveName,
     this.donationDriveDescription,
     this.donationDriveImageCover,
-    List<DonationModel>? listOfDonationsId,
-  }) : listOfDonationsId = listOfDonationsId ?? [];
+    this.listOfDonationsId,
+  });
 
   // Factory constructor to instantiate object from json format
   factory DonationDriveModel.fromJson(Map<String, dynamic> json) {
     return DonationDriveModel(
-      id: json['id'],
-      organizationId: json['organizationId'],
-      donationDriveName: json['donationDriveName'],
-      donationDriveDescription: json['donationDriveDescription'],
-      donationDriveImageCover: json['donationDriveImageCover'],
-      listOfDonationsId: (json['listOfDonationsId'] as List<dynamic>?)
-          ?.map((item) => DonationModel.fromJson(item as Map<String, dynamic>))
-          .toList(),
-    );
+        id: json['id'],
+        organizationId: json['organizationId'],
+        donationDriveName: json['donationDriveName'],
+        donationDriveDescription: json['donationDriveDescription'],
+        donationDriveImageCover: json['donationDriveImageCover'],
+        listOfDonationsId: json['listOfDonationsId'] != null
+            ? List<String>.from(json['listOfDonationsId'])
+            : null);
   }
 
   Map<String, dynamic> toJson(DonationDriveModel donationDriveModel) {
@@ -38,13 +37,7 @@ class DonationDriveModel {
       'donationDriveName': donationDriveName,
       'donationDriveDescription': donationDriveDescription,
       'donationDriveImageCover': donationDriveImageCover,
-      'listOfDonationsId':
-          listOfDonationsId?.map((item) => item.toJson(item)).toList(),
+      'listOfDonationsId': listOfDonationsId
     };
-  }
-
-  // Method to add a donation to the list
-  void addDonation(DonationModel donation) {
-    listOfDonationsId?.add(donation);
   }
 }

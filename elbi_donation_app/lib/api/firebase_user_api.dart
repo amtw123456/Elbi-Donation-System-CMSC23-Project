@@ -111,7 +111,7 @@ class FirebaseUserAPI {
   }
 
   // view all organizations
-  Future<Map<String, dynamic>> getOrganizations() async {
+  Future<Map<String, dynamic>> getAllOrganizations() async {
     try {
       List<UserModel> orgs = [];
       final snapshots = await db
@@ -121,6 +121,30 @@ class FirebaseUserAPI {
       for (var snapshot in snapshots.docs) {
         orgs.add(UserModel.fromJson(snapshot.data()));
       }
+
+      return {'success': true, 'orgs': orgs};
+    } on FirebaseException catch (e) {
+      return {
+        'success': false,
+        'error': 'Firebase Error: ${e.code} : ${e.message}'
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Error: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> getAllVerifiedOrganizations() async {
+    try {
+      List<UserModel> orgs = [];
+      final snapshots = await db
+          .collection("userModels")
+          .where("type", isEqualTo: "org")
+          .where('isApprovedByAdmin', isEqualTo: true)
+          .get();
+      for (var snapshot in snapshots.docs) {
+        orgs.add(UserModel.fromJson(snapshot.data()));
+      }
+
       return {'success': true, 'orgs': orgs};
     } on FirebaseException catch (e) {
       return {

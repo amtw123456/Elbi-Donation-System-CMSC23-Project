@@ -5,8 +5,12 @@ import 'package:elbi_donation_app/providers/user_provider.dart';
 import 'package:elbi_donation_app/providers/auth_provider.dart';
 import 'package:elbi_donation_app/providers/organization_provider.dart';
 
+import 'package:elbi_donation_app/models/donation_model.dart';
+
 class OrgDonationDetails extends StatefulWidget {
-  const OrgDonationDetails({Key? key}) : super(key: key);
+  DonationModel donationDetails;
+  OrgDonationDetails({Key? key, required this.donationDetails})
+      : super(key: key);
 
   @override
   State<OrgDonationDetails> createState() => _OrgDonationDetailsState();
@@ -46,6 +50,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
     'Canceled'
   ];
 
+  List<String> organizationDriveList = [];
   List<String> drives = [];
   String selectedDrive = '-';
 
@@ -59,8 +64,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
     final userId = context.read<UserAuthProvider>().user?.uid;
     final userInformation =
         await context.read<UserProvider>().getUserModel(userId!);
-    final List<dynamic> organizationDriveList =
-        userInformation['userModel'].organizationDriveList;
+    organizationDriveList = userInformation['userModel'].organizationDriveList;
     List<String> items = [];
     for (String donationDriveId in organizationDriveList) {
       final donationDriveModel = await context
@@ -78,7 +82,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
 
   @override
   Widget build(BuildContext context) {
-    final userId = context.read<UserAuthProvider>().user?.uid;
+    // final userId = context.read<UserAuthProvider>().user?.uid;
 
     return Scaffold(
         appBar: AppBar(
@@ -88,7 +92,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
               Navigator.of(context).pop();
             },
           ),
-          title: Text(
+          title: const Text(
             'Donation Details',
             style: TextStyle(
                 fontFamily: 'Poppins',
@@ -128,7 +132,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                         children: [
                           Text('Category',
                               style: TextStyle(fontFamily: 'Poppins')),
-                          Text('Clothes',
+                          Text(widget.donationDetails.categories!.join(', '),
                               style: TextStyle(
                                   fontFamily: 'Poppins',
                                   color: Color(0xFF818181))),
@@ -140,7 +144,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                         children: [
                           Text('Weight',
                               style: TextStyle(fontFamily: 'Poppins')),
-                          Text('10kg',
+                          Text(widget.donationDetails.weight.toString(),
                               style: TextStyle(
                                   fontFamily: 'Poppins',
                                   color: Color(0xFF818181))),
@@ -152,7 +156,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                         children: [
                           Text('Mode of delivery',
                               style: TextStyle(fontFamily: 'Poppins')),
-                          Text('pickup',
+                          Text(widget.donationDetails.isPickupOrDropoff!,
                               style: TextStyle(
                                   fontFamily: 'Poppins',
                                   color: Color(0xFF818181))),
@@ -169,7 +173,9 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                                     Text('Pickup date',
                                         style:
                                             TextStyle(fontFamily: 'Poppins')),
-                                    Text('05/25/2024',
+                                    Text(
+                                        widget.donationDetails.dateTime
+                                            .toString(),
                                         style: TextStyle(
                                             fontFamily: 'Poppins',
                                             color: Color(0xFF818181))),
@@ -197,7 +203,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                                     Text('Contact number',
                                         style:
                                             TextStyle(fontFamily: 'Poppins')),
-                                    Text('1234567890',
+                                    Text(widget.donationDetails.contactNo!,
                                         style: TextStyle(
                                             fontFamily: 'Poppins',
                                             color: Color(0xFF818181))),
@@ -307,10 +313,10 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                       }
                       return null;
                     },
-                    items: drives.map((String donationDriveId) {
+                    items: drives.map((String donationDriveName) {
                       return DropdownMenuItem<String>(
-                        value: donationDriveId,
-                        child: Text(donationDriveId,
+                        value: donationDriveName,
+                        child: Text(donationDriveName,
                             style: TextStyle(fontFamily: 'Poppins')),
                       );
                     }).toList(),
@@ -327,10 +333,24 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           print(selectedStatus);
                           print(selectedDrive);
+                          // print(drives.indexOf(selectedDrive));
+                          print(organizationDriveList);
+                          // print(organizationDriveList[
+                          //     drives.indexOf(selectedDrive)]);
+                          Map<String, dynamic> donationDriveupdate = {
+                            'listOfDonationsId': widget.donationDetails.id,
+                          };
+
+                          await context
+                              .read<OrganizationProvider>()
+                              .updateDonationDriveModel(
+                                  organizationDriveList[
+                                      drives.indexOf(selectedDrive)],
+                                  donationDriveupdate);
                         }
                       },
                       child: const Text(

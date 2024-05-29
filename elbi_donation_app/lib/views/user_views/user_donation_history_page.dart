@@ -7,6 +7,7 @@ import 'package:elbi_donation_app/providers/user_provider.dart';
 import 'package:elbi_donation_app/models/donation_model.dart';
 import 'package:elbi_donation_app/providers/auth_provider.dart';
 import 'package:elbi_donation_app/providers/donor_provider.dart';
+import 'package:elbi_donation_app/providers/organization_provider.dart';
 import 'package:provider/provider.dart';
 
 class UserDonationHistory extends StatefulWidget {
@@ -76,10 +77,13 @@ class _UserDonationHistoryState extends State<UserDonationHistory> {
                                 ),
                                 onTap: () {
                                   Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              UserDonationDetails()));
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => UserDonationDetails(
+                                        donationDetails: donationInformation,
+                                      ),
+                                    ),
+                                  );
                                 },
                               );
                             } else {

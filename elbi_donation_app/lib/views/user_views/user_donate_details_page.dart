@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:elbi_donation_app/models/donation_model.dart';
 
 class UserDonationDetails extends StatefulWidget {
-  const UserDonationDetails({Key? key}) : super(key: key);
+  DonationModel donationDetails;
+  UserDonationDetails({Key? key, required this.donationDetails})
+      : super(key: key);
 
   @override
   State<UserDonationDetails> createState() => _UserDonationDetailsState();
@@ -20,9 +23,7 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
             height: 100,
             margin: EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(
-              color: Colors.green,
-              borderRadius: BorderRadius.circular(5) 
-            ),
+                color: Colors.green, borderRadius: BorderRadius.circular(5)),
           );
         },
       ),
@@ -44,173 +45,215 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
         ),
         title: Text(
           'Donation Details',
-          style: TextStyle(fontFamily: 'Poppins', fontSize: 24, fontWeight: FontWeight.w700),
+          style: TextStyle(
+              fontFamily: 'Poppins', fontSize: 24, fontWeight: FontWeight.w700),
         ),
       ),
       body: Padding(
-          padding: EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Images', style: TextStyle(fontFamily: 'Poppins', fontSize: 14)),
-              SizedBox(height: 10),
-              imageCarousel(),
-              SizedBox(height: 20),
+        padding: EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Images',
+                style: TextStyle(fontFamily: 'Poppins', fontSize: 14)),
+            SizedBox(height: 10),
+            imageCarousel(),
+            SizedBox(height: 20),
 // LOCATION
-              Row(
+            Row(
+              children: [
+                Icon(
+                  Icons.location_pin,
+                  color: Color(0xFF37A980),
+                ),
+                Expanded(child: Text("Address goes here")),
+              ],
+            ),
+            SizedBox(height: 20),
+// START OF DETAILS
+            Expanded(
+              child: Column(
                 children: [
-                  Icon(
-                    Icons.location_pin,
-                    color: Color(0xFF37A980),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Category', style: TextStyle(fontFamily: 'Poppins')),
+                      Text(widget.donationDetails.categories!.join(', '),
+                          style: TextStyle(
+                              fontFamily: 'Poppins', color: Color(0xFF818181))),
+                    ],
                   ),
-                  Expanded(child: Text("Address goes here")),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Weight', style: TextStyle(fontFamily: 'Poppins')),
+                      Text(widget.donationDetails.weight.toString(),
+                          style: TextStyle(
+                              fontFamily: 'Poppins', color: Color(0xFF818181))),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Mode of delivery',
+                          style: TextStyle(fontFamily: 'Poppins')),
+                      Text(widget.donationDetails.isPickupOrDropoff!,
+                          style: TextStyle(
+                              fontFamily: 'Poppins', color: Color(0xFF818181))),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  pickup
+                      ? // if pickup
+                      Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Pickup date',
+                                    style: TextStyle(fontFamily: 'Poppins')),
+                                Text('05/25/2024',
+                                    style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        color: Color(0xFF818181))),
+                              ],
+                            ),
+                            SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Pickup time',
+                                    style: TextStyle(fontFamily: 'Poppins')),
+                                Text(widget.donationDetails.dateTime.toString(),
+                                    style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        color: Color(0xFF818181))),
+                              ],
+                            ),
+                            SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Contact number',
+                                    style: TextStyle(fontFamily: 'Poppins')),
+                                Text(
+                                    widget.donationDetails.contactNo.toString(),
+                                    style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        color: Color(0xFF818181))),
+                              ],
+                            ),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Drop off date',
+                                    style: TextStyle(fontFamily: 'Poppins')),
+                                Text('05/25/2024',
+                                    style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        color: Color(0xFF818181))),
+                              ],
+                            ),
+                            SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Drop off time',
+                                    style: TextStyle(fontFamily: 'Poppins')),
+                                Text('11:11 AM',
+                                    style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        color: Color(0xFF818181))),
+                              ],
+                            )
+                          ],
+                        ),
                 ],
               ),
-              SizedBox(height: 20),
-// START OF DETAILS
-              Expanded(
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Category', style: TextStyle(fontFamily: 'Poppins')),
-                        Text('Clothes', style: TextStyle(fontFamily: 'Poppins', color: Color(0xFF818181))),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Weight', style: TextStyle(fontFamily: 'Poppins')),
-                        Text('10kg', style: TextStyle(fontFamily: 'Poppins', color: Color(0xFF818181))),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Mode of delivery', style: TextStyle(fontFamily: 'Poppins')),
-                        Text('pickup', style: TextStyle(fontFamily: 'Poppins', color: Color(0xFF818181))),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    pickup ? // if pickup
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Pickup date', style: TextStyle(fontFamily: 'Poppins')),
-                            Text('05/25/2024', style: TextStyle(fontFamily: 'Poppins', color: Color(0xFF818181))),
-                          ],
-                        ),
-                    SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Pickup time', style: TextStyle(fontFamily: 'Poppins')),
-                            Text('10:10 AM', style: TextStyle(fontFamily: 'Poppins', color: Color(0xFF818181))),
-                          ],
-                        ),
-                    SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Contact number', style: TextStyle(fontFamily: 'Poppins')),
-                            Text('1234567890', style: TextStyle(fontFamily: 'Poppins', color: Color(0xFF818181))),
-                          ],
-                        ),
-                      ],
-                    )
-                  : Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Drop off date', style: TextStyle(fontFamily: 'Poppins')),
-                            Text('05/25/2024', style: TextStyle(fontFamily: 'Poppins', color: Color(0xFF818181))),
-                          ],
-                        ),
-                    SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Drop off time', style: TextStyle(fontFamily: 'Poppins')),
-                            Text('11:11 AM', style: TextStyle(fontFamily: 'Poppins', color: Color(0xFF818181))),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              // END OF DETAILS
-              completed
-                  ? // IF DONATION COMPLETED
-                  SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.all(10),
-                          backgroundColor: Color(0xFF37A980),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                          ),
-                        ),
-                        onPressed: () {},
-                        child: const Text(
-                          'Completed',
-                          style: TextStyle(color: Colors.white, fontFamily: "Poppins", fontSize: 20),
+            ),
+            // END OF DETAILS
+            completed
+                ? // IF DONATION COMPLETED
+                SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.all(10),
+                        backgroundColor: Color(0xFF37A980),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
                       ),
-                    )
-                  : Column(
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.all(10),
-                              backgroundColor: Colors.grey,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                              ),
+                      onPressed: () {},
+                      child: const Text(
+                        'Completed',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "Poppins",
+                            fontSize: 20),
+                      ),
+                    ),
+                  )
+                : Column(
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.all(10),
+                            backgroundColor: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
                             ),
-                            onPressed: () {
-                              // TODO: Generate QR
-                            },
-                            child: const Text(
-                              'Generate QR',
-                              style: TextStyle(color: Colors.white, fontFamily: "Poppins", fontSize: 20),
-                            ),
+                          ),
+                          onPressed: () {
+                            // TODO: Generate QR
+                          },
+                          child: const Text(
+                            'Generate QR',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: "Poppins",
+                                fontSize: 20),
                           ),
                         ),
-                        SizedBox(height: 10),
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.all(10),
-                              backgroundColor: Colors.red,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                              ),
-                            ),
-                            onPressed: () {
-                              // TODO: Cancel Donation
-                            },
-                            child: const Text(
-                              'Cancel Donation',
-                              style: TextStyle(color: Colors.white, fontFamily: "Poppins", fontSize: 20),
+                      ),
+                      SizedBox(height: 10),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.all(10),
+                            backgroundColor: Colors.red,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
                             ),
                           ),
-                        )
-                      ],
-                    )
-            ],
-          ),
+                          onPressed: () {
+                            // TODO: Cancel Donation
+                          },
+                          child: const Text(
+                            'Cancel Donation',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: "Poppins",
+                                fontSize: 20),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+          ],
         ),
-      );
+      ),
+    );
   }
 }

@@ -81,4 +81,33 @@ class fireBaseOrganizationAPI {
       return {'success': false, 'error': 'Error: $e'};
     }
   }
+
+  Future<Map<String, dynamic>> updateDonationDrives(
+      String id, Map<String, dynamic> updates) async {
+    try {
+      // Update the document with the given id
+
+      if (updates['listOfDonationsId'] != null) {
+        // Use FieldValue.arrayUnion for organizationDriveList
+        updates['listOfDonationsId'] = FieldValue.arrayUnion(
+            updates['listOfDonationsId'] is List
+                ? updates['listOfDonationsId']
+                : [updates['listOfDonationsId']]);
+      }
+
+      await FirebaseFirestore.instance
+          .collection("donationDriveModels")
+          .doc(id)
+          .update(updates);
+
+      return {'success': true, 'message': "Successfully updated!"};
+    } on FirebaseException catch (e) {
+      return {
+        'success': false,
+        'error': 'Firebase Error: ${e.code} : ${e.message}'
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Error: $e'};
+    }
+  }
 }
