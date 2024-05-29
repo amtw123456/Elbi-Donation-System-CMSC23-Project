@@ -88,7 +88,48 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // TODO: ADD DONATION DRIVE IMAGE HERE
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Edit'), // Dialog title
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TextField(
+                                    decoration:
+                                        InputDecoration(labelText: 'Field 1'),
+                                  ),
+                                  TextField(
+                                    decoration:
+                                        InputDecoration(labelText: 'Field 2'),
+                                  ),
+                                ],
+                              ),
+                              actions: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pop(); // Close the dialog
+                                  },
+                                  child: Text('Save'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Icon(
+                        Icons.edit, // Replace with your desired icon
+                        color: Colors.green, // Adjust color as needed
+                        size: 20, // Adjust size as needed
+                      ),
+                    ),
+                  ),
                   Container(
                     width: double.infinity,
                     height: screenHeight / 3,
@@ -100,9 +141,21 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
                       ),
                       borderRadius: BorderRadius.circular(8.0),
                     ),
-                    child: Text(
-                      "This container takes the maximum width available and has borders.",
-                    ),
+                    child: donationDriveDetails['donationDriveModel']
+                                .donationDriveImageCover ==
+                            null
+                        ? Center(
+                            child: Text('No image available'),
+                          )
+                        : FittedBox(
+                            child: Image.network(
+                              donationDriveDetails['donationDriveModel']
+                                  .donationDriveImageCover!,
+                              width: 400,
+                              height: 250,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
                   ),
                   Text(
                     donationDriveDetails['donationDriveModel']

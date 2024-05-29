@@ -5,6 +5,10 @@ import 'package:elbi_donation_app/providers/organization_provider.dart';
 import 'package:elbi_donation_app/providers/user_provider.dart';
 import 'package:elbi_donation_app/providers/auth_provider.dart';
 import 'package:elbi_donation_app/models/donation_drive_model.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import 'dart:io';
 
 class DonationDriveCard extends StatefulWidget {
   final String donationDriveId;
@@ -138,12 +142,31 @@ class _DonationDriveCardState extends State<DonationDriveCard> {
                   ),
                 ),
                 Container(
+                  width: 400,
                   height: 250,
-                  padding: EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(8)),
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 1.0,
+                    ),
+                  ),
+                  child: donationDriveDetails['donationDriveModel']
+                              .donationDriveImageCover ==
+                          null
+                      ? Center(
+                          child: Text('No image available'),
+                        )
+                      : FittedBox(
+                          child: Image.network(
+                            donationDriveDetails['donationDriveModel']
+                                .donationDriveImageCover!,
+                            width: 400,
+                            height: 250,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
                 ),
+
                 Text(
                     donationDriveDetails['donationDriveModel']
                         .donationDriveName,
