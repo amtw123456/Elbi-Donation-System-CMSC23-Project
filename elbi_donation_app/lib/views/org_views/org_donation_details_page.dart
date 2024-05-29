@@ -144,7 +144,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                         children: [
                           Text('Weight',
                               style: TextStyle(fontFamily: 'Poppins')),
-                          Text('10kg',
+                          Text(widget.donationDetails.weight.toString(),
                               style: TextStyle(
                                   fontFamily: 'Poppins',
                                   color: Color(0xFF818181))),
@@ -156,7 +156,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                         children: [
                           Text('Mode of delivery',
                               style: TextStyle(fontFamily: 'Poppins')),
-                          Text('pickup',
+                          Text(widget.donationDetails.isPickupOrDropoff!,
                               style: TextStyle(
                                   fontFamily: 'Poppins',
                                   color: Color(0xFF818181))),
@@ -173,7 +173,9 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                                     Text('Pickup date',
                                         style:
                                             TextStyle(fontFamily: 'Poppins')),
-                                    Text('05/25/2024',
+                                    Text(
+                                        widget.donationDetails.dateTime
+                                            .toString(),
                                         style: TextStyle(
                                             fontFamily: 'Poppins',
                                             color: Color(0xFF818181))),
@@ -201,7 +203,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                                     Text('Contact number',
                                         style:
                                             TextStyle(fontFamily: 'Poppins')),
-                                    Text('1234567890',
+                                    Text(widget.donationDetails.contactNo!,
                                         style: TextStyle(
                                             fontFamily: 'Poppins',
                                             color: Color(0xFF818181))),
