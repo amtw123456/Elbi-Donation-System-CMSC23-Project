@@ -20,6 +20,7 @@ class _AdminOrganizationPageState extends State<AdminOrganizationPage> {
   @override
   Widget build(BuildContext context) {
     final futureOrgList = context.read<UserProvider>().getOrganizations();
+    print(futureOrgList);
     final userId = context.read<UserAuthProvider>().user?.uid;
     return Scaffold(
       backgroundColor: const Color(0xFFF8F8F8),
@@ -55,8 +56,9 @@ class _AdminOrganizationPageState extends State<AdminOrganizationPage> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          FutureBuilder<dynamic>(
-                            future: futureOrgList,
+                          FutureBuilder<Map<String, dynamic>>(
+                            future:
+                                context.read<UserProvider>().getOrganizations(),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 if (snapshot.data!['success']) {

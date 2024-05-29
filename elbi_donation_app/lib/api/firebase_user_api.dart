@@ -121,6 +121,7 @@ class FirebaseUserAPI {
       for (var snapshot in snapshots.docs) {
         orgs.add(UserModel.fromJson(snapshot.data()));
       }
+
       return {'success': true, 'orgs': orgs};
     } on FirebaseException catch (e) {
       return {
