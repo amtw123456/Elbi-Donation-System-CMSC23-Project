@@ -1,7 +1,13 @@
+import 'package:elbi_donation_app/models/donation_model.dart';
 import 'package:provider/provider.dart';
 import 'package:elbi_donation_app/providers/organization_provider.dart';
 import 'package:elbi_donation_app/components/donation_card.dart';
 import 'package:flutter/material.dart';
+import 'package:elbi_donation_app/providers/user_provider.dart';
+
+import 'package:elbi_donation_app/providers/auth_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class OrgDonationDriveDetails extends StatefulWidget {
   final String donationDriveId;
@@ -13,7 +19,6 @@ class OrgDonationDriveDetails extends StatefulWidget {
 }
 
 class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
-
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -29,11 +34,16 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
           PopupMenuButton<int>(
             icon: Icon(Icons.more_horiz), // three-dot menu icon
             onSelected: (int result) {
-              if (result == 1){
-               context.read<OrganizationProvider>().getDonationDriveModel(widget.donationDriveId).then((donationDriveDetails) {
+              if (result == 1) {
+                context
+                    .read<OrganizationProvider>()
+                    .getDonationDriveModel(widget.donationDriveId)
+                    .then((donationDriveDetails) {
                   OpenEditDialog(
-                    donationDriveDetails['donationDriveModel'].donationDriveName,
-                    donationDriveDetails['donationDriveModel'].donationDriveDescription,
+                    donationDriveDetails['donationDriveModel']
+                        .donationDriveName,
+                    donationDriveDetails['donationDriveModel']
+                        .donationDriveDescription,
                   );
                 });
               } else if (result == 2) {
@@ -81,6 +91,7 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
             return Text('Error: ${snapshot.error}');
           } else if (snapshot.hasData) {
             final donationDriveDetails = snapshot.data!;
+            print(donationDriveDetails['donationDriveModel'].listOfDonationsId);
             return Padding(
               padding: const EdgeInsets.symmetric(
                   horizontal: 32.0,
@@ -191,41 +202,74 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
                             borderRadius: BorderRadius.all(Radius.circular(5)),
                           )),
                       onPressed: () {
-                        // showModalBottomSheet(
-                        //   context: context,
-                        //   isScrollControlled: true,
-                        //   backgroundColor: Colors.transparent,
-                        //   builder: (context) => Container(
-                        //     height: MediaQuery.of(context).size.height * 0.75,
-                        //     decoration: new BoxDecoration(
-                        //       color: Colors.white,
-                        //       borderRadius: new BorderRadius.only(
-                        //         topLeft: const Radius.circular(25.0),
-                        //         topRight: const Radius.circular(25.0),
-                        //       ),
-                        //     ),
-                        //     child: SingleChildScrollView(
-                        //       child: Padding(
-                        //         padding: EdgeInsets.all(30),
-                        //         child: Column(
-                        //           children: [
-                        //             ListView.separated(
-                        //               separatorBuilder:
-                        //                   (BuildContext context, int index) =>
-                        //                       SizedBox(height: 25),
-                        //               shrinkWrap: true,
-                        //               physics: NeverScrollableScrollPhysics(),
-                        //               itemCount: 5,
-                        //               itemBuilder: (context, index) {
-                        //                 return DonationCard();
-                        //               },
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // );
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (context) => Container(
+                            height: MediaQuery.of(context).size.height * 0.75,
+                            decoration: new BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: new BorderRadius.only(
+                                topLeft: const Radius.circular(25.0),
+                                topRight: const Radius.circular(25.0),
+                              ),
+                            ),
+                            child: SingleChildScrollView(
+                              child: Padding(
+                                padding: EdgeInsets.all(30),
+                                child: Column(
+                                  children: [
+                                    ListView.separated(
+                                      separatorBuilder:
+                                          (BuildContext context, int index) =>
+                                              SizedBox(height: 25),
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: donationDriveDetails[
+                                              'donationDriveModel']
+                                          .listOfDonationsId
+                                          .length,
+                                      itemBuilder: (context, index) {
+                                        return FutureBuilder<
+                                            Map<String, dynamic>>(
+                                          future: context
+                                              .read<OrganizationProvider>()
+                                              .getDonationDriveModel(
+                                                  donationDriveDetails[
+                                                          'donationDriveModel']
+                                                      .listOfDonationsId[index]),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.hasData) {
+                                              print(snapshot.data);
+                                              return DonationCard(
+                                                  donationInformation:
+                                                      DonationModel.fromJson(
+                                                          donationDriveDetails[
+                                                              'donationDriveModel']));
+                                            } else if (snapshot.hasError) {
+                                              return Text(
+                                                  'Error: ${snapshot.error}');
+                                            } else {
+                                              return const SizedBox(
+                                                width: 60,
+                                                height: 60,
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            }
+                                          },
+                                        );
+
+                                        //
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
                       },
                       child: const Text(
                         'View Donations',
@@ -246,143 +290,148 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
       ),
     );
   }
-Future<void> OpenEditDialog(String name, String description) => showModalBottomSheet<void>(
-  
-    context: context,
-    isScrollControlled: true,
-    backgroundColor: Colors.transparent,
-    builder: (BuildContext context) {
-      final _formKey = GlobalKey<FormState>();
-      final screenHeight = MediaQuery.of(context).size.height;
-      final nameController = TextEditingController(text: name);
-      final descriptionController = TextEditingController(text: description);
-      return Container(
-        height: screenHeight * 0.75,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(25.0),
-            topRight: Radius.circular(25.0),
-          ),
-        ),
-        child: Form(
-          key: _formKey,
-          child: Padding(
-            padding: EdgeInsets.all(30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Edit drive details',
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 24.0,
-                  ),
+
+  Future<void> OpenEditDialog(String name, String description) =>
+      showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (BuildContext context) {
+          final _formKey = GlobalKey<FormState>();
+          final screenHeight = MediaQuery.of(context).size.height;
+          final nameController = TextEditingController(text: name);
+          final descriptionController =
+              TextEditingController(text: description);
+          return Container(
+              height: screenHeight * 0.75,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25.0),
+                  topRight: Radius.circular(25.0),
                 ),
-                SizedBox(height: 20),
-                TextFormField(
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0XFFD2D2D2)),
-                      borderRadius: BorderRadius.all(Radius.circular(4)),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty){
-                      return 'Please enter a name';
-                    }
-                    return null;
-                  }
-                ),
-                SizedBox(height: 20),
-                TextFormField(
-                  controller: descriptionController,
-                  maxLines: 7,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0XFFD2D2D2)),
-                      borderRadius: BorderRadius.all(Radius.circular(4)),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty){
-                      return 'Please enter details';
-                    }
-                    return null;
-                  }
-                ),
-                Spacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.all(10),
-                            backgroundColor: Colors.red[600],
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(5)),
-                            ),
-                          ),
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              print(nameController.text);
-                              print(descriptionController.text);
-                              // TODO: ADD UPDATE LOGIC HERE
-                              Navigator.pop(context);
-                            }
-                          },
-                          child: const Text(
-                            'Cancel',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: "Poppins",
-                                fontSize: 20),
-                          ),
-                        ),
-                      ), 
-                    ),
-                    SizedBox(width: 5,),
-                    Expanded(
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.all(10),
-                            backgroundColor: Color(0xFF37A980),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(5)),
-                            ),
-                          ),
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              // TODO: ADD UPDATE LOGIC HERE
-                              Navigator.pop(context);
-                            }
-                          },
-                          child: const Text(
-                            'Confirm',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: "Poppins",
-                                fontSize: 20),
-                          ),
+              ),
+              child: Form(
+                key: _formKey,
+                child: Padding(
+                  padding: EdgeInsets.all(30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Edit drive details',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 24.0,
                         ),
                       ),
-                    )
-                  ],
+                      SizedBox(height: 20),
+                      TextFormField(
+                          controller: nameController,
+                          decoration: InputDecoration(
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0XFFD2D2D2)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4)),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a name';
+                            }
+                            return null;
+                          }),
+                      SizedBox(height: 20),
+                      TextFormField(
+                          controller: descriptionController,
+                          maxLines: 7,
+                          decoration: InputDecoration(
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0XFFD2D2D2)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4)),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter details';
+                            }
+                            return null;
+                          }),
+                      Spacer(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.all(10),
+                                  backgroundColor: Colors.red[600],
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5)),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    print(nameController.text);
+                                    print(descriptionController.text);
+                                    // TODO: ADD UPDATE LOGIC HERE
+                                    Navigator.pop(context);
+                                  }
+                                },
+                                child: const Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "Poppins",
+                                      fontSize: 20),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.all(10),
+                                  backgroundColor: Color(0xFF37A980),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5)),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    // TODO: ADD UPDATE LOGIC HERE
+                                    Navigator.pop(context);
+                                  }
+                                },
+                                child: const Text(
+                                  'Confirm',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "Poppins",
+                                      fontSize: 20),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ),
-        ) 
+              ));
+        },
       );
-    },
-  );
 }
