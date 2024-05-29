@@ -50,6 +50,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
     'Canceled'
   ];
 
+  List<String> organizationDriveList = [];
   List<String> drives = [];
   String selectedDrive = '-';
 
@@ -63,8 +64,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
     final userId = context.read<UserAuthProvider>().user?.uid;
     final userInformation =
         await context.read<UserProvider>().getUserModel(userId!);
-    final List<dynamic> organizationDriveList =
-        userInformation['userModel'].organizationDriveList;
+    organizationDriveList = userInformation['userModel'].organizationDriveList;
     List<String> items = [];
     for (String donationDriveId in organizationDriveList) {
       final donationDriveModel = await context
@@ -82,7 +82,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
 
   @override
   Widget build(BuildContext context) {
-    final userId = context.read<UserAuthProvider>().user?.uid;
+    // final userId = context.read<UserAuthProvider>().user?.uid;
 
     return Scaffold(
         appBar: AppBar(
@@ -313,10 +313,10 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                       }
                       return null;
                     },
-                    items: drives.map((String donationDriveId) {
+                    items: drives.map((String donationDriveName) {
                       return DropdownMenuItem<String>(
-                        value: donationDriveId,
-                        child: Text(donationDriveId,
+                        value: donationDriveName,
+                        child: Text(donationDriveName,
                             style: TextStyle(fontFamily: 'Poppins')),
                       );
                     }).toList(),
@@ -333,10 +333,24 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           print(selectedStatus);
                           print(selectedDrive);
+                          // print(drives.indexOf(selectedDrive));
+                          // print(organizationDriveList);
+                          print(organizationDriveList[
+                              drives.indexOf(selectedDrive)]);
+                          Map<String, dynamic> donationDriveupdate = {
+                            'listOfDonationsId': widget.donationDetails.id,
+                          };
+
+                          await context
+                              .read<OrganizationProvider>()
+                              .updateDonationDriveModel(
+                                  organizationDriveList[
+                                      drives.indexOf(selectedDrive)],
+                                  donationDriveupdate);
                         }
                       },
                       child: const Text(

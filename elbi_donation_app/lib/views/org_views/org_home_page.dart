@@ -97,8 +97,7 @@ class _OrgHomePageState extends State<OrgHomePage> {
                                   } else if (snapshot.hasData) {
                                     final donationInformation =
                                         snapshot.data!['donationModel'];
-                                    print("blue");
-                                    print(snapshot.data);
+
                                     return GestureDetector(
                                       child: DonationCard(
                                         donationInformation:

@@ -96,7 +96,7 @@ class fireBaseOrganizationAPI {
       }
 
       await FirebaseFirestore.instance
-          .collection("donationsModel")
+          .collection("donationDriveModels")
           .doc(id)
           .update(updates);
 

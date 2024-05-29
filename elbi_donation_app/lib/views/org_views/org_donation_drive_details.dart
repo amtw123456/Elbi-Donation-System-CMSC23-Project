@@ -241,7 +241,6 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
                                                       .listOfDonationsId[index]),
                                           builder: (context, snapshot) {
                                             if (snapshot.hasData) {
-                                              print(snapshot.data);
                                               return DonationCard(
                                                   donationInformation:
                                                       DonationModel.fromJson(
