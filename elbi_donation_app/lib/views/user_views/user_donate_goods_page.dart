@@ -458,8 +458,15 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                         // };
                         String? donationId = generateRandomString(28);
                         DonationModel donationDetails = DonationModel(
+                          categories: _selectedDonationType,
                           id: donationId,
                           donatorId: userId,
+                          contactNo: _selectedContactNum.toString(),
+                          organizationId: null,
+                          weight: _selectedWeight,
+                          pickupAddresses: _addresses,
+                          dateTime: DateFormat('dd/MM/yyyy').parse(
+                              DateFormat('dd/MM/yyyy').format(_selectedDate!)),
                         );
 
                         await context
