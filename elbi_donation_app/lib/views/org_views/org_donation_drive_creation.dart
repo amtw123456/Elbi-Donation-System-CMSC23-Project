@@ -27,6 +27,7 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
   String? driveDescription;
 
   XFile? file;
+  String imageUrl = '';
 
   @override
   Widget build(BuildContext context) {
@@ -245,12 +246,32 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
 
                       String? donationDriveString = generateRandomString(28);
 
+                      if (file != null) {
+                        Reference referenceRoot =
+                            FirebaseStorage.instance.ref();
+
+                        Reference referenceDirImages =
+                            referenceRoot.child('images');
+
+                        Reference referenceImageToUpload =
+                            referenceDirImages.child(
+                                '$donationDriveString-proofOfLegitimacyImage');
+
+                        try {
+                          await referenceImageToUpload
+                              .putFile(File(file!.path));
+                          imageUrl =
+                              await referenceImageToUpload.getDownloadURL();
+                        } catch (error) {}
+                      }
+
                       DonationDriveModel donationDriveModel =
                           DonationDriveModel(
                         id: donationDriveString,
                         organizationId: userId,
                         donationDriveName: driveName,
                         donationDriveDescription: driveDescription,
+                        donationDriveImageCover: imageUrl,
                       );
 
                       await context
