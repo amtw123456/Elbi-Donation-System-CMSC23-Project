@@ -14,21 +14,20 @@ class DonationDriveModel {
     this.donationDriveName,
     this.donationDriveDescription,
     this.donationDriveImageCover,
-    List<DonationModel>? listOfDonationsId,
-  }) : listOfDonationsId = listOfDonationsId ?? [];
+    List<String>? listOfDonationsId,
+  });
 
   // Factory constructor to instantiate object from json format
   factory DonationDriveModel.fromJson(Map<String, dynamic> json) {
     return DonationDriveModel(
-      id: json['id'],
-      organizationId: json['organizationId'],
-      donationDriveName: json['donationDriveName'],
-      donationDriveDescription: json['donationDriveDescription'],
-      donationDriveImageCover: json['donationDriveImageCover'],
-      listOfDonationsId: (json['listOfDonationsId'] as List<dynamic>?)
-          ?.map((item) => DonationModel.fromJson(item as Map<String, dynamic>))
-          .toList(),
-    );
+        id: json['id'],
+        organizationId: json['organizationId'],
+        donationDriveName: json['donationDriveName'],
+        donationDriveDescription: json['donationDriveDescription'],
+        donationDriveImageCover: json['donationDriveImageCover'],
+        listOfDonationsId: json['listOfDonationsId'] != null
+            ? List<String>.from(json['listOfDonationsId'])
+            : null);
   }
 
   Map<String, dynamic> toJson(DonationDriveModel donationDriveModel) {
