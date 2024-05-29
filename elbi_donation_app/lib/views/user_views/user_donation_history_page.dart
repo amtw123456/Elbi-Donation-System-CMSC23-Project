@@ -77,10 +77,13 @@ class _UserDonationHistoryState extends State<UserDonationHistory> {
                                 ),
                                 onTap: () {
                                   Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              UserDonationDetails()));
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => UserDonationDetails(
+                                        donationDetails: donationInformation,
+                                      ),
+                                    ),
+                                  );
                                 },
                               );
                             } else {
