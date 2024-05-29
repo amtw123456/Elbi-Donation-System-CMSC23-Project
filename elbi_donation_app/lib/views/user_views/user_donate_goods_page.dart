@@ -461,6 +461,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                         String? donationId = generateRandomString(28);
                         DonationModel donationDetails = DonationModel(
                           categories: _selectedDonationType,
+                          isPickupOrDropoff: _selectedModeOfDelivery,
                           id: donationId,
                           donatorId: userId,
                           contactNo: _selectedContactNum.toString(),
