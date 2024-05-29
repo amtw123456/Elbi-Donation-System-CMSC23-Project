@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:elbi_donation_app/models/donation_model.dart';
+import 'package:intl/intl.dart';
 
 class UserDonationDetails extends StatefulWidget {
   DonationModel donationDetails;
@@ -114,10 +115,11 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                               children: [
                                 Text('Pickup date',
                                     style: TextStyle(fontFamily: 'Poppins')),
-                                Text('05/25/2024',
-                                    style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        color: Color(0xFF818181))),
+                                Text(
+                                  DateFormat('MM-dd-yyyy').format(widget.donationDetails.dateTime!),
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xFF818181))),
                               ],
                             ),
                             SizedBox(height: 20),
@@ -126,7 +128,8 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                               children: [
                                 Text('Pickup time',
                                     style: TextStyle(fontFamily: 'Poppins')),
-                                Text(widget.donationDetails.dateTime.toString(),
+                                Text(
+                                    DateFormat.jm().format(widget.donationDetails.dateTime!),
                                     style: TextStyle(
                                         fontFamily: 'Poppins',
                                         color: Color(0xFF818181))),
@@ -154,10 +157,11 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                               children: [
                                 Text('Drop off date',
                                     style: TextStyle(fontFamily: 'Poppins')),
-                                Text('05/25/2024',
-                                    style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        color: Color(0xFF818181))),
+                                Text(
+                                  DateFormat('MM-dd-yyyy').format(widget.donationDetails.dateTime!),
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xFF818181))),
                               ],
                             ),
                             SizedBox(height: 20),
@@ -165,11 +169,12 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('Drop off time',
-                                    style: TextStyle(fontFamily: 'Poppins')),
-                                Text('11:11 AM',
-                                    style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        color: Color(0xFF818181))),
+                                  style: TextStyle(fontFamily: 'Poppins')),
+                                Text(
+                                  DateFormat.jm().format(widget.donationDetails.dateTime!),
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xFF818181))),
                               ],
                             )
                           ],
