@@ -5,8 +5,12 @@ import 'package:elbi_donation_app/providers/user_provider.dart';
 import 'package:elbi_donation_app/providers/auth_provider.dart';
 import 'package:elbi_donation_app/providers/organization_provider.dart';
 
+import 'package:elbi_donation_app/models/donation_model.dart';
+
 class OrgDonationDetails extends StatefulWidget {
-  const OrgDonationDetails({Key? key}) : super(key: key);
+  DonationModel donationDetails;
+  OrgDonationDetails({Key? key, required this.donationDetails})
+      : super(key: key);
 
   @override
   State<OrgDonationDetails> createState() => _OrgDonationDetailsState();
@@ -88,7 +92,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
               Navigator.of(context).pop();
             },
           ),
-          title: Text(
+          title: const Text(
             'Donation Details',
             style: TextStyle(
                 fontFamily: 'Poppins',
@@ -128,7 +132,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                         children: [
                           Text('Category',
                               style: TextStyle(fontFamily: 'Poppins')),
-                          Text('Clothes',
+                          Text(widget.donationDetails.categories!.join(', '),
                               style: TextStyle(
                                   fontFamily: 'Poppins',
                                   color: Color(0xFF818181))),

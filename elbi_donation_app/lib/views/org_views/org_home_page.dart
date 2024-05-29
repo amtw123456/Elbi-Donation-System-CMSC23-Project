@@ -109,7 +109,10 @@ class _OrgHomePageState extends State<OrgHomePage> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    OrgDonationDetails()));
+                                                    OrgDonationDetails(
+                                                      donationDetails:
+                                                          donationInformation,
+                                                    )));
                                       },
                                     );
                                   } else {
