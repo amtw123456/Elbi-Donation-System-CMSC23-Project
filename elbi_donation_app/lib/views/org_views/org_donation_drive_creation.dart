@@ -27,7 +27,7 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
   String? driveDescription;
 
   XFile? file;
-  String imageUrl = '';
+  String? imageUrl;
 
   @override
   Widget build(BuildContext context) {
