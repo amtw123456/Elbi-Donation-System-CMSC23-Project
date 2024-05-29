@@ -14,18 +14,22 @@ class _UserDonationHistoryState extends State<UserDonationHistory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Donation History', style: TextStyle(fontFamily: 'Poppins', fontSize: 24, fontWeight: FontWeight.w700)),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
+        appBar: AppBar(
+          title: Text('Donation History',
+              style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700)),
+          centerTitle: true,
+        ),
+        body: SingleChildScrollView(
+            child: Padding(
           padding: EdgeInsets.all(30),
           child: Column(
-            
             children: [
               ListView.separated(
-                separatorBuilder: (BuildContext context, int index) => SizedBox(height: 25),
+                separatorBuilder: (BuildContext context, int index) =>
+                    SizedBox(height: 25),
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: 5,
@@ -33,15 +37,16 @@ class _UserDonationHistoryState extends State<UserDonationHistory> {
                   return GestureDetector(
                     child: DonationCard(),
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => UserDonationDetails()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UserDonationDetails()));
                     },
                   );
                 },
               ),
             ],
-          ), 
-        ) 
-      ) 
-    );
+          ),
+        )));
   }
 }

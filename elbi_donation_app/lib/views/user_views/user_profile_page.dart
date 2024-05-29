@@ -166,7 +166,7 @@ class UserProfileState extends State<UserProfile> {
                               const SizedBox(height: 10),
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: _savedAddresses.length,
+                          itemCount: userInformation.address.length,
                           itemBuilder: (context, index) {
                             return Container(
                               width: double.infinity,
@@ -180,7 +180,7 @@ class UserProfileState extends State<UserProfile> {
                               child: Padding(
                                 padding: const EdgeInsets.all(15),
                                 child: Text(
-                                  _savedAddresses[index],
+                                  userInformation.address[index],
                                   style: const TextStyle(
                                       fontFamily: "Poppins", fontSize: 16),
                                 ),

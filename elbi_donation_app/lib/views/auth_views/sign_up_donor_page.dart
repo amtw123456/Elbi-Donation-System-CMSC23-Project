@@ -349,6 +349,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                   address: [addressController.text],
                                   contactNumber: contactNumberController.text,
                                   organizationDriveList: [],
+                                  donationsList: [],
                                   type: _isOrganization ? "org" : "donor",
                                   proofOfLegitimacyImageUrlLink: imageUrl,
                                   isApprovedByAdmin:

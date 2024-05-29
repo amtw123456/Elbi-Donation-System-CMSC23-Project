@@ -475,6 +475,15 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                             .read<DonorProvider>()
                             .addDonationModel(donationDetails);
 
+                        Map<String, dynamic> updates = {
+                          'donationsList': donationId,
+                          // Add other fields you want to update
+                        };
+
+                        await context
+                            .read<UserProvider>()
+                            .updateUserModel(userId!, updates);
+
                         Navigator.pop(context);
                       },
                       child: const Text(
