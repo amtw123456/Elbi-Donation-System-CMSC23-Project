@@ -1,4 +1,5 @@
 import 'package:elbi_donation_app/models/donation_model.dart';
+import 'package:elbi_donation_app/providers/donor_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:elbi_donation_app/providers/organization_provider.dart';
 import 'package:elbi_donation_app/components/donation_card.dart';
@@ -91,6 +92,8 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
             return Text('Error: ${snapshot.error}');
           } else if (snapshot.hasData) {
             final donationDriveDetails = snapshot.data!;
+            print(widget.donationDriveId);
+            print(donationDriveDetails['donationDriveModel'].donationDriveName);
             print(donationDriveDetails['donationDriveModel'].listOfDonationsId);
             return Padding(
               padding: const EdgeInsets.symmetric(
@@ -227,25 +230,28 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
                                       shrinkWrap: true,
                                       physics: NeverScrollableScrollPhysics(),
                                       itemCount: donationDriveDetails[
-                                              'donationDriveModel']
-                                          .listOfDonationsId
-                                          .length,
+                                                  'donationDriveModel']
+                                              .listOfDonationsId
+                                              ?.length ??
+                                          0,
                                       itemBuilder: (context, index) {
                                         return FutureBuilder<
                                             Map<String, dynamic>>(
                                           future: context
-                                              .read<OrganizationProvider>()
-                                              .getDonationDriveModel(
+                                              .read<DonorProvider>()
+                                              .getDonationModel(
                                                   donationDriveDetails[
                                                           'donationDriveModel']
                                                       .listOfDonationsId[index]),
                                           builder: (context, snapshot) {
                                             if (snapshot.hasData) {
+                                              final donationDetails = snapshot
+                                                  .data!['donationModel'];
+                                              print(donationDetails);
                                               return DonationCard(
                                                   donationInformation:
-                                                      DonationModel.fromJson(
-                                                          donationDriveDetails[
-                                                              'donationDriveModel']));
+                                                      donationDetails);
+                                              // return Container();
                                             } else if (snapshot.hasError) {
                                               return Text(
                                                   'Error: ${snapshot.error}');

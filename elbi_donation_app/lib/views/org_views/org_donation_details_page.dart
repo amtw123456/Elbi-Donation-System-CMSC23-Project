@@ -338,9 +338,9 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                           print(selectedStatus);
                           print(selectedDrive);
                           // print(drives.indexOf(selectedDrive));
-                          // print(organizationDriveList);
-                          print(organizationDriveList[
-                              drives.indexOf(selectedDrive)]);
+                          print(organizationDriveList);
+                          // print(organizationDriveList[
+                          //     drives.indexOf(selectedDrive)]);
                           Map<String, dynamic> donationDriveupdate = {
                             'listOfDonationsId': widget.donationDetails.id,
                           };
