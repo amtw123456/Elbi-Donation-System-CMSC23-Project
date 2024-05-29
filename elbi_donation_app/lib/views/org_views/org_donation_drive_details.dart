@@ -112,9 +112,21 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
                       ),
                       borderRadius: BorderRadius.circular(8.0),
                     ),
-                    child: Text(
-                      "This container takes the maximum width available and has borders.",
-                    ),
+                    child: donationDriveDetails['donationDriveModel']
+                                .donationDriveImageCover ==
+                            null
+                        ? Center(
+                            child: Text('No image available'),
+                          )
+                        : FittedBox(
+                            child: Image.network(
+                              donationDriveDetails['donationDriveModel']
+                                  .donationDriveImageCover!,
+                              width: 400,
+                              height: 250,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
                   ),
                   Text(
                     donationDriveDetails['donationDriveModel']
