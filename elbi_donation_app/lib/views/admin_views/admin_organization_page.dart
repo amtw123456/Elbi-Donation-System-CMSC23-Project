@@ -35,7 +35,6 @@ class _AdminOrganizationPageState extends State<AdminOrganizationPage> {
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData) {
               final userInformation = snapshot.data!;
-              final userName = userInformation['userModel'].username;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
