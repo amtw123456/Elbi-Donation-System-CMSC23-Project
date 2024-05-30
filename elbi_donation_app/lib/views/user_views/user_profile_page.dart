@@ -17,6 +17,9 @@ class UserProfileState extends State<UserProfile> {
   final TextEditingController _addressController = TextEditingController();
   bool _isLoading = false;
 
+  late TextEditingController contactNumberController = TextEditingController();
+  late TextEditingController descriptionController = TextEditingController();
+
   void _showAddAddressDialog() {
     showDialog(
       context: context,
@@ -57,12 +60,177 @@ class UserProfileState extends State<UserProfile> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFF8F8F8),
-         actions: [
+        actions: [
           TextButton(
             onPressed: () {
-              context.read<UserProvider>().getUserModel(userId!).then((userDetails) {
-                OpenEditDialog(
-                  userId, userDetails['userModel'].contactNumber, userDetails['userModel'].orgDescription
+              context
+                  .read<UserProvider>()
+                  .getUserModel(userId!)
+                  .then((userDetails) {
+                // OpenEditDialog(userId, userDetails['userModel'].contactNumber,
+                //     userDetails['userModel'].orgDescription);
+
+                contactNumberController.text =
+                    userDetails['userModel'].contactNumber!;
+                descriptionController.text =
+                    userDetails['userModel'].orgDescription;
+                final _formKey = GlobalKey<FormState>();
+                final screenHeight = MediaQuery.of(context).size.height;
+                showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (BuildContext context) {
+                    // final contactNumberController = TextEditingController(
+                    //     text: userDetails['userModel'].contactNumber);
+                    // final descriptionController = TextEditingController(
+                    //     text: userDetails['userModel'].orgDescription == null
+                    //         ? ''
+                    //         : userDetails['userModel'].orgDescription);
+                    return Container(
+                        height: screenHeight * 0.75,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(25.0),
+                            topRight: Radius.circular(25.0),
+                          ),
+                        ),
+                        child: Form(
+                          key: _formKey,
+                          child: Padding(
+                            padding: EdgeInsets.all(30),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Edit your details',
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 24.0,
+                                  ),
+                                ),
+                                SizedBox(height: 20),
+                                TextFormField(
+                                    controller: contactNumberController,
+                                    decoration: InputDecoration(
+                                      fillColor: Colors.white,
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Color(0XFFD2D2D2)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(4)),
+                                      ),
+                                    ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter a contact number';
+                                      }
+                                      return null;
+                                    }),
+                                SizedBox(height: 20),
+                                TextFormField(
+                                    controller: descriptionController,
+                                    maxLines: 7,
+                                    decoration: InputDecoration(
+                                      fillColor: Colors.white,
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Color(0XFFD2D2D2)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(4)),
+                                      ),
+                                    ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter your bio';
+                                      }
+                                      return null;
+                                    }),
+                                Spacer(),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Expanded(
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            padding: EdgeInsets.all(10),
+                                            backgroundColor: Colors.red[600],
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5)),
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text(
+                                            'Cancel',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: "Poppins",
+                                                fontSize: 20),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Expanded(
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            padding: EdgeInsets.all(10),
+                                            backgroundColor: Color(0xFF37A980),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5)),
+                                            ),
+                                          ),
+                                          onPressed: () async {
+                                            if (_formKey.currentState!
+                                                .validate()) {
+                                              print(
+                                                  contactNumberController.text);
+                                              print(descriptionController.text);
+                                              Map<String, dynamic> updates = {
+                                                "contactNumber":
+                                                    contactNumberController
+                                                        .text,
+                                                "orgDescription":
+                                                    descriptionController.text
+                                              };
+                                              final result = await context
+                                                  .read<UserProvider>()
+                                                  .updateUserModel(
+                                                      userId, updates);
+                                              print(result);
+                                              setState(() {});
+                                              Navigator.pop(context);
+                                            }
+                                          },
+                                          child: const Text(
+                                            'Confirm',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: "Poppins",
+                                                fontSize: 20),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ));
+                  },
                 );
               });
             },
@@ -77,7 +245,7 @@ class UserProfileState extends State<UserProfile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 35),
+              const SizedBox(height: 1),
               FutureBuilder<Map<String, dynamic>>(
                 future: context.read<UserProvider>().getUserModel(userId!),
                 builder: (BuildContext context,
@@ -131,19 +299,20 @@ class UserProfileState extends State<UserProfile> {
                         ),
                         const SizedBox(height: 10),
                         const Text("Bio",
-                          style: TextStyle(fontFamily: "Poppins", fontSize: 16)),
+                            style:
+                                TextStyle(fontFamily: "Poppins", fontSize: 16)),
                         Container(
                           width: double.infinity,
                           height: 200,
                           child: Padding(
                             padding: const EdgeInsets.all(15),
                             child: userInformation.orgDescription == null
-                            ? Text('') 
-                            : Text(
-                              userInformation.orgDescription,
-                              style: const TextStyle(
-                                  fontFamily: "Poppins", fontSize: 16),
-                            ),
+                                ? Text('')
+                                : Text(
+                                    userInformation.orgDescription,
+                                    style: const TextStyle(
+                                        fontFamily: "Poppins", fontSize: 16),
+                                  ),
                           ),
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -311,9 +480,9 @@ class UserProfileState extends State<UserProfile> {
                                 : const Text(
                                     'Log Out',
                                     style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.red,
-                                      fontFamily: "Poppins"),
+                                        fontSize: 16,
+                                        color: Colors.red,
+                                        fontFamily: "Poppins"),
                                   ),
                           ),
                         ),
@@ -331,7 +500,8 @@ class UserProfileState extends State<UserProfile> {
     );
   }
 
-  Future<void> OpenEditDialog(String userId, String contactNumber, String? description) => 
+  Future<void> OpenEditDialog(
+          String userId, String contactNumber, String? description) =>
       showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
@@ -339,9 +509,10 @@ class UserProfileState extends State<UserProfile> {
         builder: (BuildContext context) {
           final _formKey = GlobalKey<FormState>();
           final screenHeight = MediaQuery.of(context).size.height;
-          final contactNumberController = TextEditingController(text: contactNumber);
-          final descriptionController =
-              TextEditingController(text: description == null ? '' : description);
+          final contactNumberController =
+              TextEditingController(text: contactNumber);
+          final descriptionController = TextEditingController(
+              text: description == null ? '' : description);
           return Container(
               height: screenHeight * 0.75,
               decoration: BoxDecoration(
@@ -418,7 +589,7 @@ class UserProfileState extends State<UserProfile> {
                                   ),
                                 ),
                                 onPressed: () {
-                                    Navigator.pop(context);
+                                  Navigator.pop(context);
                                 },
                                 child: const Text(
                                   'Cancel',
@@ -449,13 +620,15 @@ class UserProfileState extends State<UserProfile> {
                                   if (_formKey.currentState!.validate()) {
                                     print(contactNumberController.text);
                                     print(descriptionController.text);
-                                    Map <String, dynamic> updates = {
-                                      "contactNumber": contactNumberController.text,
-                                      "orgDescription": descriptionController.text
+                                    Map<String, dynamic> updates = {
+                                      "contactNumber":
+                                          contactNumberController.text,
+                                      "orgDescription":
+                                          descriptionController.text
                                     };
-                                    final result = await context.read<UserProvider>().updateUserModel(
-                                      userId, updates
-                                    );
+                                    final result = await context
+                                        .read<UserProvider>()
+                                        .updateUserModel(userId, updates);
                                     print(result);
                                     Navigator.pop(context);
                                   }
