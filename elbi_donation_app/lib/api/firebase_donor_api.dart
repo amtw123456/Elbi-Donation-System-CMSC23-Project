@@ -33,13 +33,13 @@ class FirebaseDonorAPI {
     }
   }
 
-  Future<String> deleteDonationModel(String id) async {
+  Future<Map<String, dynamic>> deleteDonationModel(String id) async {
     try {
       await db.collection("donationModels").doc(id).delete();
 
-      return "Successfully deleted!";
+      return {'success': true, 'message': "Successfully deleted!"};
     } on FirebaseException catch (e) {
-      return "Error in ${e.code}: ${e.message}";
+      return {'success': false, 'error': 'Error: $e'};
     }
   }
 

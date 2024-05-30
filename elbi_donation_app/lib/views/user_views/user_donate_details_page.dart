@@ -1,20 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:elbi_donation_app/providers/donor_provider.dart';
+import 'package:elbi_donation_app/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:elbi_donation_app/models/donation_model.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class UserDonationDetails extends StatefulWidget {
   DonationModel donationDetails;
-  UserDonationDetails({Key? key, required this.donationDetails})
-      : super(key: key);
+  UserDonationDetails({super.key, required this.donationDetails});
 
   @override
   State<UserDonationDetails> createState() => _UserDonationDetailsState();
 }
 
 class _UserDonationDetailsState extends State<UserDonationDetails> {
+  bool _isLoading = false;
+
   Widget imageCarousel(List<String>? donationUrlLists) {
     return donationUrlLists != []
-        ? Container(
+        ? SizedBox(
             height: 100,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -23,25 +28,25 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                 return Container(
                   width: 100,
                   height: 100,
-                  margin: EdgeInsets.symmetric(horizontal: 5),
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
                   decoration: BoxDecoration(
                       color: Colors.green,
                       borderRadius: BorderRadius.circular(5)),
-                  child: donationUrlLists![index] != null
+                  child: donationUrlLists[index] != null
                       ? Image.network(
                           donationUrlLists[index],
                           width: 100,
                           height: 100,
                           fit: BoxFit.cover,
                         )
-                      : Center(
+                      : const Center(
                           child: Text('No image selected'),
                         ),
                 );
               },
             ),
           )
-        : Container(child: Text("red"));
+        : Container(child: const Text("red"));
   }
 
   bool pickup = true;
@@ -52,33 +57,33 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        title: Text(
+        title: const Text(
           'Donation Details',
           style: TextStyle(
               fontFamily: 'Poppins', fontSize: 24, fontWeight: FontWeight.w700),
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(24),
+        padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Images',
+            const Text('Images',
                 style: TextStyle(fontFamily: 'Poppins', fontSize: 14)),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             widget.donationDetails.imagesOfDonationsList != null &&
                     widget.donationDetails.imagesOfDonationsList!.isNotEmpty
                 ? imageCarousel(widget.donationDetails.imagesOfDonationsList)
-                : Text('No images available'),
+                : const Text('No images available'),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 // LOCATION
-            Row(
+            const Row(
               children: [
                 Icon(
                   Icons.location_pin,
@@ -87,7 +92,7 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                 Expanded(child: Text("Address goes here")),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 // START OF DETAILS
             Expanded(
               child: Column(
@@ -95,34 +100,36 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Category', style: TextStyle(fontFamily: 'Poppins')),
+                      const Text('Category',
+                          style: TextStyle(fontFamily: 'Poppins')),
                       Text(widget.donationDetails.categories!.join(', '),
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontFamily: 'Poppins', color: Color(0xFF818181))),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Weight', style: TextStyle(fontFamily: 'Poppins')),
+                      const Text('Weight',
+                          style: TextStyle(fontFamily: 'Poppins')),
                       Text(widget.donationDetails.weight.toString(),
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontFamily: 'Poppins', color: Color(0xFF818181))),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Mode of delivery',
+                      const Text('Mode of delivery',
                           style: TextStyle(fontFamily: 'Poppins')),
                       Text(widget.donationDetails.isPickupOrDropoff!,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontFamily: 'Poppins', color: Color(0xFF818181))),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   pickup
                       ? // if pickup
                       Column(
@@ -130,39 +137,39 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Pickup date',
+                                const Text('Pickup date',
                                     style: TextStyle(fontFamily: 'Poppins')),
                                 Text(
                                     DateFormat('MM-dd-yyyy').format(
                                         widget.donationDetails.dateTime!),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontFamily: 'Poppins',
                                         color: Color(0xFF818181))),
                               ],
                             ),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Pickup time',
+                                const Text('Pickup time',
                                     style: TextStyle(fontFamily: 'Poppins')),
                                 Text(
                                     DateFormat.jm().format(
                                         widget.donationDetails.dateTime!),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontFamily: 'Poppins',
                                         color: Color(0xFF818181))),
                               ],
                             ),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Contact number',
+                                const Text('Contact number',
                                     style: TextStyle(fontFamily: 'Poppins')),
                                 Text(
                                     widget.donationDetails.contactNo.toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontFamily: 'Poppins',
                                         color: Color(0xFF818181))),
                               ],
@@ -174,26 +181,26 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Drop off date',
+                                const Text('Drop off date',
                                     style: TextStyle(fontFamily: 'Poppins')),
                                 Text(
                                     DateFormat('MM-dd-yyyy').format(
                                         widget.donationDetails.dateTime!),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontFamily: 'Poppins',
                                         color: Color(0xFF818181))),
                               ],
                             ),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Drop off time',
+                                const Text('Drop off time',
                                     style: TextStyle(fontFamily: 'Poppins')),
                                 Text(
                                     DateFormat.jm().format(
                                         widget.donationDetails.dateTime!),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontFamily: 'Poppins',
                                         color: Color(0xFF818181))),
                               ],
@@ -210,9 +217,9 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                     width: double.infinity,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.all(10),
-                        backgroundColor: Color(0xFF37A980),
-                        shape: RoundedRectangleBorder(
+                        padding: const EdgeInsets.all(10),
+                        backgroundColor: const Color(0xFF37A980),
+                        shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
                       ),
@@ -232,9 +239,9 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                         width: double.infinity,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             backgroundColor: Colors.grey,
-                            shape: RoundedRectangleBorder(
+                            shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(5)),
                             ),
@@ -251,29 +258,91 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.all(10),
-                            backgroundColor: Colors.red,
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5)),
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.all(10),
+                              backgroundColor: Colors.red,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
+                              ),
                             ),
-                          ),
-                          onPressed: () {
-                            // TODO: Cancel Donation
-                          },
-                          child: const Text(
-                            'Cancel Donation',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: "Poppins",
-                                fontSize: 20),
-                          ),
-                        ),
+                            onPressed: () async {
+                              // TODO: Cancel Donation
+                              try {
+                                setState(() {
+                                  _isLoading = true;
+                                });
+
+                                Map<String, dynamic> result;
+
+                                if (context.mounted) {
+                                  result = await context
+                                      .read<UserProvider>()
+                                      .updateUserModel(
+                                          widget.donationDetails.donatorId!, {
+                                    'donationsList': FieldValue.arrayRemove(
+                                        [widget.donationDetails.id])
+                                  });
+
+                                  if (!result['success']) {
+                                    throw result['error'];
+                                  }
+                                }
+
+                                if (context.mounted) {
+                                  result = await context
+                                      .read<DonorProvider>()
+                                      .deleteDonationModel(
+                                          widget.donationDetails.id!);
+
+                                  if (!result['success']) {
+                                    throw result['error'];
+                                  }
+                                }
+
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: Text('Donation canceled.'),
+                                    backgroundColor: Colors.green,
+                                  ));
+                                }
+
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                              } catch (error) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text(error.toString()),
+                                    backgroundColor: Colors.red,
+                                  ));
+                                }
+
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                              }
+                            },
+                            child: _isLoading
+                                ? Container(
+                                    width: 20,
+                                    height: 20,
+                                    padding: const EdgeInsets.all(4),
+                                    child: const CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : const Text('Cancel Donation',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: "Poppins"))),
                       )
                     ],
                   )
