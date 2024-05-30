@@ -84,6 +84,7 @@ class OrgDonationDrivePageState extends State<OrgDonationDrivePage> {
                                           OrgDonationDriveDetails(
                                         donationDriveId:
                                             organizationDriveIds[index],
+                                        organizationId: userId,
                                       ),
                                     ),
                                   ).then((_) => setState(() {}));
