@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elbi_donation_app/models/donation_drive_model.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class fireBaseOrganizationAPI {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -103,6 +104,40 @@ class fireBaseOrganizationAPI {
           .collection("donationDriveModels")
           .doc(id)
           .update(updates);
+
+      return {'success': true, 'message': "Successfully updated!"};
+    } on FirebaseException catch (e) {
+      return {
+        'success': false,
+        'error': 'Firebase Error: ${e.code} : ${e.message}'
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Error: $e'};
+    }
+  }
+
+  // dereference the donation from donation drives
+  Future<Map<String, dynamic>> dereferenceDonation(String donationId) async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("donationDriveModels")
+          .where('listOfDonationsId', arrayContains: donationId)
+          .get();
+
+      // because it's a delicate operation
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        DocumentReference docRef = FirebaseFirestore.instance
+            .collection("donationDriveModels")
+            .doc(doc.id);
+        batch.update(docRef, {
+          'listOfDonationsId': FieldValue.arrayRemove([donationId])
+        });
+      }
+
+      // finally commit
+      await batch.commit();
 
       return {'success': true, 'message': "Successfully updated!"};
     } on FirebaseException catch (e) {

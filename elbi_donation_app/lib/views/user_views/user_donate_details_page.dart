@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elbi_donation_app/providers/donor_provider.dart';
+import 'package:elbi_donation_app/providers/organization_provider.dart';
 import 'package:elbi_donation_app/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:elbi_donation_app/models/donation_model.dart';
@@ -283,6 +284,21 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                                   result = await context
                                       .read<UserProvider>()
                                       .updateUserModel(
+                                          widget.donationDetails.donatorId!, {
+                                    'donationsList': FieldValue.arrayRemove(
+                                        [widget.donationDetails.id])
+                                  });
+
+                                  if (!result['success']) {
+                                    throw result['error'];
+                                  }
+                                }
+
+                                // dereferencing
+                                if (context.mounted) {
+                                  result = await context
+                                      .read<OrganizationProvider>()
+                                      .updateDonationDriveModel(
                                           widget.donationDetails.donatorId!, {
                                     'donationsList': FieldValue.arrayRemove(
                                         [widget.donationDetails.id])

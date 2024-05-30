@@ -38,4 +38,9 @@ class OrganizationProvider with ChangeNotifier {
     final result = await firebaseService.getOrganizationDonationDrives();
     return result;
   }
+
+  Future<Map<String, dynamic>> dereferenceDonation(String donationId) async {
+    final result = await firebaseService.dereferenceDonation(donationId);
+    return result;
+  }
 }
