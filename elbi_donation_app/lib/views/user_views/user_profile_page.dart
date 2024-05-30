@@ -1,8 +1,12 @@
 import 'package:elbi_donation_app/views/auth_views/landing.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 import 'package:elbi_donation_app/providers/user_provider.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -16,6 +20,11 @@ class UserProfileState extends State<UserProfile> {
 
   final TextEditingController _addressController = TextEditingController();
   bool _isLoading = false;
+  File? _selectedImage;
+
+  XFile? file;
+  String imageUrl = '';
+
 
   void _showAddAddressDialog() {
     showDialog(
@@ -62,7 +71,7 @@ class UserProfileState extends State<UserProfile> {
             onPressed: () {
               context.read<UserProvider>().getUserModel(userId!).then((userDetails) {
                 OpenEditDialog(
-                  userId, userDetails['userModel'].contactNumber, userDetails['userModel'].orgDescription
+                  userId, userDetails['userModel'].contactNumber, userDetails['userModel'].orgDescription, userDetails['userModel'].proofOfLegitimacyImageUrlLink
                 );
               });
             },
@@ -92,6 +101,28 @@ class UserProfileState extends State<UserProfile> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 150,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                    // TODO: Replace default picture
+                                    userInformation.proofOfLegitimacyImageUrlLink == ''
+                                    ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+                                    : userInformation.proofOfLegitimacyImageUrlLink
+                                  )
+                                ),
+                                color: Colors.red
+                                ),
+                              ),
+                          ],
+                        ),
                         // FOR NAME
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -331,7 +362,7 @@ class UserProfileState extends State<UserProfile> {
     );
   }
 
-  Future<void> OpenEditDialog(String userId, String contactNumber, String? description) => 
+Future<void> OpenEditDialog(String userId, String contactNumber, String? description, String imageUrl) => 
       showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
@@ -342,8 +373,9 @@ class UserProfileState extends State<UserProfile> {
           final contactNumberController = TextEditingController(text: contactNumber);
           final descriptionController =
               TextEditingController(text: description == null ? '' : description);
-          return Container(
-              height: screenHeight * 0.75,
+          return SingleChildScrollView(
+            child: Container(
+              height: screenHeight * 0.8,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -358,6 +390,7 @@ class UserProfileState extends State<UserProfile> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
                       Text(
                         'Edit your details',
                         style: TextStyle(
@@ -365,6 +398,135 @@ class UserProfileState extends State<UserProfile> {
                           fontWeight: FontWeight.w700,
                           fontSize: 24.0,
                         ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Edit profile picture'),
+                                    content: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: () async {
+                                              if (await Permission.storage
+                                                  .request()
+                                                  .isGranted) {
+                                                // _pickImageFromGallery();
+                                                file = await ImagePicker().pickImage(
+                                                    source: ImageSource.gallery);
+                                                setState(() {});
+                                              } else {
+                                                // Permission is not granted. Handle the scenario accordingly.
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext context) {
+                                                    return AlertDialog(
+                                                      title: Text(
+                                                          "storage Permission Required"),
+                                                      content: Text(
+                                                          "Please grant stroage permission in settings to enable storage access."),
+                                                      actions: <Widget>[
+                                                        ElevatedButton(
+                                                          child: Text("CANCEL"),
+                                                          onPressed: () {
+                                                            Navigator.of(context).pop();
+                                                          },
+                                                        ),
+                                                        ElevatedButton(
+                                                          child: Text("SETTINGS"),
+                                                          onPressed: () {
+                                                            openAppSettings(); // This will open the app settings where the user can enable permissions.
+                                                          },
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              }
+                                            },
+                                          child: Text('Upload photo')
+                                        ),
+                                        SizedBox(height: 10,),
+                                        ElevatedButton(
+                                          onPressed: () async {
+                                            if (await Permission.camera
+                                                .request()
+                                                .isGranted) {
+                                              file = await ImagePicker()
+                                                  .pickImage(source: ImageSource.camera);
+                                              setState(() {});
+                                            } else {
+                                              // Permission is not granted. Handle the scenario accordingly.
+                                              showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text(
+                                                        "Camera Permission Required"),
+                                                    content: Text(
+                                                        "Please grant camera permission in settings to enable camera access."),
+                                                    actions: <Widget>[
+                                                      ElevatedButton(
+                                                        child: Text("CANCEL"),
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop();
+                                                        },
+                                                      ),
+                                                      ElevatedButton(
+                                                        child: Text("SETTINGS"),
+                                                        onPressed: () {
+                                                          openAppSettings(); // This will open the app settings where the user can enable permissions.
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            }
+                                          },
+                                          child: Text('Open camera')
+                                        ),
+                                      ]
+                                    ),
+                                  ),
+                                    actions: <Widget>[
+                                      
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('Close'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            child: Container(
+                              width: 150,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                    // TODO: Replace default picture
+                                    imageUrl == ''
+                                    ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+                                    : imageUrl
+                                  )
+                                ),
+                                color: Colors.red
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                       SizedBox(height: 20),
                       TextFormField(
@@ -475,7 +637,9 @@ class UserProfileState extends State<UserProfile> {
                     ],
                   ),
                 ),
-              ));
+              ),
+            ),
+          );
         },
       );
 }
