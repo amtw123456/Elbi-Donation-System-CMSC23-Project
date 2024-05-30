@@ -1,3 +1,4 @@
+import 'package:elbi_donation_app/providers/donor_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -350,19 +351,31 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                             });
 
                             Map<String, dynamic> result;
-                            Map<String, dynamic> donationDriveupdate = {
-                              'listOfDonationsId': widget.donationDetails.id,
-                            };
-
                             result = await context
                                 .read<OrganizationProvider>()
                                 .updateDonationDriveModel(
                                     organizationDriveList[
                                         drives.indexOf(selectedDrive)],
-                                    donationDriveupdate);
+                                    {
+                                  'listOfDonationsId':
+                                      widget.donationDetails.id,
+                                });
 
                             if (!result['success']) {
                               throw result['error'];
+                            }
+
+                            if (context.mounted) {
+                              result = await context
+                                  .read<DonorProvider>()
+                                  .updateDonationModel(
+                                      widget.donationDetails.id!, {
+                                'status': selectedStatus,
+                              });
+
+                              if (!result['success']) {
+                                throw result['error'];
+                              }
                             }
 
                             if (context.mounted) {
@@ -390,13 +403,19 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                           }
                         }
                       },
-                      child: const Text(
-                        'Confirm',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: "Poppins",
-                            fontSize: 20),
-                      ),
+                      child: _isLoading
+                          ? Container(
+                              width: 20,
+                              height: 20,
+                              padding: const EdgeInsets.all(4),
+                              child: const CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Text('Confirm',
+                              style: TextStyle(
+                                  color: Colors.white, fontFamily: "Poppins")),
                     ),
                   )
                 ],

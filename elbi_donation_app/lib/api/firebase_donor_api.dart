@@ -19,6 +19,20 @@ class FirebaseDonorAPI {
     }
   }
 
+  Future<Map<String, dynamic>> updateDonationModel(
+      String id, Map<String, dynamic> updates) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("userModels")
+          .doc(id)
+          .update(updates);
+
+      return {'success': true, 'message': "Successfully updated!"};
+    } on FirebaseException catch (e) {
+      return {'success': false, 'error': 'Error: $e'};
+    }
+  }
+
   Future<String> deleteDonationModel(String id) async {
     try {
       await db.collection("donationModels").doc(id).delete();
