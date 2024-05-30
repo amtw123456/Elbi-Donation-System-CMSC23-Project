@@ -245,7 +245,7 @@ class UserProfileState extends State<UserProfile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 35),
+              const SizedBox(height: 1),
               FutureBuilder<Map<String, dynamic>>(
                 future: context.read<UserProvider>().getUserModel(userId!),
                 builder: (BuildContext context,
