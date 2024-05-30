@@ -120,7 +120,6 @@ class _DonationCardState extends State<DonationCard> {
                     ),
                     Container(
                       margin: const EdgeInsets.fromLTRB(0, 50, 20, 0),
-                      // TODO: Change decoration depending on status
                       padding: const EdgeInsets.all(3),
                       decoration: BoxDecoration(
                         border: Border.all(
@@ -128,7 +127,6 @@ class _DonationCardState extends State<DonationCard> {
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: Text(
-                        // TODO: Change text
                         widget.donationInformation.status ?? 'N/A',
                         style: const TextStyle(
                           fontSize: 16,
