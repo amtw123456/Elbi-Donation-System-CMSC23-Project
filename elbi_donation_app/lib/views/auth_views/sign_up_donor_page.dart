@@ -236,6 +236,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                 // _pickImageFromGallery();
                                 file = await ImagePicker()
                                     .pickImage(source: ImageSource.gallery);
+                                setState(() {});
                               } else {
                                 // Permission is not granted. Handle the scenario accordingly.
                                 showDialog(
@@ -365,6 +366,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                           if (await Permission.camera.request().isGranted) {
                             file = await ImagePicker()
                                 .pickImage(source: ImageSource.camera);
+                            setState(() {});
                           } else {
                             // Permission is not granted. Handle the scenario accordingly.
                             showDialog(
@@ -437,15 +439,19 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                   //   icon: const Icon(Icons.camera),
                   // ),
                   const SizedBox(height: 50),
-                  // _selectedImage != null
-                  //     ? Image.file(_selectedImage!)
-                  //     : Row(
-                  //       mainAxisAlignment: MainAxisAlignment.center,
-                  //       children: [
-                  //         Text("Please select an image", style: TextStyle(fontFamily: 'Poppins', color: Colors.red))
-                  //       ],
-                  //     ),
-                  // SizedBox(height: 10,)
+                  file != null
+                      ? Image.file(File(file!.path))
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Please select an image",
+                                style: TextStyle(
+                                    fontFamily: 'Poppins', color: Colors.red))
+                          ],
+                        ),
+                  SizedBox(
+                    height: 10,
+                  )
                 ],
                 SizedBox(
                   width: double.infinity,
