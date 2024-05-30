@@ -280,6 +280,7 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
 
                                 Map<String, dynamic> result;
 
+                                // first dereference from user
                                 if (context.mounted) {
                                   result = await context
                                       .read<UserProvider>()
@@ -298,17 +299,15 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                                 if (context.mounted) {
                                   result = await context
                                       .read<OrganizationProvider>()
-                                      .updateDonationDriveModel(
-                                          widget.donationDetails.donatorId!, {
-                                    'donationsList': FieldValue.arrayRemove(
-                                        [widget.donationDetails.id])
-                                  });
+                                      .dereferenceDonation(
+                                          widget.donationDetails.id!);
 
                                   if (!result['success']) {
                                     throw result['error'];
                                   }
                                 }
 
+                                // deletion of the model itself
                                 if (context.mounted) {
                                   result = await context
                                       .read<DonorProvider>()
