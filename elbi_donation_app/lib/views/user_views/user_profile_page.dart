@@ -54,6 +54,21 @@ class UserProfileState extends State<UserProfile> {
   Widget build(BuildContext context) {
     final userId = context.read<UserAuthProvider>().user?.uid;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFFF8F8F8),
+         actions: [
+          TextButton(
+            onPressed: () {
+              context.read<UserProvider>().getUserModel(userId!).then((userDetails) {
+                OpenEditDialog(
+                  userDetails['userModel'].contactNumber, userDetails['userModel'].orgDescription
+                );
+              });
+            },
+            child: Icon(Icons.edit),
+          ),
+        ],
+      ),
       backgroundColor: const Color(0xFFF8F8F8),
       body: SingleChildScrollView(
         child: Padding(
@@ -111,6 +126,29 @@ class UserProfileState extends State<UserProfile> {
                               style: const TextStyle(
                                   fontFamily: "Poppins", fontSize: 16),
                             ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        const Text("Bio",
+                          style: TextStyle(fontFamily: "Poppins", fontSize: 16)),
+                        Container(
+                          width: double.infinity,
+                          height: 200,
+                          child: Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: userInformation.orgDescription == null
+                            ? Text('') 
+                            : Text(
+                              userInformation.orgDescription,
+                              style: const TextStyle(
+                                  fontFamily: "Poppins", fontSize: 16),
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            border: Border.all(color: Colors.grey, width: 1.0),
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -213,10 +251,10 @@ class UserProfileState extends State<UserProfile> {
                         const SizedBox(height: 20),
                         SizedBox(
                           width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
+                          child: TextButton(
+                            style: TextButton.styleFrom(
                               padding: const EdgeInsets.all(10),
-                              backgroundColor: Colors.red,
+                              // backgroundColor: Colors.red,
                               shape: const RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(5)),
@@ -272,8 +310,9 @@ class UserProfileState extends State<UserProfile> {
                                 : const Text(
                                     'Log Out',
                                     style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: "Poppins"),
+                                      fontSize: 16,
+                                      color: Colors.red,
+                                      fontFamily: "Poppins"),
                                   ),
                           ),
                         ),
@@ -290,4 +329,148 @@ class UserProfileState extends State<UserProfile> {
       ),
     );
   }
+
+  Future<void> OpenEditDialog(String contactNumber, String? description) => 
+      showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (BuildContext context) {
+          final _formKey = GlobalKey<FormState>();
+          final screenHeight = MediaQuery.of(context).size.height;
+          final contactNumberController = TextEditingController(text: contactNumber);
+          final descriptionController =
+              TextEditingController(text: description == null ? '' : description);
+          return Container(
+              height: screenHeight * 0.75,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25.0),
+                  topRight: Radius.circular(25.0),
+                ),
+              ),
+              child: Form(
+                key: _formKey,
+                child: Padding(
+                  padding: EdgeInsets.all(30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Edit your details',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 24.0,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      TextFormField(
+                          controller: contactNumberController,
+                          decoration: InputDecoration(
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0XFFD2D2D2)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4)),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a contact number';
+                            }
+                            return null;
+                          }),
+                      SizedBox(height: 20),
+                      TextFormField(
+                          controller: descriptionController,
+                          maxLines: 7,
+                          decoration: InputDecoration(
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0XFFD2D2D2)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4)),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your bio';
+                            }
+                            return null;
+                          }),
+                      Spacer(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.all(10),
+                                  backgroundColor: Colors.red[600],
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5)),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    print(contactNumberController.text);
+                                    print(descriptionController.text);
+                                    // TODO: ADD UPDATE LOGIC HERE
+                                    Navigator.pop(context);
+                                  }
+                                },
+                                child: const Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "Poppins",
+                                      fontSize: 20),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.all(10),
+                                  backgroundColor: Color(0xFF37A980),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5)),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    // TODO: ADD UPDATE LOGIC HERE
+                                    Navigator.pop(context);
+                                  }
+                                },
+                                child: const Text(
+                                  'Confirm',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "Poppins",
+                                      fontSize: 20),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ));
+        },
+      );
 }
