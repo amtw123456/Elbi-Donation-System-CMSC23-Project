@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 class DonationCard extends StatefulWidget {
   final DonationModel donationInformation;
 
-  DonationCard({super.key, required this.donationInformation});
+  const DonationCard({super.key, required this.donationInformation});
 
   @override
   State<DonationCard> createState() => _DonationCardState();
@@ -22,7 +22,8 @@ class _DonationCardState extends State<DonationCard> {
       future: context
           .read<UserProvider>()
           .getUserModel(widget.donationInformation.donatorId!),
-      builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
@@ -35,30 +36,31 @@ class _DonationCardState extends State<DonationCard> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(5),
-              border: Border.all(color: Color(0xFFD2D2D2), width: 1.0),
+              border: Border.all(color: const Color(0xFFD2D2D2), width: 1.0),
             ),
             child: Column(
               children: [
                 // Date container
                 Container(
-                  padding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   height: 30,
                   width: double.infinity,
-                  child: Text(
-                    DateFormat('MM-dd-yyyy').format(widget.donationInformation.dateTime!),
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                    ),
-                  ),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5),
-                    border: Border(
+                    border: const Border(
                       bottom: BorderSide(color: Color(0xFFD2D2D2), width: 1.0),
                     ),
                   ),
+                  child: Text(
+                    DateFormat('MM-dd-yyyy')
+                        .format(widget.donationInformation.dateTime!),
+                    style: const TextStyle(
+                      fontFamily: 'Poppins',
+                    ),
+                  ),
                 ),
-                SizedBox(height: 18),
+                const SizedBox(height: 18),
                 Row(
                   children: [
                     // Image placeholder
@@ -69,7 +71,7 @@ class _DonationCardState extends State<DonationCard> {
                         color: Colors.green,
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      margin: EdgeInsets.only(left: 5, right: 5),
+                      margin: const EdgeInsets.only(left: 5, right: 5),
                     ),
                     Expanded(
                       child: Column(
@@ -77,34 +79,39 @@ class _DonationCardState extends State<DonationCard> {
                         children: [
                           Text(
                             '${userInformation.firstName} ${userInformation.lastName}',
-                            style: TextStyle(fontFamily: 'Poppins'),
+                            style: const TextStyle(fontFamily: 'Poppins'),
                           ),
-                          SizedBox(height: 10),
-                          Container(
+                          const SizedBox(height: 10),
+                          SizedBox(
                             height: 20, // Adjust the height as needed
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              itemCount: widget.donationInformation.categories!.length,
+                              itemCount:
+                                  widget.donationInformation.categories!.length,
                               itemBuilder: (context, index) {
-                                final category = widget.donationInformation.categories![index];
+                                final category = widget
+                                    .donationInformation.categories![index];
                                 return Container(
-                                  margin: EdgeInsets.only(right: 8), // Add margin if you want some spacing between items
-                                  padding: EdgeInsets.all(3),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Color(0xFF37A980), width: 1),
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      category,
-                                      style: TextStyle(
-                                        fontSize: 9,
-                                        fontFamily: 'Poppins',
-                                        color: Color(0xFF37A980),
-                                      ),
+                                    margin: const EdgeInsets.only(
+                                        right:
+                                            8), // Add margin if you want some spacing between items
+                                    padding: const EdgeInsets.all(3),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: const Color(0xFF37A980),
+                                          width: 1),
+                                      borderRadius: BorderRadius.circular(5),
                                     ),
-                                  )
-                                );
+                                    child: Center(
+                                      child: Text(
+                                        category,
+                                        style: const TextStyle(
+                                          fontSize: 9,
+                                          fontFamily: 'Poppins',
+                                          color: Color(0xFF37A980),
+                                        ),
+                                      ),
+                                    ));
                               },
                             ),
                           ),
@@ -112,26 +119,20 @@ class _DonationCardState extends State<DonationCard> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.fromLTRB(
-                        0, 
-                        50, 
-                        20, 
-                        0
+                      margin: const EdgeInsets.fromLTRB(0, 50, 20, 0),
+                      padding: const EdgeInsets.all(3),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color(0xFFD2D2D2), width: 1),
+                        borderRadius: BorderRadius.circular(5),
                       ),
                       child: Text(
-                        // TODO: Change text
-                        'Pending',
-                        style: TextStyle(
+                        widget.donationInformation.status ?? 'N/A',
+                        style: const TextStyle(
                           fontSize: 16,
                           fontFamily: 'Poppins',
                           color: Color(0xFFD2D2D2),
                         ),
-                      ),
-                      // TODO: Change decoration depending on status
-                      padding: EdgeInsets.all(3),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xFFD2D2D2), width: 1),
-                        borderRadius: BorderRadius.circular(5),
                       ),
                     )
                   ],
@@ -140,7 +141,7 @@ class _DonationCardState extends State<DonationCard> {
             ),
           );
         } else {
-          return Text('No data available');
+          return const Text('No data available');
         }
       },
     );

@@ -62,6 +62,7 @@ class _AdminOrganizationPageState extends State<AdminOrganizationPage> {
                                 .getAllOrganizations(),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
+                                print(snapshot.data);
                                 if (snapshot.data!['success']) {
                                   final organizations = snapshot.data!['orgs'];
                                   return ListView.separated(
@@ -115,7 +116,7 @@ class _AdminOrganizationPageState extends State<AdminOrganizationPage> {
                 ],
               );
             } else {
-              return Text('No data available');
+              return const Text('No data available');
             }
           },
         ),

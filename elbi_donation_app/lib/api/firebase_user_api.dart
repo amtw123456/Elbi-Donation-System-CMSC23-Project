@@ -60,22 +60,22 @@ class FirebaseUserAPI {
   Future<Map<String, dynamic>> updateUserModel(
       String id, Map<String, dynamic> updates) async {
     try {
-      // Update the document with the given id
-      if (updates['organizationDriveList'] != null) {
-        // Use FieldValue.arrayUnion for organizationDriveList
-        updates['organizationDriveList'] = FieldValue.arrayUnion(
-            updates['organizationDriveList'] is List
-                ? updates['organizationDriveList']
-                : [updates['organizationDriveList']]);
-      }
+      // // Update the document with the given id
+      // if (updates['organizationDriveList'] != null) {
+      //   // Use FieldValue.arrayUnion for organizationDriveList
+      //   updates['organizationDriveList'] = FieldValue.arrayUnion(
+      //       updates['organizationDriveList'] is List
+      //           ? updates['organizationDriveList']
+      //           : [updates['organizationDriveList']]);
+      // }
 
-      if (updates['donationsList'] != null) {
-        // Use FieldValue.arrayUnion for organizationDriveList
-        updates['donationsList'] = FieldValue.arrayUnion(
-            updates['donationsList'] is List
-                ? updates['donationsList']
-                : [updates['donationsList']]);
-      }
+      // if (updates['donationsList'] != null) {
+      //   // Use FieldValue.arrayUnion for organizationDriveList
+      //   updates['donationsList'] = FieldValue.arrayUnion(
+      //       updates['donationsList'] is List
+      //           ? updates['donationsList']
+      //           : [updates['donationsList']]);
+      // }
 
       await FirebaseFirestore.instance
           .collection("userModels")

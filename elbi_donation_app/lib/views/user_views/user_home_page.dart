@@ -30,12 +30,12 @@ class _UserHomePageState extends State<UserHomePage> {
           builder: (BuildContext context,
               AsyncSnapshot<Map<String, dynamic>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData) {
               final userInformation = snapshot.data!;
-              print(userInformation); // Print the snapshot data
+
               // Assuming the user's name is stored under 'firstname' key
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +62,7 @@ class _UserHomePageState extends State<UserHomePage> {
                           ),
                         );
                       } else {
-                        return Text('No data available');
+                        return const Text('No data available');
                       }
                     },
                   ),
@@ -134,7 +134,7 @@ class _UserHomePageState extends State<UserHomePage> {
                 ],
               );
             } else {
-              return Text('No data available');
+              return const Text('No data available');
             }
           },
         ),
