@@ -12,23 +12,36 @@ class UserDonationDetails extends StatefulWidget {
 }
 
 class _UserDonationDetailsState extends State<UserDonationDetails> {
-  Widget imageCarousel() {
-    return Container(
-      height: 100,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 5,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            width: 100,
+  Widget imageCarousel(List<String>? donationUrlLists) {
+    return donationUrlLists != []
+        ? Container(
             height: 100,
-            margin: EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-                color: Colors.green, borderRadius: BorderRadius.circular(5)),
-          );
-        },
-      ),
-    );
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: donationUrlLists!.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  width: 100,
+                  height: 100,
+                  margin: EdgeInsets.symmetric(horizontal: 5),
+                  decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: donationUrlLists![index] != null
+                      ? Image.network(
+                          donationUrlLists[index],
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        )
+                      : Center(
+                          child: Text('No image selected'),
+                        ),
+                );
+              },
+            ),
+          )
+        : Container(child: Text("red"));
   }
 
   bool pickup = true;
@@ -58,7 +71,11 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
             Text('Images',
                 style: TextStyle(fontFamily: 'Poppins', fontSize: 14)),
             SizedBox(height: 10),
-            imageCarousel(),
+            widget.donationDetails.imagesOfDonationsList != null &&
+                    widget.donationDetails.imagesOfDonationsList!.isNotEmpty
+                ? imageCarousel(widget.donationDetails.imagesOfDonationsList)
+                : Text('No images available'),
+
             SizedBox(height: 20),
 // LOCATION
             Row(
@@ -116,10 +133,11 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                                 Text('Pickup date',
                                     style: TextStyle(fontFamily: 'Poppins')),
                                 Text(
-                                  DateFormat('MM-dd-yyyy').format(widget.donationDetails.dateTime!),
-                                  style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    color: Color(0xFF818181))),
+                                    DateFormat('MM-dd-yyyy').format(
+                                        widget.donationDetails.dateTime!),
+                                    style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        color: Color(0xFF818181))),
                               ],
                             ),
                             SizedBox(height: 20),
@@ -129,7 +147,8 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                                 Text('Pickup time',
                                     style: TextStyle(fontFamily: 'Poppins')),
                                 Text(
-                                    DateFormat.jm().format(widget.donationDetails.dateTime!),
+                                    DateFormat.jm().format(
+                                        widget.donationDetails.dateTime!),
                                     style: TextStyle(
                                         fontFamily: 'Poppins',
                                         color: Color(0xFF818181))),
@@ -158,10 +177,11 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                                 Text('Drop off date',
                                     style: TextStyle(fontFamily: 'Poppins')),
                                 Text(
-                                  DateFormat('MM-dd-yyyy').format(widget.donationDetails.dateTime!),
-                                  style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    color: Color(0xFF818181))),
+                                    DateFormat('MM-dd-yyyy').format(
+                                        widget.donationDetails.dateTime!),
+                                    style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        color: Color(0xFF818181))),
                               ],
                             ),
                             SizedBox(height: 20),
@@ -169,12 +189,13 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('Drop off time',
-                                  style: TextStyle(fontFamily: 'Poppins')),
+                                    style: TextStyle(fontFamily: 'Poppins')),
                                 Text(
-                                  DateFormat.jm().format(widget.donationDetails.dateTime!),
-                                  style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    color: Color(0xFF818181))),
+                                    DateFormat.jm().format(
+                                        widget.donationDetails.dateTime!),
+                                    style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        color: Color(0xFF818181))),
                               ],
                             )
                           ],

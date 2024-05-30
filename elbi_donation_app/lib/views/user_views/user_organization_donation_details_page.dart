@@ -71,17 +71,18 @@ class _UserOrganizationDetailsState extends State<UserOrganizationDetails> {
                 fontSize: 12.0,
               ),
             ),
-            const Expanded(
+            Expanded(
               child: Column(
                 children: [
                   Text(
-                    "This is a description This is a description This is a description This is a description This is a description",
+                    widget.organization.orgDescription ??
+                        'No description available',
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       color: Colors.grey,
                       fontSize: 12.0,
                     ),
-                  ),
+                  )
                 ],
               ),
             ),

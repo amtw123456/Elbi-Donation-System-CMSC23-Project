@@ -11,6 +11,13 @@ import 'package:elbi_donation_app/models/donation_model.dart';
 import 'package:elbi_donation_app/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import 'package:firebase_storage/firebase_storage.dart';
+
+import 'dart:io';
+
 class DonateGoodsPage extends StatefulWidget {
   String? organizationId;
 
@@ -34,6 +41,14 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
   bool? dropOffSelected = false;
 
   String noTypeSelected = '';
+
+  File? _selectedImage;
+
+  XFile? file;
+  String imageUrl = '';
+
+  List<File> _selectedImageLists = [];
+  List<String> selectedImagesUrlLists = [];
 
   final List<String> _addresses = [
     '123 Main St',
@@ -114,6 +129,38 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
     final dt = DateTime(now.year, now.month, now.day, time.hour, time.minute);
     final format = DateFormat.jm(); // This will format the time as AM/PM
     return format.format(dt);
+  }
+
+  Widget imageCarousel(List<File> _selectedImageLists) {
+    return _selectedImageLists != []
+        ? Container(
+            height: 100,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: _selectedImageLists.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  width: 100,
+                  height: 100,
+                  margin: EdgeInsets.symmetric(horizontal: 5),
+                  decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: _selectedImageLists[index] != null
+                      ? Image.file(
+                          File(_selectedImageLists[index].path),
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        )
+                      : Center(
+                          child: Text('No image selected'),
+                        ),
+                );
+              },
+            ),
+          )
+        : Container(child: Text("red"));
   }
 
   @override
@@ -204,6 +251,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                       ),
                     ],
                   ),
+
                   Text(
                     noTypeSelected,
                     style: TextStyle(color: Colors.red[900]),
@@ -419,6 +467,201 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                     ),
                   ),
                   const SizedBox(height: 16.0),
+                  //
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 150,
+                    child: _selectedImage != null
+                        ? Image.file(_selectedImage!)
+                        : ElevatedButton(
+                            onPressed: () async {
+                              if (await Permission.storage
+                                  .request()
+                                  .isGranted) {
+                                // _pickImageFromGallery();
+                                file = await ImagePicker()
+                                    .pickImage(source: ImageSource.gallery);
+
+                                _selectedImageLists.add(File(file!.path));
+                                String fileName = file!.path;
+                                Reference referenceRoot =
+                                    FirebaseStorage.instance.ref();
+
+                                Reference referenceDirImages =
+                                    referenceRoot.child('images');
+
+                                Reference referenceImageToUpload =
+                                    referenceDirImages
+                                        .child('$fileName.donationImages');
+
+                                try {
+                                  await referenceImageToUpload
+                                      .putFile(File(file!.path));
+                                  imageUrl = await referenceImageToUpload
+                                      .getDownloadURL();
+                                } catch (error) {}
+                                selectedImagesUrlLists.add(imageUrl);
+                                setState(() {});
+                              } else {
+                                // Permission is not granted. Handle the scenario accordingly.
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title:
+                                          Text("storage Permission Required"),
+                                      content: Text(
+                                          "Please grant stroage permission in settings to enable storage access."),
+                                      actions: <Widget>[
+                                        ElevatedButton(
+                                          child: Text("CANCEL"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        ElevatedButton(
+                                          child: Text("SETTINGS"),
+                                          onPressed: () {
+                                            openAppSettings(); // This will open the app settings where the user can enable permissions.
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
+                            },
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .center, // Center the contents vertically
+                                children: [
+                                  Icon(Icons.photo_library,
+                                      size: 40,
+                                      color: Colors.grey[
+                                          500]), // Adjust size and color as needed
+                                  SizedBox(
+                                      height:
+                                          10), // Add some space between the icon and the text
+                                  Text(
+                                    "Upload Donation Photos",
+                                    style: TextStyle(
+                                        color: Colors.grey[500],
+                                        fontSize: 16,
+                                        fontFamily:
+                                            'Poppins'), // Adjust text style as needed
+                                  ),
+                                ],
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              padding: const EdgeInsets.all(20),
+                              backgroundColor: Colors.grey[50],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                                side: BorderSide(
+                                    color: const Color(0xFF37A980), width: 2),
+                              ),
+                            ),
+                          ),
+                  ),
+
+                  const SizedBox(height: 10),
+                  SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.camera_alt, color: Color(0xFF37A980)),
+                            SizedBox(width: 5),
+                            Text(
+                              'Open Camera & Take Photo',
+                              style: TextStyle(
+                                  color: Color(0xFF37A980),
+                                  fontFamily: 'Poppins'),
+                            ),
+                          ],
+                        ),
+                        onPressed: () async {
+                          if (await Permission.camera.request().isGranted) {
+                            file = await ImagePicker()
+                                .pickImage(source: ImageSource.camera);
+                            _selectedImageLists.add(File(file!.path));
+                            String fileName = file!.path;
+                            Reference referenceRoot =
+                                FirebaseStorage.instance.ref();
+
+                            Reference referenceDirImages =
+                                referenceRoot.child('images');
+
+                            Reference referenceImageToUpload =
+                                referenceDirImages
+                                    .child('$fileName.donationImages');
+
+                            try {
+                              await referenceImageToUpload
+                                  .putFile(File(file!.path));
+                              imageUrl =
+                                  await referenceImageToUpload.getDownloadURL();
+                            } catch (error) {}
+                            selectedImagesUrlLists.add(imageUrl);
+                            setState(() {});
+                          } else {
+                            // Permission is not granted. Handle the scenario accordingly.
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Camera Permission Required"),
+                                  content: Text(
+                                      "Please grant camera permission in settings to enable camera access."),
+                                  actions: <Widget>[
+                                    ElevatedButton(
+                                      child: Text("CANCEL"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    ElevatedButton(
+                                      child: Text("SETTINGS"),
+                                      onPressed: () {
+                                        openAppSettings(); // This will open the app settings where the user can enable permissions.
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            padding: const EdgeInsets.all(20),
+                            backgroundColor: Colors.green[50],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            )),
+                      )),
+
+                  const SizedBox(height: 10),
+
+                  imageCarousel(_selectedImageLists),
+
+                  const SizedBox(height: 10),
+
+                  // file != null
+                  //     ? Image.file(File(file!.path))
+                  //     : Row(
+                  //         mainAxisAlignment: MainAxisAlignment.center,
+                  //         children: [
+                  //           Text("Please select an image",
+                  //               style: TextStyle(
+                  //                   fontFamily: 'Poppins', color: Colors.red))
+                  //         ],
+                  //       ),
                   // SUBMIT BUTTON
                   SizedBox(
                     width: double.infinity,
@@ -456,6 +699,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                                 organizationId: widget.organizationId,
                                 weight: _selectedWeight,
                                 pickupAddresses: _addresses,
+                                imagesOfDonationsList: selectedImagesUrlLists,
                                 dateTime: DateFormat('dd/MM/yyyy').parse(
                                     DateFormat('dd/MM/yyyy')
                                         .format(_selectedDate!)),

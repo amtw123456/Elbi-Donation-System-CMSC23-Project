@@ -21,26 +21,36 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
-  Widget imageCarousel() {
-    return SizedBox(
-      height: 100,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 5,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            // TODO: Add images array here
-            width: 100,
+  Widget imageCarousel(List<String>? donationUrlLists) {
+    return donationUrlLists != []
+        ? Container(
             height: 100,
-            margin: const EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-              color: Colors.green,
-              borderRadius: BorderRadius.circular(5),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: donationUrlLists!.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  width: 100,
+                  height: 100,
+                  margin: EdgeInsets.symmetric(horizontal: 5),
+                  decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: donationUrlLists![index] != null
+                      ? Image.network(
+                          donationUrlLists[index],
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        )
+                      : Center(
+                          child: Text('No image selected'),
+                        ),
+                );
+              },
             ),
-          );
-        },
-      ),
-    );
+          )
+        : Container(child: Text("red"));
   }
 
   bool pickup = true;
@@ -115,7 +125,13 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                   const Text('Images',
                       style: TextStyle(fontFamily: 'Poppins', fontSize: 14)),
                   const SizedBox(height: 10),
-                  imageCarousel(),
+                  widget.donationDetails.imagesOfDonationsList != null &&
+                          widget
+                              .donationDetails.imagesOfDonationsList!.isNotEmpty
+                      ? imageCarousel(
+                          widget.donationDetails.imagesOfDonationsList)
+                      : Text('No images available'),
+
                   const SizedBox(height: 20),
                   // LOCATION
                   const Row(
