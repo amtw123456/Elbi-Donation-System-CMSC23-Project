@@ -14,6 +14,8 @@ import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'package:firebase_storage/firebase_storage.dart';
+
 import 'dart:io';
 
 class DonateGoodsPage extends StatefulWidget {
@@ -46,6 +48,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
   String imageUrl = '';
 
   List<File> _selectedImageLists = [];
+  List<String> selectedImagesUrlLists = [];
 
   final List<String> _addresses = [
     '123 Main St',
@@ -481,6 +484,24 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                                     .pickImage(source: ImageSource.gallery);
 
                                 _selectedImageLists.add(File(file!.path));
+                                String fileName = file!.path;
+                                Reference referenceRoot =
+                                    FirebaseStorage.instance.ref();
+
+                                Reference referenceDirImages =
+                                    referenceRoot.child('images');
+
+                                Reference referenceImageToUpload =
+                                    referenceDirImages
+                                        .child('$fileName.donationImages');
+
+                                try {
+                                  await referenceImageToUpload
+                                      .putFile(File(file!.path));
+                                  imageUrl = await referenceImageToUpload
+                                      .getDownloadURL();
+                                } catch (error) {}
+                                selectedImagesUrlLists.add(imageUrl);
                                 setState(() {});
                               } else {
                                 // Permission is not granted. Handle the scenario accordingly.
@@ -569,6 +590,24 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                             file = await ImagePicker()
                                 .pickImage(source: ImageSource.camera);
                             _selectedImageLists.add(File(file!.path));
+                            String fileName = file!.path;
+                            Reference referenceRoot =
+                                FirebaseStorage.instance.ref();
+
+                            Reference referenceDirImages =
+                                referenceRoot.child('images');
+
+                            Reference referenceImageToUpload =
+                                referenceDirImages
+                                    .child('$fileName.donationImages');
+
+                            try {
+                              await referenceImageToUpload
+                                  .putFile(File(file!.path));
+                              imageUrl =
+                                  await referenceImageToUpload.getDownloadURL();
+                            } catch (error) {}
+                            selectedImagesUrlLists.add(imageUrl);
                             setState(() {});
                           } else {
                             // Permission is not granted. Handle the scenario accordingly.
@@ -660,6 +699,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                                 organizationId: widget.organizationId,
                                 weight: _selectedWeight,
                                 pickupAddresses: _addresses,
+                                imagesOfDonationsList: selectedImagesUrlLists,
                                 dateTime: DateFormat('dd/MM/yyyy').parse(
                                     DateFormat('dd/MM/yyyy')
                                         .format(_selectedDate!)),
