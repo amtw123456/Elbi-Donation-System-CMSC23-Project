@@ -82,18 +82,22 @@ class fireBaseOrganizationAPI {
     }
   }
 
+  // The reason why i commented it out is because that portion of the code
+  // can cause problems, because not all operations involve adding something
+  // in the list of donations, eg, delete
+
   Future<Map<String, dynamic>> updateDonationDrives(
       String id, Map<String, dynamic> updates) async {
     try {
       // Update the document with the given id
 
-      if (updates['listOfDonationsId'] != null) {
-        // Use FieldValue.arrayUnion for organizationDriveList
-        updates['listOfDonationsId'] = FieldValue.arrayUnion(
-            updates['listOfDonationsId'] is List
-                ? updates['listOfDonationsId']
-                : [updates['listOfDonationsId']]);
-      }
+      // if (updates['listOfDonationsId'] != null) {
+      //   // Use FieldValue.arrayUnion for organizationDriveList
+      //   updates['listOfDonationsId'] = FieldValue.arrayUnion(
+      //       updates['listOfDonationsId'] is List
+      //           ? updates['listOfDonationsId']
+      //           : [updates['listOfDonationsId']]);
+      // }
 
       await FirebaseFirestore.instance
           .collection("donationDriveModels")
