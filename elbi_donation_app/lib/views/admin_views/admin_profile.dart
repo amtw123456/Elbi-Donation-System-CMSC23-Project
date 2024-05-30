@@ -175,11 +175,13 @@ class AdminProfileState extends State<AdminProfile> {
                                       });
                                     }
                                   },
-                                  child: const Text('Log out',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: "Poppins",
-                                          fontSize: 20)))),
+                                  child: _isLoading
+                                      ? const CircularProgressIndicator()
+                                      : const Text('Log out',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: "Poppins",
+                                              fontSize: 20)))),
                         ],
                       )
                     ],
