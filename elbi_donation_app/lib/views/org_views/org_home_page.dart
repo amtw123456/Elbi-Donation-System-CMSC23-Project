@@ -19,11 +19,10 @@ class OrgHomePage extends StatefulWidget {
 class _OrgHomePageState extends State<OrgHomePage> {
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
     final userId = context.read<UserAuthProvider>().user?.uid;
 
     return Scaffold(
-      backgroundColor: Color(0xFFF8F8F8),
+      backgroundColor: const Color(0xFFF8F8F8),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: FutureBuilder<Map<String, dynamic>>(
@@ -38,11 +37,10 @@ class _OrgHomePageState extends State<OrgHomePage> {
               final userInformation = snapshot.data!['userModel'];
               final userName = userInformation.username;
               final verificationStatus = userInformation.isApprovedByAdmin;
-              print(userInformation.donationsList.length);
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                   Text("Hello, $userName 👋",
                       style: const TextStyle(
                           fontFamily: 'Poppins',
@@ -55,16 +53,16 @@ class _OrgHomePageState extends State<OrgHomePage> {
                         "Verification status: ",
                       ),
                       Text(
-                        "${verificationStatus ? 'Verified' : 'Unverified'}",
+                        verificationStatus ? 'Verified' : 'Unverified',
                         style: TextStyle(
                           color: verificationStatus ? Colors.green : Colors.red,
                         ),
                       ),
                     ],
                   ),
-                  Text("Here are the recent donations made by users:",
+                  const Text("Here are the recent donations made by users:",
                       style: TextStyle(fontFamily: 'Poppins', fontSize: 16)),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Expanded(
@@ -74,12 +72,11 @@ class _OrgHomePageState extends State<OrgHomePage> {
                           ListView.separated(
                             separatorBuilder:
                                 (BuildContext context, int index) =>
-                                    SizedBox(height: 25),
+                                    const SizedBox(height: 25),
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             itemCount: userInformation.donationsList.length,
                             itemBuilder: (context, index) {
-                              print(userInformation.donationsList[index]);
                               return FutureBuilder<Map<String, dynamic>>(
                                 future: context
                                     .read<DonorProvider>()
@@ -105,18 +102,18 @@ class _OrgHomePageState extends State<OrgHomePage> {
                                       ),
                                       onTap: () {
                                         Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        OrgDonationDetails(
-                                                          donationDetails:
-                                                              donationInformation,
-                                                        )))
-                                            .then((_) => setState(() {}));
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    OrgDonationDetails(
+                                                      donationDetails:
+                                                          donationInformation,
+                                                    ))).then((_) => setState(
+                                            () {})); // TODO: idk what this is for
                                       },
                                     );
                                   } else {
-                                    return Text('No data available');
+                                    return const Text('No data available');
                                   }
                                 },
                               );
@@ -129,7 +126,7 @@ class _OrgHomePageState extends State<OrgHomePage> {
                 ],
               );
             } else {
-              return Text('No data available');
+              return const Text('No data available');
             }
           },
         ),

@@ -116,23 +116,34 @@ class fireBaseOrganizationAPI {
     }
   }
 
-  // dereference the donation from donation drives
+  // dereference the donation from donation drives and users
   Future<Map<String, dynamic>> dereferenceDonation(String donationId) async {
     try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection("donationDriveModels")
-          .where('listOfDonationsId', arrayContains: donationId)
+      final CollectionReference donationDriveCollection =
+          db.collection("donationDriveModels");
+      final CollectionReference userCollection = db.collection("userModels");
+      final QuerySnapshot querySnapshotDonationDrive =
+          await donationDriveCollection
+              .where('listOfDonationsId', arrayContains: donationId)
+              .get();
+      final QuerySnapshot querySnapshotUser = await userCollection
+          .where('donationsList', arrayContains: donationId)
           .get();
 
       // because it's a delicate operation
-      WriteBatch batch = FirebaseFirestore.instance.batch();
+      WriteBatch batch = db.batch();
 
-      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
-        DocumentReference docRef = FirebaseFirestore.instance
-            .collection("donationDriveModels")
-            .doc(doc.id);
+      for (QueryDocumentSnapshot doc in querySnapshotDonationDrive.docs) {
+        DocumentReference docRef = donationDriveCollection.doc(doc.id);
         batch.update(docRef, {
           'listOfDonationsId': FieldValue.arrayRemove([donationId])
+        });
+      }
+
+      for (QueryDocumentSnapshot doc in querySnapshotUser.docs) {
+        DocumentReference docRef = userCollection.doc(doc.id);
+        batch.update(docRef, {
+          'donationsList': FieldValue.arrayRemove([donationId])
         });
       }
 
