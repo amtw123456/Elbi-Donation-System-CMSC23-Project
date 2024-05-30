@@ -21,6 +21,7 @@ class DonationModel {
   // pending, confirmed, scheduled(scheduled for pick up), complete, or canceled
   String? status;
   List<String>? imagesOfDonationsList;
+
   DonationModel(
       {this.id,
       this.donatorId,
@@ -72,7 +73,7 @@ class DonationModel {
       'contactNo': donationModel.contactNo,
       'isCancelled': donationModel.isCancelled,
       'status': donationModel.status,
-      'imagesOfDonationsList': imagesOfDonationsList
+      'imagesOfDonationsList': donationModel.imagesOfDonationsList
     };
   }
 }

@@ -212,75 +212,93 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   const Text(
                     'Please provide a proof of legitimacy',
                     style: TextStyle(fontFamily: 'Poppins'),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   // UPLOAD IMAGE
                   SizedBox(
                     width: double.infinity,
                     height: 150,
                     child: _selectedImage != null
-                      ? Image.file(_selectedImage!)
-                      : ElevatedButton(
-                          onPressed: () async {
-                          if (await Permission.storage.request().isGranted) {
-                            // _pickImageFromGallery();
-                            file = await ImagePicker()
-                              .pickImage(source: ImageSource.gallery);
-                          } else {
-                          // Permission is not granted. Handle the scenario accordingly.
-                            showDialog(
-                            context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text("storage Permission Required"),
-                                  content: Text(
-                                    "Please grant stroage permission in settings to enable storage access."),
-                                  actions: <Widget>[
-                                  ElevatedButton(
-                                    child: Text("CANCEL"),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                  ElevatedButton(
-                                    child: Text("SETTINGS"),
-                                    onPressed: () {
-                                      openAppSettings(); // This will open the app settings where the user can enable permissions.
-                                    },
+                        ? Image.file(_selectedImage!)
+                        : ElevatedButton(
+                            onPressed: () async {
+                              if (await Permission.storage
+                                  .request()
+                                  .isGranted) {
+                                // _pickImageFromGallery();
+                                file = await ImagePicker()
+                                    .pickImage(source: ImageSource.gallery);
+                              } else {
+                                // Permission is not granted. Handle the scenario accordingly.
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title:
+                                          Text("storage Permission Required"),
+                                      content: Text(
+                                          "Please grant stroage permission in settings to enable storage access."),
+                                      actions: <Widget>[
+                                        ElevatedButton(
+                                          child: Text("CANCEL"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        ElevatedButton(
+                                          child: Text("SETTINGS"),
+                                          onPressed: () {
+                                            openAppSettings(); // This will open the app settings where the user can enable permissions.
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
+                            },
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .center, // Center the contents vertically
+                                children: [
+                                  Icon(Icons.photo_library,
+                                      size: 40,
+                                      color: Colors.grey[
+                                          500]), // Adjust size and color as needed
+                                  SizedBox(
+                                      height:
+                                          10), // Add some space between the icon and the text
+                                  Text(
+                                    "Upload photo",
+                                    style: TextStyle(
+                                        color: Colors.grey[500],
+                                        fontSize: 16,
+                                        fontFamily:
+                                            'Poppins'), // Adjust text style as needed
                                   ),
                                 ],
-                              );
-                            },
-                          );
-                        }
-                      },
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center, // Center the contents vertically
-                          children: [
-                            Icon(Icons.photo_library, size: 40, color: Colors.grey[500]), // Adjust size and color as needed
-                            SizedBox(height: 10), // Add some space between the icon and the text
-                            Text(
-                              "Upload photo",
-                              style: TextStyle(color: Colors.grey[500], fontSize: 16, fontFamily: 'Poppins'), // Adjust text style as needed
+                              ),
                             ),
-                          ],
-                        ),
-                      ), 
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        padding: const EdgeInsets.all(20),
-                        backgroundColor: Colors.grey[50],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: BorderSide(color: const Color(0xFF37A980), width: 2),
-                        ),
-                      ),
-                    ),
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              padding: const EdgeInsets.all(20),
+                              backgroundColor: Colors.grey[50],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                                side: BorderSide(
+                                    color: const Color(0xFF37A980), width: 2),
+                              ),
+                            ),
+                          ),
                   ),
                   // IconButton.outlined(
                   //   onPressed: () async {
@@ -328,58 +346,61 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                   SizedBox(height: 20),
                   // TAKE IMAGE
                   SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.camera_alt, color: Color(0xFF37A980)),
-                          SizedBox(width: 5),
-                          Text('Open Camera & Take Photo',
-                          style: TextStyle(color: Color(0xFF37A980), fontFamily: 'Poppins'),),
-                        ],
-                      ),
-                      onPressed: () async {
-                        if (await Permission.camera.request().isGranted) {
-                          file = await ImagePicker()
-                              .pickImage(source: ImageSource.camera);
-                        } else {
-                          // Permission is not granted. Handle the scenario accordingly.
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text("Camera Permission Required"),
-                                content: Text(
-                                    "Please grant camera permission in settings to enable camera access."),
-                                actions: <Widget>[
-                                  ElevatedButton(
-                                    child: Text("CANCEL"),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                  ElevatedButton(
-                                    child: Text("SETTINGS"),
-                                    onPressed: () {
-                                      openAppSettings(); // This will open the app settings where the user can enable permissions.
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        }
-                      },                        
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        padding: const EdgeInsets.all(20),
-                        backgroundColor: Colors.green[50],
-                        shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.camera_alt, color: Color(0xFF37A980)),
+                            SizedBox(width: 5),
+                            Text(
+                              'Open Camera & Take Photo',
+                              style: TextStyle(
+                                  color: Color(0xFF37A980),
+                                  fontFamily: 'Poppins'),
+                            ),
+                          ],
+                        ),
+                        onPressed: () async {
+                          if (await Permission.camera.request().isGranted) {
+                            file = await ImagePicker()
+                                .pickImage(source: ImageSource.camera);
+                          } else {
+                            // Permission is not granted. Handle the scenario accordingly.
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Camera Permission Required"),
+                                  content: Text(
+                                      "Please grant camera permission in settings to enable camera access."),
+                                  actions: <Widget>[
+                                    ElevatedButton(
+                                      child: Text("CANCEL"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    ElevatedButton(
+                                      child: Text("SETTINGS"),
+                                      onPressed: () {
+                                        openAppSettings(); // This will open the app settings where the user can enable permissions.
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            padding: const EdgeInsets.all(20),
+                            backgroundColor: Colors.green[50],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            )),
                       )),
-                    )
-                  ),
                   // IconButton.outlined(
                   //   onPressed: () async {
                   //     if (await Permission.camera.request().isGranted) {
