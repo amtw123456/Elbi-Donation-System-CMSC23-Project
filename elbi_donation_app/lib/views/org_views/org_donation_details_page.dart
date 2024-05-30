@@ -10,8 +10,7 @@ import 'package:elbi_donation_app/models/donation_model.dart';
 
 class OrgDonationDetails extends StatefulWidget {
   DonationModel donationDetails;
-  OrgDonationDetails({Key? key, required this.donationDetails})
-      : super(key: key);
+  OrgDonationDetails({super.key, required this.donationDetails});
 
   @override
   State<OrgDonationDetails> createState() => _OrgDonationDetailsState();
@@ -19,8 +18,10 @@ class OrgDonationDetails extends StatefulWidget {
 
 class _OrgDonationDetailsState extends State<OrgDonationDetails> {
   final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
+
   Widget imageCarousel() {
-    return Container(
+    return SizedBox(
       height: 100,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -30,7 +31,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
             // TODO: Add images array here
             width: 100,
             height: 100,
-            margin: EdgeInsets.symmetric(horizontal: 5),
+            margin: const EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(
               color: Colors.green,
               borderRadius: BorderRadius.circular(5),
@@ -75,7 +76,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
       items.add(donationDriveModel['donationDriveModel'].donationDriveName);
     }
     setState(() {
-      if (organizationDriveList.length != 0) {
+      if (organizationDriveList.isNotEmpty) {
         drives = items;
         selectedDrive = items[0];
       }
@@ -89,7 +90,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -104,19 +105,19 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(24),
+            padding: const EdgeInsets.all(24),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Images',
+                  const Text('Images',
                       style: TextStyle(fontFamily: 'Poppins', fontSize: 14)),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   imageCarousel(),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   // LOCATION
-                  Row(
+                  const Row(
                     children: [
                       Icon(
                         Icons.location_pin,
@@ -125,46 +126,46 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                       Expanded(child: Text("Address goes here")),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   // START OF DETAILS
                   Column(
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Category',
-                            style: TextStyle(fontFamily: 'Poppins')),
+                          const Text('Category',
+                              style: TextStyle(fontFamily: 'Poppins')),
                           Text(widget.donationDetails.categories!.join(', '),
-                            style: TextStyle(
-                            fontFamily: 'Poppins',
-                            color: Color(0xFF818181))),
+                              style: const TextStyle(
+                                  fontFamily: 'Poppins',
+                                  color: Color(0xFF818181))),
                         ],
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Weight',
-                            style: TextStyle(fontFamily: 'Poppins')),
+                          const Text('Weight',
+                              style: TextStyle(fontFamily: 'Poppins')),
                           Text(widget.donationDetails.weight.toString(),
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              color: Color(0xFF818181))),
+                              style: const TextStyle(
+                                  fontFamily: 'Poppins',
+                                  color: Color(0xFF818181))),
                         ],
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Mode of delivery',
-                            style: TextStyle(fontFamily: 'Poppins')),
+                          const Text('Mode of delivery',
+                              style: TextStyle(fontFamily: 'Poppins')),
                           Text(widget.donationDetails.isPickupOrDropoff!,
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              color: Color(0xFF818181))),
+                              style: const TextStyle(
+                                  fontFamily: 'Poppins',
+                                  color: Color(0xFF818181))),
                         ],
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       pickup
                           ? Column(
                               children: [
@@ -172,41 +173,43 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('Pickup date',
+                                    const Text('Pickup date',
                                         style:
                                             TextStyle(fontFamily: 'Poppins')),
                                     Text(
-                                      DateFormat('MM-dd-yyyy').format(widget.donationDetails.dateTime!),
-                                        style: TextStyle(
+                                        DateFormat('MM-dd-yyyy').format(
+                                            widget.donationDetails.dateTime!),
+                                        style: const TextStyle(
                                             fontFamily: 'Poppins',
                                             color: Color(0xFF818181))),
                                   ],
                                 ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('Pickup time',
+                                    const Text('Pickup time',
                                         style:
                                             TextStyle(fontFamily: 'Poppins')),
                                     Text(
-                                      DateFormat.jm().format(widget.donationDetails.dateTime!),
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        color: Color(0xFF818181))),
+                                        DateFormat.jm().format(
+                                            widget.donationDetails.dateTime!),
+                                        style: const TextStyle(
+                                            fontFamily: 'Poppins',
+                                            color: Color(0xFF818181))),
                                   ],
                                 ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('Contact number',
+                                    const Text('Contact number',
                                         style:
                                             TextStyle(fontFamily: 'Poppins')),
                                     Text(widget.donationDetails.contactNo!,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontFamily: 'Poppins',
                                             color: Color(0xFF818181))),
                                   ],
@@ -217,31 +220,33 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                               children: [
                                 Row(
                                   mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('Drop off date',
-                                      style:
-                                      TextStyle(fontFamily: 'Poppins')),
+                                    const Text('Drop off date',
+                                        style:
+                                            TextStyle(fontFamily: 'Poppins')),
                                     Text(
-                                      DateFormat('MM-dd-yyyy').format(widget.donationDetails.dateTime!),
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        color: Color(0xFF818181))),
+                                        DateFormat('MM-dd-yyyy').format(
+                                            widget.donationDetails.dateTime!),
+                                        style: const TextStyle(
+                                            fontFamily: 'Poppins',
+                                            color: Color(0xFF818181))),
                                   ],
                                 ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('Drop off time',
-                                      style:
-                                        TextStyle(fontFamily: 'Poppins')),
+                                    const Text('Drop off time',
+                                        style:
+                                            TextStyle(fontFamily: 'Poppins')),
                                     Text(
-                                      DateFormat.jm().format(widget.donationDetails.dateTime!),
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        color: Color(0xFF818181))),
+                                        DateFormat.jm().format(
+                                            widget.donationDetails.dateTime!),
+                                        style: const TextStyle(
+                                            fontFamily: 'Poppins',
+                                            color: Color(0xFF818181))),
                                   ],
                                 ),
                               ],
@@ -249,15 +254,15 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                     ],
                   ),
                   // END OF DETAILS
-                  SizedBox(height: 10),
-                  Text("Edit status",
+                  const SizedBox(height: 10),
+                  const Text("Edit status",
                       style: TextStyle(
                           fontFamily: 'Poppins',
                           color: Color(0xFF37A980),
                           fontSize: 16)),
                   // DROPDOWN FOR STATUS
                   DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       // hintText: 'Pe',
                       // hintStyle: TextStyle(fontFamily: 'Poppins', color: Color(0XFFD2D2D2)),
                       fillColor: Colors.white,
@@ -282,13 +287,13 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                       return DropdownMenuItem<String>(
                         value: status,
                         child: Text(status,
-                            style: TextStyle(fontFamily: 'Poppins')),
+                            style: const TextStyle(fontFamily: 'Poppins')),
                       );
                     }).toList(),
                   ),
 
-                  SizedBox(height: 10),
-                  Text("Assign donation drive",
+                  const SizedBox(height: 10),
+                  const Text("Assign donation drive",
                       style: TextStyle(
                           fontFamily: 'Poppins',
                           color: Color(0xFF37A980),
@@ -296,7 +301,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                   // DROPDOWN FOR DONATION DRIVE
 
                   DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       // hintText: 'Pe',
                       // hintStyle: TextStyle(fontFamily: 'Poppins', color: Color(0XFFD2D2D2)),
                       fillColor: Colors.white,
@@ -321,40 +326,68 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                       return DropdownMenuItem<String>(
                         value: donationDriveName,
                         child: Text(donationDriveName,
-                            style: TextStyle(fontFamily: 'Poppins')),
+                            style: const TextStyle(fontFamily: 'Poppins')),
                       );
                     }).toList(),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   // CONFIRM BUTTON
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.all(10),
-                        backgroundColor: Color(0xFF37A980),
-                        shape: RoundedRectangleBorder(
+                        padding: const EdgeInsets.all(10),
+                        backgroundColor: const Color(0xFF37A980),
+                        shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
                       ),
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          print(selectedStatus);
-                          print(selectedDrive);
-                          // print(drives.indexOf(selectedDrive));
-                          print(organizationDriveList);
-                          // print(organizationDriveList[
-                          //     drives.indexOf(selectedDrive)]);
-                          Map<String, dynamic> donationDriveupdate = {
-                            'listOfDonationsId': widget.donationDetails.id,
-                          };
+                          try {
+                            setState(() {
+                              _isLoading = true;
+                            });
 
-                          await context
-                              .read<OrganizationProvider>()
-                              .updateDonationDriveModel(
-                                  organizationDriveList[
-                                      drives.indexOf(selectedDrive)],
-                                  donationDriveupdate);
+                            Map<String, dynamic> result;
+                            Map<String, dynamic> donationDriveupdate = {
+                              'listOfDonationsId': widget.donationDetails.id,
+                            };
+
+                            result = await context
+                                .read<OrganizationProvider>()
+                                .updateDonationDriveModel(
+                                    organizationDriveList[
+                                        drives.indexOf(selectedDrive)],
+                                    donationDriveupdate);
+
+                            if (!result['success']) {
+                              throw result['error'];
+                            }
+
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text('Drive updated successfully!'),
+                                backgroundColor: Colors.green,
+                              ));
+                            }
+
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          } catch (error) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text(error.toString()),
+                                backgroundColor: Colors.red,
+                              ));
+                            }
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          }
                         }
                       },
                       child: const Text(
