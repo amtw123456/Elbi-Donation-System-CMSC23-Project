@@ -19,6 +19,7 @@ class UserProfileState extends State<UserProfile> {
 
   final TextEditingController _addressController = TextEditingController();
   bool _isLoading = false;
+
   File? _selectedImage;
 
   XFile? file;
@@ -182,7 +183,7 @@ class UserProfileState extends State<UserProfile> {
                           child: Padding(
                             padding: const EdgeInsets.all(15),
                             child: userInformation.orgDescription == null
-                                ? const Text('')
+                                ? const Text('No biography available')
                                 : Text(
                                     userInformation.orgDescription,
                                     style: const TextStyle(
@@ -559,6 +560,9 @@ class UserProfileState extends State<UserProfile> {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a contact number';
                             }
+                            if (value.length != 11) {
+                              return 'Contact number must be of length 11';
+                            }
                             return null;
                           }),
                       const SizedBox(height: 20),
@@ -615,39 +619,78 @@ class UserProfileState extends State<UserProfile> {
                             child: SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.all(10),
-                                  backgroundColor: const Color(0xFF37A980),
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
+                                  style: ElevatedButton.styleFrom(
+                                    padding: const EdgeInsets.all(10),
+                                    backgroundColor: const Color(0xFF37A980),
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5)),
+                                    ),
                                   ),
-                                ),
-                                onPressed: () async {
-                                  if (formKey.currentState!.validate()) {
-                                    print(contactNumberController.text);
-                                    print(descriptionController.text);
-                                    Map<String, dynamic> updates = {
-                                      "contactNumber":
-                                          contactNumberController.text,
-                                      "orgDescription":
-                                          descriptionController.text
-                                    };
-                                    final result = await context
-                                        .read<UserProvider>()
-                                        .updateUserModel(userId, updates);
-                                    print(result);
-                                    Navigator.pop(context);
-                                  }
-                                },
-                                child: const Text(
-                                  'Confirm',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: "Poppins",
-                                      fontSize: 20),
-                                ),
-                              ),
+                                  onPressed: () async {
+                                    if (formKey.currentState!.validate()) {
+                                      try {
+                                        setState(() {
+                                          _isLoading = true;
+                                        });
+
+                                        Map<String, dynamic> updates = {
+                                          "contactNumber":
+                                              contactNumberController.text,
+                                          "orgDescription":
+                                              descriptionController.text
+                                        };
+
+                                        if (context.mounted) {
+                                          final result = await context
+                                              .read<UserProvider>()
+                                              .updateUserModel(userId, updates);
+                                          if (!result['success']) {
+                                            throw result['error'];
+                                          }
+                                        }
+
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(const SnackBar(
+                                            content: Text('Profile edited'),
+                                            backgroundColor: Colors.green,
+                                          ));
+                                        }
+
+                                        if (context.mounted) {
+                                          Navigator.pop(context);
+                                        }
+                                      } catch (error) {
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(error.toString()),
+                                            backgroundColor: Colors.red,
+                                          ));
+                                        }
+
+                                        setState(() {
+                                          _isLoading = false;
+                                        });
+                                      }
+                                    }
+                                  },
+                                  child: _isLoading
+                                      ? Container(
+                                          width: 20,
+                                          height: 20,
+                                          padding: const EdgeInsets.all(4),
+                                          child:
+                                              const CircularProgressIndicator(
+                                            color: Colors.white,
+                                            strokeWidth: 2,
+                                          ),
+                                        )
+                                      : const Text('Confirm',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: "Poppins"))),
                             ),
                           )
                         ],
