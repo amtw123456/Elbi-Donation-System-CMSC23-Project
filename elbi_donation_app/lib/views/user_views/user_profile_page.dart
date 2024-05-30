@@ -53,15 +53,16 @@ class UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     final userId = context.read<UserAuthProvider>().user?.uid;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFF8F8F8),
+        backgroundColor: const Color(0xFFF8F8F8),
          actions: [
           TextButton(
             onPressed: () {
               context.read<UserProvider>().getUserModel(userId!).then((userDetails) {
                 OpenEditDialog(
-                  userDetails['userModel'].contactNumber, userDetails['userModel'].orgDescription
+                  userId, userDetails['userModel'].contactNumber, userDetails['userModel'].orgDescription
                 );
               });
             },
@@ -330,7 +331,7 @@ class UserProfileState extends State<UserProfile> {
     );
   }
 
-  Future<void> OpenEditDialog(String contactNumber, String? description) => 
+  Future<void> OpenEditDialog(String userId, String contactNumber, String? description) => 
       showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
@@ -417,12 +418,7 @@ class UserProfileState extends State<UserProfile> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    print(contactNumberController.text);
-                                    print(descriptionController.text);
-                                    // TODO: ADD UPDATE LOGIC HERE
                                     Navigator.pop(context);
-                                  }
                                 },
                                 child: const Text(
                                   'Cancel',
@@ -451,7 +447,16 @@ class UserProfileState extends State<UserProfile> {
                                 ),
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
-                                    // TODO: ADD UPDATE LOGIC HERE
+                                    print(contactNumberController.text);
+                                    print(descriptionController.text);
+                                    Map <String, dynamic> updates = {
+                                      "contactNumber": contactNumberController.text,
+                                      "orgDescription": descriptionController.text
+                                    };
+                                    final result = await context.read<UserProvider>().updateUserModel(
+                                      userId, updates
+                                    );
+                                    print(result);
                                     Navigator.pop(context);
                                   }
                                 },
