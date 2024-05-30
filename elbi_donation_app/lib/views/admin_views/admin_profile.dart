@@ -1,3 +1,4 @@
+import 'package:elbi_donation_app/models/user_model.dart';
 import 'package:elbi_donation_app/views/auth_views/landing.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +38,8 @@ class AdminProfileState extends State<AdminProfile> {
                 );
               } else if (snapshot.hasData) {
                 if (snapshot.data!['success']) {
+                  // get the data here
+                  final UserModel userModel = snapshot.data!['userModel'];
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -45,7 +48,7 @@ class AdminProfileState extends State<AdminProfile> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Username",
+                              "Admin",
                               style: TextStyle(
                                   fontFamily: "Poppins",
                                   fontSize: 32,
@@ -69,11 +72,11 @@ class AdminProfileState extends State<AdminProfile> {
                               border:
                                   Border.all(color: Colors.grey, width: 1.0),
                             ),
-                            child: const Padding(
-                              padding: EdgeInsets.all(15),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15),
                               child: Text(
-                                "First name Last name",
-                                style: TextStyle(
+                                "${userModel.firstName} ${userModel.lastName}",
+                                style: const TextStyle(
                                     fontFamily: "Poppins", fontSize: 16),
                               ),
                             ),
@@ -91,11 +94,11 @@ class AdminProfileState extends State<AdminProfile> {
                               border:
                                   Border.all(color: Colors.grey, width: 1.0),
                             ),
-                            child: const Padding(
-                              padding: EdgeInsets.all(15),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15),
                               child: Text(
-                                "Email@email.com",
-                                style: TextStyle(
+                                userModel.email,
+                                style: const TextStyle(
                                     fontFamily: "Poppins", fontSize: 16),
                               ),
                             ),
@@ -113,49 +116,17 @@ class AdminProfileState extends State<AdminProfile> {
                               border:
                                   Border.all(color: Colors.grey, width: 1.0),
                             ),
-                            child: const Padding(
-                              padding: EdgeInsets.all(15),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15),
                               child: Text(
-                                "1234567890",
-                                style: TextStyle(
+                                userModel.contactNumber ?? 'N/A',
+                                style: const TextStyle(
                                     fontFamily: "Poppins", fontSize: 16),
                               ),
                             ),
                           ),
                           const SizedBox(height: 10),
-                          const Text("Saved addresses",
-                              style: TextStyle(
-                                  fontFamily: "Poppins", fontSize: 16)),
-                          // TODO: Iterate over addresses
-                          ListView.separated(
-                            separatorBuilder:
-                                (BuildContext context, int index) =>
-                                    const SizedBox(height: 10),
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: 5,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(5)),
-                                  border: Border.all(
-                                      color: Colors.grey, width: 1.0),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(15),
-                                  child: Text(
-                                    "Address here",
-                                    style: TextStyle(
-                                        fontFamily: "Poppins", fontSize: 16),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 10),
+
                           SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
