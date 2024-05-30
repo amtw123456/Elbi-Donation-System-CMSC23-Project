@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elbi_donation_app/providers/donor_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -8,7 +9,6 @@ import 'package:elbi_donation_app/functions/misc.dart';
 import 'package:elbi_donation_app/providers/user_provider.dart';
 import 'package:elbi_donation_app/models/donation_model.dart';
 import 'package:elbi_donation_app/providers/auth_provider.dart';
-import 'package:elbi_donation_app/providers/donor_provider.dart';
 import 'package:provider/provider.dart';
 
 class DonateGoodsPage extends StatefulWidget {
@@ -23,7 +23,7 @@ class DonateGoodsPage extends StatefulWidget {
 class _DonateGoodsPageState extends State<DonateGoodsPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  List<String> _selectedDonationType = [];
+  final List<String> _selectedDonationType = [];
   String? _selectedModeOfDelivery;
   double? _selectedWeight;
   DateTime? _selectedDate;
@@ -42,6 +42,9 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
   ];
 
   final List<String> _modeOfDelivery = ['Drop off', 'Pick up'];
+
+  // for loading
+  bool _isLoading = false;
 
   void _onDonationTypeSelected(String donationType) {
     setState(() {
@@ -247,8 +250,8 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: TextFormField(
-                      style:
-                          TextStyle(fontFamily: 'Poppins', color: Colors.black),
+                      style: const TextStyle(
+                          fontFamily: 'Poppins', color: Colors.black),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter the weight';
@@ -295,7 +298,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                                 fontWeight: FontWeight.normal,
                                 fontFamily: 'Poppins',
                                 color: _selectedDate == null
-                                    ? Color(0XFFD2D2D2)
+                                    ? const Color(0XFFD2D2D2)
                                     : Colors.black),
                             fillColor: Colors.white,
                             border: const OutlineInputBorder(
@@ -325,7 +328,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                                 fontWeight: FontWeight.normal,
                                 fontFamily: 'Poppins',
                                 color: _selectedTime == null
-                                    ? Color(0XFFD2D2D2)
+                                    ? const Color(0XFFD2D2D2)
                                     : Colors.black),
                             fillColor: Colors.white,
                             border: const OutlineInputBorder(
@@ -397,7 +400,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                           }
                           return null;
                         },
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontFamily: 'Poppins', color: Colors.black),
                         decoration: const InputDecoration(
                           hintText: 'Contact number',
@@ -438,68 +441,92 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                           });
                         }
                         if (_formKey.currentState!.validate()) {
-                          // print(_selectedDonationType);
-                          // print(_selectedModeOfDelivery);
-                          // print(_selectedWeight);
-                          // print(
-                          //     DateFormat('dd/MM/yyyy').format(_selectedDate!));
-                          // print(formatTimeOfDay(_selectedTime!));
-                          // print(_selectedAddress);
-                          // print(_selectedContactNum);
+                          try {
+                            setState(() {
+                              _isLoading = true;
+                            });
+
+                            String? donationId = generateRandomString(28);
+                            DonationModel donationDetails = DonationModel(
+                              categories: _selectedDonationType,
+                              isPickupOrDropoff: _selectedModeOfDelivery,
+                              id: donationId,
+                              donatorId: userId,
+                              contactNo: _selectedContactNum.toString(),
+                              organizationId: widget.organizationId,
+                              weight: _selectedWeight,
+                              pickupAddresses: _addresses,
+                              dateTime: DateFormat('dd/MM/yyyy').parse(
+                                  DateFormat('dd/MM/yyyy')
+                                      .format(_selectedDate!)),
+                            );
+                            Map<String, dynamic> result;
+
+                            result = await context
+                                .read<DonorProvider>()
+                                .addDonationModel(donationDetails);
+
+                            if (!result['success']) {
+                              throw result['error'];
+                            }
+
+                            if (context.mounted) {
+                              result = await context
+                                  .read<UserProvider>()
+                                  .updateUserModel(userId!, {
+                                'donationsList':
+                                    FieldValue.arrayUnion([donationId]),
+                              });
+
+                              if (!result['success']) {
+                                throw result['error'];
+                              }
+                            }
+
+                            if (context.mounted) {
+                              result = await context
+                                  .read<UserProvider>()
+                                  .updateUserModel(widget.organizationId!, {
+                                'donationsList':
+                                    FieldValue.arrayUnion([donationId]),
+                              });
+                              if (!result['success']) {
+                                throw result['error'];
+                              }
+                            }
+
+                            if (context.mounted) {
+                              Navigator.pop(context);
+                            }
+
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          } catch (error) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(error.toString())));
+                            }
+
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          }
                         }
-
-                        // Map<String, dynamic> donationDetails = {
-                        //   'donationTypes': _selectedDonationType,
-                        //   'modeOfDelivery': _selectedModeOfDelivery,
-                        //   'donationWeight': _selectedWeight,
-                        //   'date':
-                        //       DateFormat('dd/MM/yyyy').format(_selectedDate!),
-                        //   'time': formatTimeOfDay(_selectedTime!),
-                        //   'address': _selectedAddress,
-                        //   'contactNumber': _selectedContactNum
-                        // };
-                        String? donationId = generateRandomString(28);
-                        DonationModel donationDetails = DonationModel(
-                          categories: _selectedDonationType,
-                          isPickupOrDropoff: _selectedModeOfDelivery,
-                          id: donationId,
-                          donatorId: userId,
-                          contactNo: _selectedContactNum.toString(),
-                          organizationId: widget.organizationId,
-                          weight: _selectedWeight,
-                          pickupAddresses: _addresses,
-                          dateTime: DateFormat('dd/MM/yyyy').parse(
-                              DateFormat('dd/MM/yyyy').format(_selectedDate!)),
-                        );
-
-                        await context
-                            .read<DonorProvider>()
-                            .addDonationModel(donationDetails);
-
-                        Map<String, dynamic> userUpdates = {
-                          'donationsList': donationId,
-                        };
-
-                        await context
-                            .read<UserProvider>()
-                            .updateUserModel(userId!, userUpdates);
-
-                        Map<String, dynamic> organizationUpdates = {
-                          'donationsList': donationId,
-                        };
-
-                        await context.read<UserProvider>().updateUserModel(
-                            widget.organizationId!, organizationUpdates);
-
-                        Navigator.pop(context);
                       },
-                      child: const Text(
-                        'Confirm',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: "Poppins",
-                            fontSize: 20),
-                      ),
+                      child: _isLoading
+                          ? Container(
+                              width: 20,
+                              height: 20,
+                              padding: const EdgeInsets.all(4),
+                              child: const CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Text('Confirm',
+                              style: TextStyle(
+                                  color: Colors.white, fontFamily: "Poppins")),
                     ),
                   )
                 ],
