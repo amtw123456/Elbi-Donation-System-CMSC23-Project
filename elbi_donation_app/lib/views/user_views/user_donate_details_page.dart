@@ -327,6 +327,10 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                                   ));
                                 }
 
+                                if (context.mounted) {
+                                  Navigator.of(context).pop();
+                                }
+
                                 setState(() {
                                   _isLoading = false;
                                 });
