@@ -448,18 +448,18 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
 
                             String? donationId = generateRandomString(28);
                             DonationModel donationDetails = DonationModel(
-                              categories: _selectedDonationType,
-                              isPickupOrDropoff: _selectedModeOfDelivery,
-                              id: donationId,
-                              donatorId: userId,
-                              contactNo: _selectedContactNum.toString(),
-                              organizationId: widget.organizationId,
-                              weight: _selectedWeight,
-                              pickupAddresses: _addresses,
-                              dateTime: DateFormat('dd/MM/yyyy').parse(
-                                  DateFormat('dd/MM/yyyy')
-                                      .format(_selectedDate!)),
-                            );
+                                categories: _selectedDonationType,
+                                isPickupOrDropoff: _selectedModeOfDelivery,
+                                id: donationId,
+                                donatorId: userId,
+                                contactNo: _selectedContactNum.toString(),
+                                organizationId: widget.organizationId,
+                                weight: _selectedWeight,
+                                pickupAddresses: _addresses,
+                                dateTime: DateFormat('dd/MM/yyyy').parse(
+                                    DateFormat('dd/MM/yyyy')
+                                        .format(_selectedDate!)),
+                                status: 'Pending');
                             Map<String, dynamic> result;
 
                             result = await context

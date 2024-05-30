@@ -129,7 +129,7 @@ class _DonationCardState extends State<DonationCard> {
                       ),
                       child: Text(
                         // TODO: Change text
-                        widget.donationInformation.status!,
+                        widget.donationInformation.status ?? 'N/A',
                         style: const TextStyle(
                           fontSize: 16,
                           fontFamily: 'Poppins',
