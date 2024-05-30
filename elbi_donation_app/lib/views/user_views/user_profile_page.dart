@@ -26,6 +26,9 @@ class UserProfileState extends State<UserProfile> {
   String imageUrl = '';
 
 
+  late TextEditingController contactNumberController = TextEditingController();
+  late TextEditingController descriptionController = TextEditingController();
+
   void _showAddAddressDialog() {
     showDialog(
       context: context,
@@ -66,7 +69,7 @@ class UserProfileState extends State<UserProfile> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFF8F8F8),
-         actions: [
+        actions: [
           TextButton(
             onPressed: () {
               context.read<UserProvider>().getUserModel(userId!).then((userDetails) {
@@ -86,7 +89,7 @@ class UserProfileState extends State<UserProfile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 35),
+              const SizedBox(height: 1),
               FutureBuilder<Map<String, dynamic>>(
                 future: context.read<UserProvider>().getUserModel(userId!),
                 builder: (BuildContext context,
@@ -162,19 +165,20 @@ class UserProfileState extends State<UserProfile> {
                         ),
                         const SizedBox(height: 10),
                         const Text("Bio",
-                          style: TextStyle(fontFamily: "Poppins", fontSize: 16)),
+                            style:
+                                TextStyle(fontFamily: "Poppins", fontSize: 16)),
                         Container(
                           width: double.infinity,
                           height: 200,
                           child: Padding(
                             padding: const EdgeInsets.all(15),
                             child: userInformation.orgDescription == null
-                            ? Text('') 
-                            : Text(
-                              userInformation.orgDescription,
-                              style: const TextStyle(
-                                  fontFamily: "Poppins", fontSize: 16),
-                            ),
+                                ? Text('')
+                                : Text(
+                                    userInformation.orgDescription,
+                                    style: const TextStyle(
+                                        fontFamily: "Poppins", fontSize: 16),
+                                  ),
                           ),
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -342,9 +346,9 @@ class UserProfileState extends State<UserProfile> {
                                 : const Text(
                                     'Log Out',
                                     style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.red,
-                                      fontFamily: "Poppins"),
+                                        fontSize: 16,
+                                        color: Colors.red,
+                                        fontFamily: "Poppins"),
                                   ),
                           ),
                         ),
@@ -580,7 +584,7 @@ Future<void> OpenEditDialog(String userId, String contactNumber, String? descrip
                                   ),
                                 ),
                                 onPressed: () {
-                                    Navigator.pop(context);
+                                  Navigator.pop(context);
                                 },
                                 child: const Text(
                                   'Cancel',
@@ -611,13 +615,15 @@ Future<void> OpenEditDialog(String userId, String contactNumber, String? descrip
                                   if (_formKey.currentState!.validate()) {
                                     print(contactNumberController.text);
                                     print(descriptionController.text);
-                                    Map <String, dynamic> updates = {
-                                      "contactNumber": contactNumberController.text,
-                                      "orgDescription": descriptionController.text
+                                    Map<String, dynamic> updates = {
+                                      "contactNumber":
+                                          contactNumberController.text,
+                                      "orgDescription":
+                                          descriptionController.text
                                     };
-                                    final result = await context.read<UserProvider>().updateUserModel(
-                                      userId, updates
-                                    );
+                                    final result = await context
+                                        .read<UserProvider>()
+                                        .updateUserModel(userId, updates);
                                     print(result);
                                     Navigator.pop(context);
                                   }

@@ -64,15 +64,11 @@ class _DonationCardState extends State<DonationCard> {
                 Row(
                   children: [
                     // Image placeholder
-                    Container(
-                      height: 75,
-                      width: 75,
-                      decoration: BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      margin: const EdgeInsets.only(left: 5, right: 5),
+                    Icon(
+                      Icons.person,
+                      size: 60.0, // Adjust the size as needed
                     ),
+
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
