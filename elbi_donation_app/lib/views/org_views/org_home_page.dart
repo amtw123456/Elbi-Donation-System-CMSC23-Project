@@ -65,64 +65,72 @@ class _OrgHomePageState extends State<OrgHomePage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          ListView.separated(
-                            separatorBuilder:
-                                (BuildContext context, int index) =>
-                                    const SizedBox(height: 25),
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: userInformation.donationsList.length,
-                            itemBuilder: (context, index) {
-                              return FutureBuilder<Map<String, dynamic>>(
-                                future: context
-                                    .read<DonorProvider>()
-                                    .getDonationModel(
-                                        userInformation.donationsList[index]),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<Map<String, dynamic>>
-                                        snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return const Center(
-                                        child: CircularProgressIndicator());
-                                  } else if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}');
-                                  } else if (snapshot.hasData) {
-                                    final donationInformation =
-                                        snapshot.data!['donationModel'];
+                  (snapshot.data!['userModel'].donationsList.isEmpty)
+                      ? const Center(
+                          child: Text('No donations yet.'),
+                        )
+                      : Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                ListView.separated(
+                                  separatorBuilder:
+                                      (BuildContext context, int index) =>
+                                          const SizedBox(height: 25),
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount:
+                                      userInformation.donationsList.length,
+                                  itemBuilder: (context, index) {
+                                    return FutureBuilder<Map<String, dynamic>>(
+                                      future: context
+                                          .read<DonorProvider>()
+                                          .getDonationModel(userInformation
+                                              .donationsList[index]),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<Map<String, dynamic>>
+                                              snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return const Center(
+                                              child:
+                                                  CircularProgressIndicator());
+                                        } else if (snapshot.hasError) {
+                                          return Text(
+                                              'Error: ${snapshot.error}');
+                                        } else if (snapshot.hasData) {
+                                          final donationInformation =
+                                              snapshot.data!['donationModel'];
 
-                                    return GestureDetector(
-                                      child: DonationCard(
-                                        donationInformation:
-                                            donationInformation,
-                                      ),
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    OrgDonationDetails(
-                                                      donationDetails:
-                                                          donationInformation,
-                                                    ))).then((_) => setState(
-                                            () {})); // TODO: idk what this is for
+                                          return GestureDetector(
+                                            child: DonationCard(
+                                              donationInformation:
+                                                  donationInformation,
+                                            ),
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          OrgDonationDetails(
+                                                            donationDetails:
+                                                                donationInformation,
+                                                          ))).then((_) => setState(
+                                                  () {})); // TODO: idk what this is for
+                                            },
+                                          );
+                                        } else {
+                                          return const Text(
+                                              'No data available');
+                                        }
                                       },
                                     );
-                                  } else {
-                                    return const Text('No data available');
-                                  }
-                                },
-                              );
-                            },
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
+                        ),
                 ],
               );
             } else {
