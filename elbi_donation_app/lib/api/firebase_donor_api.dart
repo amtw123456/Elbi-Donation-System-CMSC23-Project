@@ -23,7 +23,7 @@ class FirebaseDonorAPI {
       String id, Map<String, dynamic> updates) async {
     try {
       await FirebaseFirestore.instance
-          .collection("userModels")
+          .collection("donationModels")
           .doc(id)
           .update(updates);
 
