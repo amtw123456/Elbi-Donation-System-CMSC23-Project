@@ -661,6 +661,10 @@ class UserProfileState extends State<UserProfile> {
                                         if (context.mounted) {
                                           Navigator.pop(context);
                                         }
+
+                                        setState(() {
+                                          _isLoading = false;
+                                        });
                                       } catch (error) {
                                         if (context.mounted) {
                                           ScaffoldMessenger.of(context)
