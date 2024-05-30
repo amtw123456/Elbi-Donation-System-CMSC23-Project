@@ -12,7 +12,9 @@ import 'package:provider/provider.dart';
 
 class OrgDonationDriveDetails extends StatefulWidget {
   final String donationDriveId;
-  const OrgDonationDriveDetails({required this.donationDriveId, super.key});
+  final String organizationId;
+  const OrgDonationDriveDetails(
+      {required this.donationDriveId, required this.organizationId, super.key});
 
   @override
   State<OrgDonationDriveDetails> createState() =>
@@ -34,7 +36,7 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
         actions: [
           PopupMenuButton<int>(
             icon: Icon(Icons.more_horiz), // three-dot menu icon
-            onSelected: (int result) {
+            onSelected: (int result) async {
               if (result == 1) {
                 context
                     .read<OrganizationProvider>()
@@ -49,6 +51,18 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
                 });
               } else if (result == 2) {
                 // TODO: DO DELETE HERE
+                await context
+                    .read<OrganizationProvider>()
+                    .deleteDonationDriveModel(widget.donationDriveId);
+
+                context
+                    .read<UserProvider>()
+                    .removeDonationDriveModelFromUserModel(
+                        widget.organizationId, widget.donationDriveId);
+
+                Navigator.of(context).pop(); // Close the dialog
+
+                // widget.onDeletion?.call();
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
@@ -102,48 +116,48 @@ class _OrgDonationDriveDetailsState extends State<OrgDonationDriveDetails> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Edit'), // Dialog title
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  TextField(
-                                    decoration:
-                                        InputDecoration(labelText: 'Field 1'),
-                                  ),
-                                  TextField(
-                                    decoration:
-                                        InputDecoration(labelText: 'Field 2'),
-                                  ),
-                                ],
-                              ),
-                              actions: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .pop(); // Close the dialog
-                                  },
-                                  child: Text('Save'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      child: Icon(
-                        Icons.edit, // Replace with your desired icon
-                        color: Colors.green, // Adjust color as needed
-                        size: 20, // Adjust size as needed
-                      ),
-                    ),
-                  ),
+                  // Align(
+                  //   alignment: Alignment.centerRight,
+                  //   child: GestureDetector(
+                  //     onTap: () {
+                  //       showDialog(
+                  //         context: context,
+                  //         builder: (BuildContext context) {
+                  //           return AlertDialog(
+                  //             title: Text('Edit'), // Dialog title
+                  //             content: Column(
+                  //               mainAxisSize: MainAxisSize.min,
+                  //               children: [
+                  //                 TextField(
+                  //                   decoration:
+                  //                       InputDecoration(labelText: 'Field 1'),
+                  //                 ),
+                  //                 TextField(
+                  //                   decoration:
+                  //                       InputDecoration(labelText: 'Field 2'),
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //             actions: [
+                  //               ElevatedButton(
+                  //                 onPressed: () {
+                  //                   Navigator.of(context)
+                  //                       .pop(); // Close the dialog
+                  //                 },
+                  //                 child: Text('Save'),
+                  //               ),
+                  //             ],
+                  //           );
+                  //         },
+                  //       );
+                  //     },
+                  //     child: Icon(
+                  //       Icons.edit, // Replace with your desired icon
+                  //       color: Colors.green, // Adjust color as needed
+                  //       size: 20, // Adjust size as needed
+                  //     ),
+                  //   ),
+                  // ),
                   Container(
                     width: double.infinity,
                     height: screenHeight / 3,
