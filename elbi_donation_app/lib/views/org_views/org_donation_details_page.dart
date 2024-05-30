@@ -381,7 +381,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                             if (context.mounted) {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(const SnackBar(
-                                content: Text('Drive updated successfully!'),
+                                content: Text('Donation updated successfully!'),
                                 backgroundColor: Colors.green,
                               ));
                             }
@@ -400,6 +400,9 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                             setState(() {
                               _isLoading = false;
                             });
+                          }
+                          if (context.mounted) {
+                            Navigator.pop(context);
                           }
                         }
                       },

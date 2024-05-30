@@ -105,13 +105,14 @@ class _OrgHomePageState extends State<OrgHomePage> {
                                       ),
                                       onTap: () {
                                         Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    OrgDonationDetails(
-                                                      donationDetails:
-                                                          donationInformation,
-                                                    )));
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        OrgDonationDetails(
+                                                          donationDetails:
+                                                              donationInformation,
+                                                        )))
+                                            .then((_) => setState(() {}));
                                       },
                                     );
                                   } else {
