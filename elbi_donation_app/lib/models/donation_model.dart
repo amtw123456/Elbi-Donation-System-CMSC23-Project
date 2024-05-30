@@ -20,7 +20,7 @@ class DonationModel {
   bool? isCancelled;
   // pending, confirmed, scheduled(scheduled for pick up), complete, or canceled
   String? status;
-
+  List<String>? imagesOfDonationsList;
   DonationModel(
       {this.id,
       this.donatorId,
@@ -32,6 +32,7 @@ class DonationModel {
       this.pickupAddresses,
       this.contactNo,
       this.isCancelled = false,
+      this.imagesOfDonationsList,
       this.status});
 
   // Factory constructor to instantiate object from json format
@@ -52,6 +53,9 @@ class DonationModel {
       contactNo: json['contactNo'],
       isCancelled: json['isCancelled'],
       status: json['status'],
+      imagesOfDonationsList: json['imagesOfDonationsList'] != null
+          ? List<String>.from(json['imagesOfDonationsList'])
+          : null,
     );
   }
 
@@ -67,7 +71,8 @@ class DonationModel {
       'pickupAddresses': donationModel.pickupAddresses,
       'contactNo': donationModel.contactNo,
       'isCancelled': donationModel.isCancelled,
-      'status': donationModel.status
+      'status': donationModel.status,
+      'imagesOfDonationsList': imagesOfDonationsList
     };
   }
 }
