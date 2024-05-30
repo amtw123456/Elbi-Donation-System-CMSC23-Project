@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:elbi_donation_app/providers/organization_provider.dart';
@@ -28,6 +29,8 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
 
   XFile? file;
   String? imageUrl;
+
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -248,61 +251,102 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                   ),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      print(driveName);
-                      print(driveDescription);
+                      try {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        String? donationDriveString = generateRandomString(28);
+                        Map<String, dynamic> result;
 
-                      String? donationDriveString = generateRandomString(28);
+                        if (file != null) {
+                          Reference referenceRoot =
+                              FirebaseStorage.instance.ref();
 
-                      if (file != null) {
-                        Reference referenceRoot =
-                            FirebaseStorage.instance.ref();
+                          Reference referenceDirImages =
+                              referenceRoot.child('images');
 
-                        Reference referenceDirImages =
-                            referenceRoot.child('images');
+                          Reference referenceImageToUpload =
+                              referenceDirImages.child(
+                                  '$donationDriveString-proofOfLegitimacyImage');
 
-                        Reference referenceImageToUpload =
-                            referenceDirImages.child(
-                                '$donationDriveString-proofOfLegitimacyImage');
-
-                        try {
                           await referenceImageToUpload
                               .putFile(File(file!.path));
                           imageUrl =
                               await referenceImageToUpload.getDownloadURL();
-                        } catch (error) {}
+                        }
+
+                        DonationDriveModel donationDriveModel =
+                            DonationDriveModel(
+                          id: donationDriveString,
+                          organizationId: userId,
+                          donationDriveName: driveName,
+                          donationDriveDescription: driveDescription,
+                          donationDriveImageCover: imageUrl,
+                        );
+
+                        if (context.mounted) {
+                          result = await context
+                              .read<OrganizationProvider>()
+                              .addDonationDriveModel(donationDriveModel);
+                          if (!result['success']) {
+                            throw result['error'];
+                          }
+                        }
+
+                        if (context.mounted) {
+                          result = await context
+                              .read<UserProvider>()
+                              .updateUserModel(userId!, {
+                            'organizationDriveList':
+                                FieldValue.arrayUnion([donationDriveString]),
+                            // Add other fields you want to update
+                          });
+                          if (!result['success']) {
+                            throw result['error'];
+                          }
+                        }
+
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text('Drive added successfully!'),
+                            backgroundColor: Colors.green,
+                          ));
+                        }
+
+                        if (context.mounted) {
+                          Navigator.pop(context);
+                        }
+
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      } catch (error) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(error.toString()),
+                            backgroundColor: Colors.red,
+                          ));
+                        }
+                        setState(() {
+                          _isLoading = false;
+                        });
                       }
-
-                      DonationDriveModel donationDriveModel =
-                          DonationDriveModel(
-                        id: donationDriveString,
-                        organizationId: userId,
-                        donationDriveName: driveName,
-                        donationDriveDescription: driveDescription,
-                        donationDriveImageCover: imageUrl,
-                      );
-
-                      await context
-                          .read<OrganizationProvider>()
-                          .addDonationDriveModel(donationDriveModel);
-                      Map<String, dynamic> updates = {
-                        'organizationDriveList': donationDriveString,
-                        // Add other fields you want to update
-                      };
-
-                      await context
-                          .read<UserProvider>()
-                          .updateUserModel(userId!, updates);
-
-                      Navigator.pop(context);
                     }
                   },
-                  child: const Text(
-                    'Confirm',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: "Poppins",
-                        fontSize: 20),
-                  ),
+                  child: _isLoading
+                      ? Container(
+                          width: 20,
+                          height: 20,
+                          padding: const EdgeInsets.all(4),
+                          child: const CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : const Text('Confirm',
+                          style: TextStyle(
+                              color: Colors.white, fontFamily: "Poppins")),
                 ),
               )
             ],
