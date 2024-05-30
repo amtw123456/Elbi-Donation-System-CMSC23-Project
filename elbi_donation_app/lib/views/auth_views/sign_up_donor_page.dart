@@ -448,129 +448,129 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                   // SizedBox(height: 10,)
                 ],
                 SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.all(20),
-                            backgroundColor: const Color(0xFF37A980),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(2),
-                            )),
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(20),
+                        backgroundColor: const Color(0xFF37A980),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(2),
+                        )),
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        try {
+                          Map<String, dynamic> result;
+                          // start loading
+                          setState(() {
+                            _isLoading = true;
+                          });
+
+                          result = await context
+                              .read<UserAuthProvider>()
+                              .signUp(emailController.text,
+                                  passwordController.text);
+
+                          if (!result['success']) {
+                            throw result['error'];
+                          }
+
+                          String id = result['uid'];
+
+                          if (_isOrganization) {
+                            Reference referenceRoot =
+                                FirebaseStorage.instance.ref();
+
+                            Reference referenceDirImages =
+                                referenceRoot.child('images');
+
+                            Reference referenceImageToUpload =
+                                referenceDirImages
+                                    .child('$id-proofOfLegitimacyImage');
+
                             try {
-                              Map<String, dynamic> result;
-                              // start loading
-                              setState(() {
-                                _isLoading = true;
-                              });
+                              await referenceImageToUpload
+                                  .putFile(File(file!.path));
+                              imageUrl =
+                                  await referenceImageToUpload.getDownloadURL();
+                            } catch (error) {}
+                          }
 
-                              result = await context
-                                  .read<UserAuthProvider>()
-                                  .signUp(emailController.text,
-                                      passwordController.text);
+                          UserModel userModel = UserModel(
+                              id: id,
+                              firstName: firstNameController.text,
+                              lastName: lastNameController.text,
+                              username: usernameController.text,
+                              orgName: organizationNameController.text,
+                              email: emailController.text,
+                              address: [addressController.text],
+                              contactNumber: contactNumberController.text,
+                              organizationDriveList: [],
+                              donationsList: [],
+                              type: _isOrganization ? "org" : "donor",
+                              proofOfLegitimacyImageUrlLink: imageUrl,
+                              isApprovedByAdmin:
+                                  _isOrganization ? false : null);
 
-                              if (!result['success']) {
-                                throw result['error'];
-                              }
+                          if (context.mounted) {
+                            result = await context
+                                .read<UserProvider>()
+                                .addUserModel(userModel);
+                          }
 
-                              String id = result['uid'];
+                          if (!result['success']) {
+                            throw result['error'];
+                          }
 
-                              if (_isOrganization) {
-                                Reference referenceRoot =
-                                    FirebaseStorage.instance.ref();
+                          // finish loading
+                          setState(() {
+                            _isLoading = false;
+                          });
 
-                                Reference referenceDirImages =
-                                    referenceRoot.child('images');
-
-                                Reference referenceImageToUpload =
-                                    referenceDirImages
-                                        .child('$id-proofOfLegitimacyImage');
-
-                                try {
-                                  await referenceImageToUpload
-                                      .putFile(File(file!.path));
-                                  imageUrl = await referenceImageToUpload
-                                      .getDownloadURL();
-                                } catch (error) {}
-                              }
-
-                              UserModel userModel = UserModel(
-                                  id: id,
-                                  firstName: firstNameController.text,
-                                  lastName: lastNameController.text,
-                                  username: usernameController.text,
-                                  orgName: organizationNameController.text,
-                                  email: emailController.text,
-                                  address: [addressController.text],
-                                  contactNumber: contactNumberController.text,
-                                  organizationDriveList: [],
-                                  donationsList: [],
-                                  type: _isOrganization ? "org" : "donor",
-                                  proofOfLegitimacyImageUrlLink: imageUrl,
-                                  isApprovedByAdmin:
-                                      _isOrganization ? false : null);
-
-                              if (context.mounted) {
-                                result = await context
-                                    .read<UserProvider>()
-                                    .addUserModel(userModel);
-                              }
-
-                              if (!result['success']) {
-                                throw result['error'];
-                              }
-
-                              // finish loading
-                              setState(() {
-                                _isLoading = false;
-                              });
-
-                              if (context.mounted) {
-                                if (userModel.type == 'org') {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => const OrgRouter()));
-                                } else if (userModel.type == 'donor') {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const UserRouter()));
-                                } else if (userModel.type == 'admin') {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AdminRouter()));
-                                } else {
-                                  throw 'Routing error.';
-                                }
-                              }
-                            } catch (e) {
-                              if (context.mounted) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content: Text(e.toString()),
-                                  backgroundColor: Colors.red,
-                                ));
-                              }
-
-                              setState(() {
-                                _isLoading = false;
-                              });
+                          if (context.mounted) {
+                            if (userModel.type == 'org') {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const OrgRouter()));
+                            } else if (userModel.type == 'donor') {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const UserRouter()));
+                            } else if (userModel.type == 'admin') {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const AdminRouter()));
+                            } else {
+                              throw 'Routing error.';
                             }
                           }
-                        },
-                        child: _isLoading
-                            ? Container(
-                                width: 20,
-                                height: 20,
-                                padding: const EdgeInsets.all(4),
-                                child: const CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : const Text('Continue',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: "Poppins")))),
+                        } catch (e) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(e.toString()),
+                              backgroundColor: Colors.red,
+                            ));
+                          }
+
+                          setState(() {
+                            _isLoading = false;
+                          });
+                        }
+                      }
+                    },
+                    child: _isLoading
+                        ? Container(
+                            width: 20,
+                            height: 20,
+                            padding: const EdgeInsets.all(4),
+                            child: const CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : const Text(
+                            'Continue',
+                            style: TextStyle(
+                                color: Colors.white, fontFamily: "Poppins"),
+                          ),
+                  ),
+                ),
                 const SizedBox(
                   height: 20,
                 ),

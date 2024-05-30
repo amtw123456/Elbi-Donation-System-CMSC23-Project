@@ -15,6 +15,7 @@ class UserModel {
   String? status;
   String? orgDescription;
   String? proofOfLegitimacyImageUrlLink;
+  String? userProfileImageUrlLink;
   List<String>? organizationDriveList; // New list field
 
   UserModel({
@@ -32,6 +33,7 @@ class UserModel {
     this.status,
     this.orgDescription,
     this.proofOfLegitimacyImageUrlLink,
+    this.userProfileImageUrlLink,
     this.organizationDriveList, // Add organizationDriveList to the constructor
   });
 
@@ -50,6 +52,7 @@ class UserModel {
       status: json['status'],
       orgDescription: json['orgDescription'],
       proofOfLegitimacyImageUrlLink: json['proofOfLegitimacyImageUrlLink'],
+      userProfileImageUrlLink: json['userProfileImageUrlLink'],
       donationsList: json['donationsList'] != null
           ? List<String>.from(json['donationsList'])
           : null,
@@ -83,6 +86,7 @@ class UserModel {
       'status': status,
       'orgDescription': orgDescription,
       'proofOfLegitimacyImageUrlLink': proofOfLegitimacyImageUrlLink,
+      'userProfileImageUrlLink': userProfileImageUrlLink,
       'organizationDriveList':
           organizationDriveList, // Include organizationDriveList in JSON
     };
