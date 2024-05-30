@@ -496,6 +496,14 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                             }
 
                             if (context.mounted) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text('Donation added successfully!'),
+                                backgroundColor: Colors.green,
+                              ));
+                            }
+
+                            if (context.mounted) {
                               Navigator.pop(context);
                             }
 
@@ -504,8 +512,11 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                             });
                           } catch (error) {
                             if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(error.toString())));
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text(error.toString()),
+                                backgroundColor: Colors.red,
+                              ));
                             }
 
                             setState(() {
