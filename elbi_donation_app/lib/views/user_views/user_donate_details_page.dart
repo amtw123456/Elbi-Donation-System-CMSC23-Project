@@ -272,28 +272,12 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                               ),
                             ),
                             onPressed: () async {
-                              // TODO: Cancel Donation
                               try {
                                 setState(() {
                                   _isLoading = true;
                                 });
 
                                 Map<String, dynamic> result;
-
-                                // first dereference from user
-                                if (context.mounted) {
-                                  result = await context
-                                      .read<UserProvider>()
-                                      .updateUserModel(
-                                          widget.donationDetails.donatorId!, {
-                                    'donationsList': FieldValue.arrayRemove(
-                                        [widget.donationDetails.id])
-                                  });
-
-                                  if (!result['success']) {
-                                    throw result['error'];
-                                  }
-                                }
 
                                 // dereferencing
                                 if (context.mounted) {
