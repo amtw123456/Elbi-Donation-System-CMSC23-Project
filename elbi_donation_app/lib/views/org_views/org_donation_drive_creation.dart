@@ -14,7 +14,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 
 class AddDonationDrive extends StatefulWidget {
-  const AddDonationDrive({Key? key}) : super(key: key);
+  const AddDonationDrive({super.key});
 
   @override
   State<AddDonationDrive> createState() => _AddDonationDriveState();
@@ -35,26 +35,26 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        title: Text(
+        title: const Text(
           'Drive Details',
           style: TextStyle(
               fontFamily: 'Poppins', fontSize: 24, fontWeight: FontWeight.w700),
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(24),
+        padding: const EdgeInsets.all(24),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Please enter your drive details'),
-              Expanded(
+              const Text('Please enter your drive details'),
+              SingleChildScrollView(
                 child: Column(
                   children: [
                     Container(
@@ -71,7 +71,7 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Donation drive name',
                           hintStyle: TextStyle(
                               fontFamily: 'Poppins', color: Color(0XFFD2D2D2)),
@@ -99,7 +99,7 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                         },
                         minLines: 9,
                         maxLines: 10,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Description',
                           hintStyle: TextStyle(
                               fontFamily: 'Poppins', color: Color(0XFFD2D2D2)),
@@ -111,7 +111,7 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                         ),
                       ),
                     ),
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
@@ -137,18 +137,19 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: Text("storage Permission Required"),
-                                    content: Text(
+                                    title: const Text(
+                                        "storage Permission Required"),
+                                    content: const Text(
                                         "Please grant stroage permission in settings to enable storage access."),
                                     actions: <Widget>[
                                       ElevatedButton(
-                                        child: Text("CANCEL"),
+                                        child: const Text("CANCEL"),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
                                       ),
                                       ElevatedButton(
-                                        child: Text("SETTINGS"),
+                                        child: const Text("SETTINGS"),
                                         onPressed: () {
                                           openAppSettings(); // This will open the app settings where the user can enable permissions.
                                         },
@@ -172,18 +173,19 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: Text("Camera Permission Required"),
-                                    content: Text(
+                                    title: const Text(
+                                        "Camera Permission Required"),
+                                    content: const Text(
                                         "Please grant camera permission in settings to enable camera access."),
                                     actions: <Widget>[
                                       ElevatedButton(
-                                        child: Text("CANCEL"),
+                                        child: const Text("CANCEL"),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
                                       ),
                                       ElevatedButton(
-                                        child: Text("SETTINGS"),
+                                        child: const Text("SETTINGS"),
                                         onPressed: () {
                                           openAppSettings(); // This will open the app settings where the user can enable permissions.
                                         },
@@ -198,7 +200,7 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     const Row(
                       children: [
                         Text(
@@ -218,7 +220,7 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                         ),
                       ),
                       child: file == null
-                          ? Center(
+                          ? const Center(
                               child: Text('No image selected.'),
                             )
                           : Image.file(
@@ -231,13 +233,16 @@ class _AddDonationDriveState extends State<AddDonationDrive> {
                   ],
                 ),
               ),
+              const SizedBox(
+                height: 16,
+              ),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.all(10),
-                    backgroundColor: Color(0xFF37A980),
-                    shape: RoundedRectangleBorder(
+                    padding: const EdgeInsets.all(10),
+                    backgroundColor: const Color(0xFF37A980),
+                    shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(5)),
                     ),
                   ),
