@@ -75,18 +75,26 @@ class _OrgQRScannerState extends State<OrgQRScanner> {
         print(success);
         controller.pauseCamera();
         // success snackbar
+
+        if (success['success'] = true) {
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Successfully updated donation status. Thank you!"))
         );
+        } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Couldn't update"))
+        );
+        }
 
-        final donationInformation = await context.read<DonorProvider>().getDonationModel(donationid);
-        // show donation page
-         Navigator.push(
-          context,
-          MaterialPageRoute( builder: (context) =>
-            OrgDonationDetails(
-              donationDetails: DonationModel.fromJson(donationInformation),
-            ))); 
+        // final donationInformation = await context.read<DonorProvider>().getDonationModel(donationid);
+        // // show donation page
+        //  Navigator.push(
+        //   context,
+        //   MaterialPageRoute( builder: (context) =>
+        //     OrgDonationDetails(
+        //       donationDetails: DonationModel.fromJson(donationInformation),
+        //     ))); 
       }
     }, onError: (error) {
       print('Error scanning QR code: $error');

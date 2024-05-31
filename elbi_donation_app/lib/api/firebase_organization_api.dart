@@ -164,7 +164,7 @@ class fireBaseOrganizationAPI {
   Future<Map<String,dynamic>> updateQRStatus(String donationid) async {
     try {
       await FirebaseFirestore.instance
-        .collection('donationDriveModels')
+        .collection('donationModels')
         .doc(donationid)
         .update({'status': 'Confirmed'});
 
