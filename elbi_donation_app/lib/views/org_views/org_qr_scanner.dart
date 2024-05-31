@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:elbi_donation_app/providers/donor_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import '../../models/donation_model.dart';
 import '../../providers/organization_provider.dart';
+import 'org_donation_details_page.dart';
 
 class OrgQRScanner extends StatefulWidget {
   const OrgQRScanner({super.key});
@@ -64,14 +67,27 @@ class _OrgQRScannerState extends State<OrgQRScanner> {
 
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
+    controller.scannedDataStream.listen((scanData) async {
       final donationid = scanData.code;
       print(donationid);
       if(donationid != null) {
-        print(context.read<OrganizationProvider>().updateDonationStatusQR(donationid));
+        Map<String, dynamic> success = await context.read<OrganizationProvider>().updateDonationStatusQR(donationid);
+        print(success);
+        controller.pauseCamera();
+        // success snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Successfully updated donation status. Thank you!"))
+        );
+
+        final donationInformation = await context.read<DonorProvider>().getDonationModel(donationid);
+        // show donation page
+         Navigator.push(
+          context,
+          MaterialPageRoute( builder: (context) =>
+            OrgDonationDetails(
+              donationDetails: DonationModel.fromJson(donationInformation),
+            ))); 
       }
-      // Pause the camera after a successful scan
-      controller.pauseCamera();
     }, onError: (error) {
       print('Error scanning QR code: $error');
     });
