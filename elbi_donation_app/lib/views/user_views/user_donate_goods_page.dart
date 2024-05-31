@@ -36,7 +36,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
   String? _selectedAddress;
-  int? _selectedContactNum;
+  String? _selectedContactNum;
 
   bool? dropOffSelected = false;
 
@@ -61,15 +61,26 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
   // for loading
   bool _isLoading = false;
 
-  void _onDonationTypeSelected(String donationType) {
+  void _onDonationTypeSelected(bool isSelected, String donationType) {
     setState(() {
       _selectedDonationType.add(donationType);
     });
   }
 
-  void _onDonationTypeRemoved(String donationType) {
+  void _onDonationTypeRemoved(bool isSelected, String donationType) {
     setState(() {
       _selectedDonationType.remove(donationType);
+    });
+  }
+
+
+  void _handleCategorySelection(bool isSelected, String category) {
+    setState(() {
+      if (isSelected) {
+        _selectedDonationType.add(category);
+      } else {
+        _selectedDonationType.remove(category);
+      }
     });
   }
 
@@ -94,7 +105,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
 
   void _onContactNumSelected(String number) {
     setState(() {
-      _selectedContactNum = int.tryParse(number);
+      _selectedContactNum = number;
     });
   }
 
@@ -123,6 +134,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
       });
     }
   }
+
 
   String formatTimeOfDay(TimeOfDay time) {
     final now = DateTime.now();
@@ -198,16 +210,14 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                       DonationContainer(
                         iconData: DonationIcons.tshirt,
                         label: 'Clothes',
-                        onPressed: (selected) {
-                          if (selected) _onDonationTypeSelected('Clothes');
-                        },
+                        onPressed: _onDonationTypeSelected,
+                        onRemoved: _onDonationTypeRemoved,
                       ),
                       DonationContainer(
                         iconData: DonationIcons.food,
                         label: 'Food',
-                        onPressed: (selected) {
-                          if (selected) _onDonationTypeSelected('Food');
-                        },
+                        onPressed: _onDonationTypeSelected,
+                        onRemoved: _onDonationTypeRemoved, // Pass the onRemoved callback
                       ),
                     ],
                   ),
@@ -218,16 +228,14 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                       DonationContainer(
                         iconData: DonationIcons.mobile,
                         label: 'Electronics',
-                        onPressed: (selected) {
-                          if (selected) _onDonationTypeSelected('Electronics');
-                        },
+                        onPressed: _onDonationTypeSelected,
+                        onRemoved: _onDonationTypeRemoved,
                       ),
                       DonationContainer(
                         iconData: DonationIcons.money_bill_alt,
                         label: 'Cash',
-                        onPressed: (selected) {
-                          if (selected) _onDonationTypeSelected('Cash');
-                        },
+                        onPressed: _onDonationTypeSelected,
+                        onRemoved: _onDonationTypeRemoved,
                       ),
                     ],
                   ),
@@ -238,16 +246,14 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                       DonationContainer(
                         iconData: DonationIcons.bed,
                         label: 'Furniture',
-                        onPressed: (selected) {
-                          if (selected) _onDonationTypeSelected('Furniture');
-                        },
+                        onPressed: _onDonationTypeSelected,
+                        onRemoved: _onDonationTypeRemoved,
                       ),
                       DonationContainer(
                         iconData: DonationIcons.dot_3,
                         label: 'Others',
-                        onPressed: (selected) {
-                          if (selected) _onDonationTypeSelected('Others');
-                        },
+                        onPressed: _onDonationTypeSelected,
+                        onRemoved: _onDonationTypeRemoved,
                       ),
                     ],
                   ),
@@ -444,7 +450,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                             return 'Please enter a valid number';
                           }
                           if (value.length != 11) {
-                            return 'Contact number must be 10 digits long';
+                            return 'Contact number must be 11 digits long';
                           }
                           return null;
                         },
@@ -695,65 +701,71 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                                 isPickupOrDropoff: _selectedModeOfDelivery,
                                 id: donationId,
                                 donatorId: userId,
-                                contactNo: _selectedContactNum.toString(),
+                                contactNo: _selectedContactNum,
                                 organizationId: widget.organizationId,
                                 weight: _selectedWeight,
                                 pickupAddresses: _addresses,
                                 imagesOfDonationsList: selectedImagesUrlLists,
-                                dateTime: DateFormat('dd/MM/yyyy').parse(
-                                    DateFormat('dd/MM/yyyy')
-                                        .format(_selectedDate!)),
+                                dateTime: DateTime(
+                                            _selectedDate!.year,
+                                            _selectedDate!.month,
+                                            _selectedDate!.day,
+                                            _selectedTime!.hour,
+                                            _selectedTime!.minute
+                                          ),
                                 status: 'Pending');
                             Map<String, dynamic> result;
+                            print(donationDetails.categories);
+                            print(donationDetails.dateTime);
+                            print(donationDetails.contactNo);
+                      //       result = await context
+                      //           .read<DonorProvider>()
+                      //           .addDonationModel(donationDetails);
 
-                            result = await context
-                                .read<DonorProvider>()
-                                .addDonationModel(donationDetails);
+                      //       if (!result['success']) {
+                      //         throw result['error'];
+                      //       }
 
-                            if (!result['success']) {
-                              throw result['error'];
-                            }
+                      //       if (context.mounted) {
+                      //         result = await context
+                      //             .read<UserProvider>()
+                      //             .updateUserModel(userId!, {
+                      //           'donationsList':
+                      //               FieldValue.arrayUnion([donationId]),
+                      //         });
 
-                            if (context.mounted) {
-                              result = await context
-                                  .read<UserProvider>()
-                                  .updateUserModel(userId!, {
-                                'donationsList':
-                                    FieldValue.arrayUnion([donationId]),
-                              });
+                      //         if (!result['success']) {
+                      //           throw result['error'];
+                      //         }
+                      //       }
 
-                              if (!result['success']) {
-                                throw result['error'];
-                              }
-                            }
+                      //       if (context.mounted) {
+                      //         result = await context
+                      //             .read<UserProvider>()
+                      //             .updateUserModel(widget.organizationId!, {
+                      //           'donationsList':
+                      //               FieldValue.arrayUnion([donationId]),
+                      //         });
+                      //         if (!result['success']) {
+                      //           throw result['error'];
+                      //         }
+                      //       }
 
-                            if (context.mounted) {
-                              result = await context
-                                  .read<UserProvider>()
-                                  .updateUserModel(widget.organizationId!, {
-                                'donationsList':
-                                    FieldValue.arrayUnion([donationId]),
-                              });
-                              if (!result['success']) {
-                                throw result['error'];
-                              }
-                            }
+                      //       if (context.mounted) {
+                      //         ScaffoldMessenger.of(context)
+                      //             .showSnackBar(const SnackBar(
+                      //           content: Text('Donation added successfully!'),
+                      //           backgroundColor: Colors.green,
+                      //         ));
+                      //       }
 
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                content: Text('Donation added successfully!'),
-                                backgroundColor: Colors.green,
-                              ));
-                            }
+                      //       if (context.mounted) {
+                      //         Navigator.pop(context);
+                      //       }
 
-                            if (context.mounted) {
-                              Navigator.pop(context);
-                            }
-
-                            setState(() {
-                              _isLoading = false;
-                            });
+                      //       setState(() {
+                      //         _isLoading = false;
+                      //       });
                           } catch (error) {
                             if (context.mounted) {
                               ScaffoldMessenger.of(context)
