@@ -1,3 +1,4 @@
+import 'package:elbi_donation_app/components/donor_view_donation_card.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/donation_card.dart';
@@ -69,7 +70,7 @@ class _UserDonationHistoryState extends State<UserDonationHistory> {
                               final donationInformation =
                                   snapshot.data!['donationModel'];
                               return GestureDetector(
-                                child: DonationCard(
+                                child: DonorDonationCard(
                                   donationInformation: donationInformation,
                                 ),
                                 onTap: () {

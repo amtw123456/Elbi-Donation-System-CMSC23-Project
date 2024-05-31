@@ -6,22 +6,22 @@ import 'package:elbi_donation_app/providers/donor_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-class DonationCard extends StatefulWidget {
+class DonorDonationCard extends StatefulWidget {
   final DonationModel donationInformation;
 
-  const DonationCard({super.key, required this.donationInformation});
+  const DonorDonationCard({super.key, required this.donationInformation});
 
   @override
-  State<DonationCard> createState() => _DonationCardState();
+  State<DonorDonationCard> createState() => _DonorDonationCardState();
 }
 
-class _DonationCardState extends State<DonationCard> {
+class _DonorDonationCardState extends State<DonorDonationCard> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>>(
       future: context
           .read<UserProvider>()
-          .getUserModel(widget.donationInformation.donatorId!),
+          .getUserModel(widget.donationInformation.organizationId!),
       builder:
           (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -84,7 +84,7 @@ class _DonationCardState extends State<DonationCard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${userInformation.firstName} ${userInformation.lastName}',
+                            '${userInformation.orgName}',
                             style: const TextStyle(fontFamily: 'Poppins'),
                           ),
                           const SizedBox(height: 10),
