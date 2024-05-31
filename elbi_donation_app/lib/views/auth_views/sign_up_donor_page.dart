@@ -212,14 +212,14 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   const Text(
                     'Please provide a proof of legitimacy',
                     style: TextStyle(fontFamily: 'Poppins'),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   // UPLOAD IMAGE
@@ -243,19 +243,19 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title:
-                                          Text("storage Permission Required"),
-                                      content: Text(
+                                      title: const Text(
+                                          "storage Permission Required"),
+                                      content: const Text(
                                           "Please grant stroage permission in settings to enable storage access."),
                                       actions: <Widget>[
                                         ElevatedButton(
-                                          child: Text("CANCEL"),
+                                          child: const Text("CANCEL"),
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                           },
                                         ),
                                         ElevatedButton(
-                                          child: Text("SETTINGS"),
+                                          child: const Text("SETTINGS"),
                                           onPressed: () {
                                             openAppSettings(); // This will open the app settings where the user can enable permissions.
                                           },
@@ -266,6 +266,16 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                 );
                               }
                             },
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              padding: const EdgeInsets.all(20),
+                              backgroundColor: Colors.grey[50],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                                side: const BorderSide(
+                                    color: Color(0xFF37A980), width: 2),
+                              ),
+                            ),
                             child: Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment
@@ -275,7 +285,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                       size: 40,
                                       color: Colors.grey[
                                           500]), // Adjust size and color as needed
-                                  SizedBox(
+                                  const SizedBox(
                                       height:
                                           10), // Add some space between the icon and the text
                                   Text(
@@ -287,16 +297,6 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                             'Poppins'), // Adjust text style as needed
                                   ),
                                 ],
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              elevation: 0,
-                              padding: const EdgeInsets.all(20),
-                              backgroundColor: Colors.grey[50],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                side: BorderSide(
-                                    color: const Color(0xFF37A980), width: 2),
                               ),
                             ),
                           ),
@@ -337,31 +337,18 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                   //   },
                   //   icon: const Icon(Icons.upload),
                   // ),
-                  SizedBox(height: 20),
-                  Row(
+                  const SizedBox(height: 20),
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text('or'),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   // TAKE IMAGE
                   SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.camera_alt, color: Color(0xFF37A980)),
-                            SizedBox(width: 5),
-                            Text(
-                              'Open Camera & Take Photo',
-                              style: TextStyle(
-                                  color: Color(0xFF37A980),
-                                  fontFamily: 'Poppins'),
-                            ),
-                          ],
-                        ),
                         onPressed: () async {
                           if (await Permission.camera.request().isGranted) {
                             file = await ImagePicker()
@@ -373,18 +360,19 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: Text("Camera Permission Required"),
-                                  content: Text(
+                                  title:
+                                      const Text("Camera Permission Required"),
+                                  content: const Text(
                                       "Please grant camera permission in settings to enable camera access."),
                                   actions: <Widget>[
                                     ElevatedButton(
-                                      child: Text("CANCEL"),
+                                      child: const Text("CANCEL"),
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
                                     ),
                                     ElevatedButton(
-                                      child: Text("SETTINGS"),
+                                      child: const Text("SETTINGS"),
                                       onPressed: () {
                                         openAppSettings(); // This will open the app settings where the user can enable permissions.
                                       },
@@ -402,6 +390,19 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             )),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.camera_alt, color: Color(0xFF37A980)),
+                            SizedBox(width: 5),
+                            Text(
+                              'Open Camera & Take Photo',
+                              style: TextStyle(
+                                  color: Color(0xFF37A980),
+                                  fontFamily: 'Poppins'),
+                            ),
+                          ],
+                        ),
                       )),
                   // IconButton.outlined(
                   //   onPressed: () async {
@@ -441,7 +442,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                   const SizedBox(height: 50),
                   file != null
                       ? Image.file(File(file!.path))
-                      : Row(
+                      : const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text("Please select an image",
@@ -449,7 +450,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                                     fontFamily: 'Poppins', color: Colors.red))
                           ],
                         ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   )
                 ],
@@ -512,6 +513,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                               contactNumber: contactNumberController.text,
                               organizationDriveList: [],
                               donationsList: [],
+                              status: _isOrganization ? "Open" : null,
                               type: _isOrganization ? "org" : "donor",
                               proofOfLegitimacyImageUrlLink: imageUrl,
                               isApprovedByAdmin:
@@ -593,7 +595,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (returnedImage == null) return;
     setState(() {
-      _selectedImage = File(returnedImage!.path);
+      _selectedImage = File(returnedImage.path);
     });
   }
 
@@ -602,7 +604,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (returnedImage == null) return;
     setState(() {
-      _selectedImage = File(returnedImage!.path);
+      _selectedImage = File(returnedImage.path);
     });
   }
 }

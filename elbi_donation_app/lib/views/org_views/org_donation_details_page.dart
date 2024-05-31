@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elbi_donation_app/providers/donor_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -23,7 +24,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
 
   Widget imageCarousel(List<String>? donationUrlLists) {
     return donationUrlLists != []
-        ? Container(
+        ? SizedBox(
             height: 100,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -32,25 +33,25 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                 return Container(
                   width: 100,
                   height: 100,
-                  margin: EdgeInsets.symmetric(horizontal: 5),
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
                   decoration: BoxDecoration(
                       color: Colors.green,
                       borderRadius: BorderRadius.circular(5)),
-                  child: donationUrlLists![index] != null
+                  child: donationUrlLists[index] != null
                       ? Image.network(
                           donationUrlLists[index],
                           width: 100,
                           height: 100,
                           fit: BoxFit.cover,
                         )
-                      : Center(
+                      : const Center(
                           child: Text('No image selected'),
                         ),
                 );
               },
             ),
           )
-        : Container(child: Text("red"));
+        : Container(child: const Text("red"));
   }
 
   bool pickup = true;
@@ -130,7 +131,7 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                               .donationDetails.imagesOfDonationsList!.isNotEmpty
                       ? imageCarousel(
                           widget.donationDetails.imagesOfDonationsList)
-                      : Text('No images available'),
+                      : const Text('No images available'),
 
                   const SizedBox(height: 20),
                   // LOCATION
@@ -373,8 +374,8 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                                     organizationDriveList[
                                         drives.indexOf(selectedDrive)],
                                     {
-                                  'listOfDonationsId':
-                                      widget.donationDetails.id,
+                                  'listOfDonationsId': FieldValue.arrayUnion(
+                                      [widget.donationDetails.id]),
                                 });
 
                             if (!result['success']) {

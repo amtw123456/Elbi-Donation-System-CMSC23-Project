@@ -27,6 +27,7 @@ class OrgDonationDrivePageState extends State<OrgDonationDrivePage> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     String? userId = context.read<UserAuthProvider>().user?.uid ?? "";
     return Scaffold(
@@ -43,7 +44,7 @@ class OrgDonationDrivePageState extends State<OrgDonationDrivePage> {
         automaticallyImplyLeading: false,
       ),
       body: FutureBuilder<Map<String, dynamic>>(
-        future: context.read<UserProvider>().getUserModel(userId!),
+        future: context.read<UserProvider>().getUserModel(userId),
         builder: (BuildContext context,
             AsyncSnapshot<Map<String, dynamic>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -56,18 +57,18 @@ class OrgDonationDrivePageState extends State<OrgDonationDrivePage> {
             final organizationDriveIds =
                 userInformation['userModel'].organizationDriveList;
             return organizationDriveIds.length == 0
-                ? Center(child: Text("No Donation Drives yet!"))
+                ? const Center(child: Text("No Donation Drives yet!"))
                 : SingleChildScrollView(
                     child: Padding(
-                      padding: EdgeInsets.all(30),
+                      padding: const EdgeInsets.all(30),
                       child: Column(
                         children: [
                           ListView.separated(
                             separatorBuilder:
                                 (BuildContext context, int index) =>
-                                    SizedBox(height: 25),
+                                    const SizedBox(height: 25),
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             itemCount: organizationDriveIds.length,
                             itemBuilder: (context, index) {
                               return GestureDetector(
@@ -97,7 +98,7 @@ class OrgDonationDrivePageState extends State<OrgDonationDrivePage> {
                     ),
                   );
           } else {
-            return Text('No data available');
+            return const Text('No data available');
           }
         },
       ),
@@ -105,15 +106,15 @@ class OrgDonationDrivePageState extends State<OrgDonationDrivePage> {
         onPressed: () async {
           final value = await Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddDonationDrive()),
+            MaterialPageRoute(builder: (context) => const AddDonationDrive()),
           ).then((_) => setState(() {}));
         },
-        child: Icon(
+        backgroundColor: Colors.white,
+        shape: const CircleBorder(),
+        child: const Icon(
           Icons.add,
           color: Color(0xFF37A980),
         ),
-        backgroundColor: Colors.white,
-        shape: CircleBorder(),
       ),
     );
   }

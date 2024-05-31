@@ -30,11 +30,17 @@ dependencies:
   qr_flutter: ^4.1.0
   qr_bar_code_scanner_dialog: ^0.0.5
   qr_code_scanner: ^1.0.1
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "images/app_icon.png"
 
 flutter:
   # The following line ensures that the Material Icons font is
