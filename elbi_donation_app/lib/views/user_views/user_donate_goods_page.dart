@@ -50,11 +50,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
   List<File> _selectedImageLists = [];
   List<String> selectedImagesUrlLists = [];
 
-  final List<String> _addresses = [
-    '123 Main St',
-    '456 Oak Ave',
-    '789 Pine Rd',
-  ];
+  List<String> _addresses = [];
 
   final List<String> _modeOfDelivery = ['Drop off', 'Pick up'];
 
@@ -175,9 +171,26 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
         : Container(child: Text("red"));
   }
 
+  Future<List<String>> fetchAddresses(userid) async {
+    final userModel = await context.read<UserProvider>().getUserModel(userid);
+    // print(await userModel['userModel'].address);
+    return userModel['userModel'].address;
+  }
+
+  Future<List<String>>? _addressesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    final userId = context.read<UserAuthProvider>().user?.uid;
+    _addressesFuture = fetchAddresses(userId); 
+  }
+
   @override
   Widget build(BuildContext context) {
     final userId = context.read<UserAuthProvider>().user?.uid;
+    // final futureAddress = context.read<UserProvider>().getUserModel(userId!);
+
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -377,7 +390,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                           decoration: InputDecoration(
                             hintText: _selectedTime == null
                                 ? 'Select Time'
-                                : '${_selectedTime!.hour}:${_selectedTime!.minute}',
+                                : formatTimeOfDay(_selectedTime!),
                             hintStyle: TextStyle(
                                 fontWeight: FontWeight.normal,
                                 fontFamily: 'Poppins',
@@ -399,42 +412,57 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                   // ADDRESS SELECTOR
                   Visibility(
                     visible: !dropOffSelected!,
-                    child: DropdownButtonFormField<String>(
-                      decoration: const InputDecoration(
-                        hintText: 'Select Address',
-                        hintStyle: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.normal,
-                            color: Color(0XFFD2D2D2)),
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0XFFD2D2D2)),
-                          borderRadius: BorderRadius.all(Radius.circular(4)),
-                        ),
-                      ),
-                      value: _selectedAddress,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedAddress = newValue;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please select a mode of delivery';
-                        }
-                        return null;
-                      },
-                      items: _addresses.map((String address) {
-                        return DropdownMenuItem<String>(
-                          value: address,
-                          child: Text(address,
-                              style: const TextStyle(
+                    child: FutureBuilder<List<String>>(
+                      future: _addressesFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return DropdownButtonFormField(
+                            items: [], 
+                            onChanged: (value) {}
+                          ); // Show a loading indicator while fetching data
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          return DropdownButtonFormField<String>(
+                            decoration: const InputDecoration(
+                              hintText: 'Select Address',
+                              hintStyle: TextStyle(
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.normal,
-                                  color: Colors.black)),
-                        );
-                      }).toList(),
-                    ),
+                                  color: Color(0XFFD2D2D2)),
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Color(0XFFD2D2D2)),
+                                borderRadius: BorderRadius.all(Radius.circular(4)),
+                              ),
+                            ),
+                            value: _selectedAddress,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _selectedAddress = newValue;
+                                _addresses = [_selectedAddress!];
+                              });
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please select a mode of delivery';
+                              }
+                              return null;
+                            },
+                            items: snapshot.data!.map((String address) {
+                              return DropdownMenuItem<String>(
+                                value: address,
+                                child: Text(address,
+                                    style: const TextStyle(
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.black)),
+                              );
+                            }).toList(),
+                          );
+                        }
+                      },
+                    )
                   ),
                   // CONTACT NUMBER
                   Visibility(
@@ -715,57 +743,58 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                                           ),
                                 status: 'Pending');
                             Map<String, dynamic> result;
-                            print(donationDetails.categories);
-                            print(donationDetails.dateTime);
-                            print(donationDetails.contactNo);
-                      //       result = await context
-                      //           .read<DonorProvider>()
-                      //           .addDonationModel(donationDetails);
+                            // print(donationDetails.categories);
+                            // print(donationDetails.dateTime);
+                            // print(donationDetails.contactNo);
+                            // print(donationDetails.pickupAddresses);
+                            result = await context
+                                .read<DonorProvider>()
+                                .addDonationModel(donationDetails);
 
-                      //       if (!result['success']) {
-                      //         throw result['error'];
-                      //       }
+                            if (!result['success']) {
+                              throw result['error'];
+                            }
 
-                      //       if (context.mounted) {
-                      //         result = await context
-                      //             .read<UserProvider>()
-                      //             .updateUserModel(userId!, {
-                      //           'donationsList':
-                      //               FieldValue.arrayUnion([donationId]),
-                      //         });
+                            if (context.mounted) {
+                              result = await context
+                                  .read<UserProvider>()
+                                  .updateUserModel(userId!, {
+                                'donationsList':
+                                    FieldValue.arrayUnion([donationId]),
+                              });
 
-                      //         if (!result['success']) {
-                      //           throw result['error'];
-                      //         }
-                      //       }
+                              if (!result['success']) {
+                                throw result['error'];
+                              }
+                            }
 
-                      //       if (context.mounted) {
-                      //         result = await context
-                      //             .read<UserProvider>()
-                      //             .updateUserModel(widget.organizationId!, {
-                      //           'donationsList':
-                      //               FieldValue.arrayUnion([donationId]),
-                      //         });
-                      //         if (!result['success']) {
-                      //           throw result['error'];
-                      //         }
-                      //       }
+                            if (context.mounted) {
+                              result = await context
+                                  .read<UserProvider>()
+                                  .updateUserModel(widget.organizationId!, {
+                                'donationsList':
+                                    FieldValue.arrayUnion([donationId]),
+                              });
+                              if (!result['success']) {
+                                throw result['error'];
+                              }
+                            }
 
-                      //       if (context.mounted) {
-                      //         ScaffoldMessenger.of(context)
-                      //             .showSnackBar(const SnackBar(
-                      //           content: Text('Donation added successfully!'),
-                      //           backgroundColor: Colors.green,
-                      //         ));
-                      //       }
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text('Donation added successfully!'),
+                                backgroundColor: Colors.green,
+                              ));
+                            }
 
-                      //       if (context.mounted) {
-                      //         Navigator.pop(context);
-                      //       }
+                            if (context.mounted) {
+                              Navigator.pop(context);
+                            }
 
-                      //       setState(() {
-                      //         _isLoading = false;
-                      //       });
+                            setState(() {
+                              _isLoading = false;
+                            });
                           } catch (error) {
                             if (context.mounted) {
                               ScaffoldMessenger.of(context)
