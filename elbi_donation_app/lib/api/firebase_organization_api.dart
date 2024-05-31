@@ -164,9 +164,9 @@ class fireBaseOrganizationAPI {
   Future<Map<String,dynamic>> updateQRStatus(String donationid) async {
     try {
       await FirebaseFirestore.instance
-        .collection('donationDriveModels')
+        .collection('donationModels')
         .doc(donationid)
-        .update({'status': 'Complete'});
+        .update({'status': 'Confirmed'});
 
       return {'success': true, 'message': 'successfully updated qr'};
     } on FirebaseException catch (e) {
