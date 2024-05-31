@@ -166,7 +166,7 @@ class fireBaseOrganizationAPI {
       await FirebaseFirestore.instance
         .collection('donationDriveModels')
         .doc(donationid)
-        .update({'status': 'Complete'});
+        .update({'status': 'Confirmed'});
 
       return {'success': true, 'message': 'successfully updated qr'};
     } on FirebaseException catch (e) {
