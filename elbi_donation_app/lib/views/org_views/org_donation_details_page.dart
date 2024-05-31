@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:elbi_donation_app/functions/messageSending.dart';
 import 'package:elbi_donation_app/providers/donor_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -402,6 +403,11 @@ class _OrgDonationDetailsState extends State<OrgDonationDetails> {
                                 backgroundColor: Colors.green,
                               ));
                             }
+
+                            // then send text to the donor
+                            sendMessage(
+                                'Greetings! Your donation donated at ${widget.donationDetails.dateTime} has been sent to the donation drive $selectedDrive. Thank you!',
+                                [widget.donationDetails.contactNo!]);
 
                             setState(() {
                               _isLoading = false;
