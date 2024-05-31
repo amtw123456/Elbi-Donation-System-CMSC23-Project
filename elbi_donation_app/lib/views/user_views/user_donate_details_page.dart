@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:elbi_donation_app/models/donation_model.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class UserDonationDetails extends StatefulWidget {
   DonationModel donationDetails;
@@ -249,6 +250,8 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
                           ),
                           onPressed: () {
                             // TODO: Generate QR
+                            _qrDialog(context, widget.donationDetails.id!);
+                            
                           },
                           child: const Text(
                             'Generate QR',
@@ -352,6 +355,39 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
           ],
         ),
       ),
+    );
+  }
+
+  void _qrDialog(BuildContext context, String id) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Scan the QR'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                height: 300,
+                width: 300,
+                child: QrImageView(
+                  data: id,
+                  version: QrVersions.auto,
+                  size: 300,
+                )
+              )
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              }, 
+              child: Text('Close'),
+            )
+          ],
+        );
+      }
     );
   }
 }

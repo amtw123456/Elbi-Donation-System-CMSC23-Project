@@ -18,6 +18,7 @@ class _OrgNavbarState extends State<OrgNavbar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
       selectedItemColor: Color(0xFF37A980),
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
@@ -27,6 +28,10 @@ class _OrgNavbarState extends State<OrgNavbar> {
         BottomNavigationBarItem(
           icon: Icon(Icons.card_giftcard_rounded),
           label: 'Drives',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.qr_code_scanner),
+          label: 'QR',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),

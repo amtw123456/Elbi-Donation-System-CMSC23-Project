@@ -43,4 +43,9 @@ class OrganizationProvider with ChangeNotifier {
     final result = await firebaseService.dereferenceDonation(donationId);
     return result;
   }
+
+  Future<Map<String, dynamic>> updateDonationStatusQR(String id) async {
+    final result = await firebaseService.updateQRStatus(id);
+    return result;
+  }
 }

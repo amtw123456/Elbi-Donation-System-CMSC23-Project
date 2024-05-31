@@ -4,6 +4,7 @@ import 'package:elbi_donation_app/views/org_views/org_profile.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/org_navbar.dart';
+import 'org_qr_scanner.dart';
 
 class OrgRouter extends StatefulWidget {
   const OrgRouter({Key? key});
@@ -39,8 +40,8 @@ class _UserRouterState extends State<OrgRouter> {
     return Scaffold(
       body: _buildPage(),
       bottomNavigationBar: OrgNavbar(
-        onItemTapped: _onItemTapped, // Pass the callback to the adminNavBar
-        selectedIndex: _selectedIndex, // Pass the selectedIndex to the adminNavBar
+        onItemTapped: _onItemTapped,
+        selectedIndex: _selectedIndex,
       ),
     );
   }
@@ -51,7 +52,9 @@ class _UserRouterState extends State<OrgRouter> {
         return const OrgHomePage();
       case 1:
         return const OrgDonationDrivePage();
-      case 2:
+      case 2: 
+        return const OrgQRScanner();
+      case 3:
         return const OrgProfile();
       default:
         return const SizedBox.shrink();
