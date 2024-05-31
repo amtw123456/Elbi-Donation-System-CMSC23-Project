@@ -67,11 +67,11 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
     });
   }
 
-void _onDonationTypeRemoved(bool isSelected, String donationType) {
-  setState(() {
-    _selectedDonationType.remove(donationType);
-  });
-}
+  void _onDonationTypeRemoved(bool isSelected, String donationType) {
+    setState(() {
+      _selectedDonationType.remove(donationType);
+    });
+  }
 
 
   void _handleCategorySelection(bool isSelected, String category) {
@@ -228,14 +228,14 @@ void _onDonationTypeRemoved(bool isSelected, String donationType) {
                       DonationContainer(
                         iconData: DonationIcons.mobile,
                         label: 'Electronics',
-      onPressed: _onDonationTypeSelected,
-      onRemoved: _onDonationTypeRemoved,
+                        onPressed: _onDonationTypeSelected,
+                        onRemoved: _onDonationTypeRemoved,
                       ),
                       DonationContainer(
                         iconData: DonationIcons.money_bill_alt,
                         label: 'Cash',
-      onPressed: _onDonationTypeSelected,
-      onRemoved: _onDonationTypeRemoved,
+                        onPressed: _onDonationTypeSelected,
+                        onRemoved: _onDonationTypeRemoved,
                       ),
                     ],
                   ),
@@ -246,14 +246,14 @@ void _onDonationTypeRemoved(bool isSelected, String donationType) {
                       DonationContainer(
                         iconData: DonationIcons.bed,
                         label: 'Furniture',
-      onPressed: _onDonationTypeSelected,
-      onRemoved: _onDonationTypeRemoved,
+                        onPressed: _onDonationTypeSelected,
+                        onRemoved: _onDonationTypeRemoved,
                       ),
                       DonationContainer(
                         iconData: DonationIcons.dot_3,
                         label: 'Others',
-      onPressed: _onDonationTypeSelected,
-      onRemoved: _onDonationTypeRemoved,
+                        onPressed: _onDonationTypeSelected,
+                        onRemoved: _onDonationTypeRemoved,
                       ),
                     ],
                   ),
@@ -706,12 +706,17 @@ void _onDonationTypeRemoved(bool isSelected, String donationType) {
                                 weight: _selectedWeight,
                                 pickupAddresses: _addresses,
                                 imagesOfDonationsList: selectedImagesUrlLists,
-                                dateTime: DateFormat('dd/MM/yyyy').parse(
-                                    DateFormat('dd/MM/yyyy')
-                                        .format(_selectedDate!)),
+                                dateTime: DateTime(
+                                            _selectedDate!.year,
+                                            _selectedDate!.month,
+                                            _selectedDate!.day,
+                                            _selectedTime!.hour,
+                                            _selectedTime!.minute
+                                          ),
                                 status: 'Pending');
                             Map<String, dynamic> result;
                             print(donationDetails.categories);
+                            print(donationDetails.dateTime);
                       //       result = await context
                       //           .read<DonorProvider>()
                       //           .addDonationModel(donationDetails);
