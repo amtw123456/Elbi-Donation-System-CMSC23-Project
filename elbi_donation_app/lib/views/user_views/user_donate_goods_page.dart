@@ -36,7 +36,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
   String? _selectedAddress;
-  int? _selectedContactNum;
+  String? _selectedContactNum;
 
   bool? dropOffSelected = false;
 
@@ -105,7 +105,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
 
   void _onContactNumSelected(String number) {
     setState(() {
-      _selectedContactNum = int.tryParse(number);
+      _selectedContactNum = number;
     });
   }
 
@@ -450,7 +450,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                             return 'Please enter a valid number';
                           }
                           if (value.length != 11) {
-                            return 'Contact number must be 10 digits long';
+                            return 'Contact number must be 11 digits long';
                           }
                           return null;
                         },
@@ -701,7 +701,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                                 isPickupOrDropoff: _selectedModeOfDelivery,
                                 id: donationId,
                                 donatorId: userId,
-                                contactNo: _selectedContactNum.toString(),
+                                contactNo: _selectedContactNum,
                                 organizationId: widget.organizationId,
                                 weight: _selectedWeight,
                                 pickupAddresses: _addresses,
@@ -717,6 +717,7 @@ class _DonateGoodsPageState extends State<DonateGoodsPage> {
                             Map<String, dynamic> result;
                             print(donationDetails.categories);
                             print(donationDetails.dateTime);
+                            print(donationDetails.contactNo);
                       //       result = await context
                       //           .read<DonorProvider>()
                       //           .addDonationModel(donationDetails);
