@@ -38,7 +38,7 @@ class _DonationDriveCardState extends State<DonationDriveCard> {
           return Container(
             width: double.infinity,
             height: 400,
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(
@@ -55,10 +55,11 @@ class _DonationDriveCardState extends State<DonationDriveCard> {
           return Text('Error: ${snapshot.error}');
         } else if (snapshot.hasData) {
           final donationDriveDetails = snapshot.data!;
+          print(donationDriveDetails);
           return Container(
             width: double.infinity,
             height: 400,
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(
@@ -80,7 +81,7 @@ class _DonationDriveCardState extends State<DonationDriveCard> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text(''),
+                            title: const Text(''),
                             content: SizedBox(
                               width: 400.0,
                               height: 120,
@@ -90,7 +91,8 @@ class _DonationDriveCardState extends State<DonationDriveCard> {
                                   const Text(
                                     'Are you sure you want to delete this donation drive?',
                                   ),
-                                  SizedBox(height: 20), // Add some spacing
+                                  const SizedBox(
+                                      height: 20), // Add some spacing
                                   Center(
                                     child: Row(
                                       mainAxisAlignment:
@@ -117,7 +119,8 @@ class _DonationDriveCardState extends State<DonationDriveCard> {
                                           },
                                           child: const Text('Delete'),
                                         ),
-                                        SizedBox(width: 10), // Add some spacing
+                                        const SizedBox(
+                                            width: 10), // Add some spacing
                                         ElevatedButton(
                                           child: const Text('Close'),
                                           onPressed: () {
@@ -153,7 +156,7 @@ class _DonationDriveCardState extends State<DonationDriveCard> {
                   child: donationDriveDetails['donationDriveModel']
                               .donationDriveImageCover ==
                           null
-                      ? Center(
+                      ? const Center(
                           child: Text('No image available'),
                         )
                       : FittedBox(
@@ -170,7 +173,8 @@ class _DonationDriveCardState extends State<DonationDriveCard> {
                 Text(
                     donationDriveDetails['donationDriveModel']
                         .donationDriveName,
-                    style: TextStyle(fontFamily: "Poppins", fontSize: 20)),
+                    style:
+                        const TextStyle(fontFamily: "Poppins", fontSize: 20)),
                 Text(
                   donationDriveDetails['donationDriveModel']
                       .donationDriveDescription,
@@ -179,7 +183,7 @@ class _DonationDriveCardState extends State<DonationDriveCard> {
             ),
           );
         } else {
-          return Text('No data available');
+          return const Text('No data available');
         }
       },
     );
