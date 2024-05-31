@@ -85,13 +85,13 @@ class _UserDonationDetailsState extends State<UserDonationDetails> {
 
             const SizedBox(height: 20),
 // LOCATION
-            const Row(
+            Row(
               children: [
                 Icon(
                   Icons.location_pin,
                   color: Color(0xFF37A980),
                 ),
-                Expanded(child: Text("Address goes here")),
+                Expanded(child: Text(widget.donationDetails.pickupAddresses![0])),
               ],
             ),
             const SizedBox(height: 20),
