@@ -62,11 +62,21 @@ class _DonationCardState extends State<DonationCard> {
                 ),
                 const SizedBox(height: 18),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Image placeholder
-                    Icon(
-                      Icons.person,
-                      size: 60.0, // Adjust the size as needed
+                    Container(
+                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      height: 75, 
+                      width: 75, 
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(5)
+                      ),
+                      child: widget.donationInformation.imagesOfDonationsList != null &&
+                            widget.donationInformation.imagesOfDonationsList!.isNotEmpty
+                            ? Image.network(widget.donationInformation.imagesOfDonationsList![0])
+                            : Image.network('')
                     ),
 
                     Expanded(
