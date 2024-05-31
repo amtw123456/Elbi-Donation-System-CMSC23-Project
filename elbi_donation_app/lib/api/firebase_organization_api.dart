@@ -160,4 +160,17 @@ class fireBaseOrganizationAPI {
       return {'success': false, 'error': 'Error: $e'};
     }
   }
+
+  Future<Map<String,dynamic>> updateQRStatus(String donationid) async {
+    try {
+      await FirebaseFirestore.instance
+        .collection('donationDriveModels')
+        .doc(donationid)
+        .update({'status': 'Complete'});
+
+      return {'success': true, 'message': 'successfully updated qr'};
+    } on FirebaseException catch (e) {
+      return {'success': false, 'message': e};
+    }
+  }
 }
