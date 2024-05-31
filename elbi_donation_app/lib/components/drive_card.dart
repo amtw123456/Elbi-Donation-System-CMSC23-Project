@@ -55,7 +55,6 @@ class _DonationDriveCardState extends State<DonationDriveCard> {
           return Text('Error: ${snapshot.error}');
         } else if (snapshot.hasData) {
           final donationDriveDetails = snapshot.data!;
-          print(donationDriveDetails);
           return Container(
             width: double.infinity,
             height: 400,
