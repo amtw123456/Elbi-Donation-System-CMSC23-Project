@@ -4,28 +4,55 @@ import 'donation_icons_icons.dart';
 class DonationContainer extends StatefulWidget {
   final IconData iconData;
   final String label;
-  final Function(bool) onPressed;
+  final Function(bool, String) onPressed;
+  final bool initiallySelected;
+  final Function(bool, String) onRemoved;
 
-  const DonationContainer({required this.iconData, required this.label, required this.onPressed, Key? key}) : super(key: key);
+  const DonationContainer({
+    required this.iconData,
+    required this.label,
+    required this.onPressed,
+    this.initiallySelected = false,
+    required this.onRemoved,
+    Key? key,
+  }) : super(key: key);
 
   @override
   _DonationContainerState createState() => _DonationContainerState();
 }
 
 class _DonationContainerState extends State<DonationContainer> {
+  late bool _isSelected;
   Color _iconColor = const Color(0XFFD2D2D2); 
   Color _backgroundColor = Colors.white;
   Color _textColor = const Color(0XFFD2D2D2);
   Color _borderColor = const Color(0XFFD2D2D2);
 
+  @override
+  void initState() {
+    super.initState();
+    _isSelected = widget.initiallySelected;
+    if (_isSelected) {
+      _iconColor = Colors.white;
+      _backgroundColor = const Color(0xFF37A980);
+      _textColor = Colors.white;
+      _borderColor = const Color(0xFF37A980);
+    }
+  }
+
   void _changeColor() {
     setState(() {
-      _borderColor = _borderColor == const Color(0XFFD2D2D2) ? const Color(0xFF37A980) : const Color(0XFFD2D2D2);
-      _backgroundColor = _backgroundColor == Colors.white ? const Color(0xFF37A980) : Colors.white;
-      _iconColor = _iconColor == const Color(0XFFD2D2D2) ? Colors.white : const Color(0XFFD2D2D2);
-      _textColor = _textColor == const Color(0XFFD2D2D2) ? Colors.white : const Color(0XFFD2D2D2);
+      _isSelected = !_isSelected;
+      _borderColor = _isSelected ? const Color(0xFF37A980) : const Color(0XFFD2D2D2);
+      _backgroundColor = _isSelected ? const Color(0xFF37A980) : Colors.white;
+      _iconColor = _isSelected ? Colors.white : const Color(0XFFD2D2D2);
+      _textColor = _isSelected ? Colors.white : const Color(0XFFD2D2D2);
     });
-    widget.onPressed(true);
+    if (_isSelected) {
+      widget.onPressed(_isSelected, widget.label);
+    } else {
+      widget.onRemoved(_isSelected, widget.label); // Call the onRemoved callback
+    }
   }
 
   @override
@@ -48,14 +75,13 @@ class _DonationContainerState extends State<DonationContainer> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: 
-                  widget.label == 'Clothes' 
-                  ? const EdgeInsets.only(right: 26.0) 
-                  : widget.label == 'Cash' 
-                  ? const EdgeInsets.only(right: 19.0) 
-                  : widget.label == 'Furniture'
-                  ? const EdgeInsets.only(right: 18)
-                  : EdgeInsets.zero,
+              padding: widget.label == 'Clothes'
+                  ? const EdgeInsets.only(right: 26.0)
+                  : widget.label == 'Cash'
+                      ? const EdgeInsets.only(right: 19.0)
+                      : widget.label == 'Furniture'
+                          ? const EdgeInsets.only(right: 18)
+                          : EdgeInsets.zero,
               child: Icon(widget.iconData, size: 75, color: _iconColor),
             ),
             Text(widget.label, style: TextStyle(fontFamily: 'Poppins', color: _textColor)),
