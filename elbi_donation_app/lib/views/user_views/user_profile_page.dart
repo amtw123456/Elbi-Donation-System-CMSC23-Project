@@ -7,7 +7,6 @@ import 'package:elbi_donation_app/providers/user_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
 
@@ -20,11 +19,11 @@ class UserProfileState extends State<UserProfile> {
 
   final TextEditingController _addressController = TextEditingController();
   bool _isLoading = false;
+
   File? _selectedImage;
 
   XFile? file;
   String imageUrl = '';
-
 
   late TextEditingController contactNumberController = TextEditingController();
   late TextEditingController descriptionController = TextEditingController();
@@ -72,13 +71,18 @@ class UserProfileState extends State<UserProfile> {
         actions: [
           TextButton(
             onPressed: () {
-              context.read<UserProvider>().getUserModel(userId!).then((userDetails) {
+              context
+                  .read<UserProvider>()
+                  .getUserModel(userId!)
+                  .then((userDetails) {
                 OpenEditDialog(
-                  userId, userDetails['userModel'].contactNumber, userDetails['userModel'].orgDescription, userDetails['userModel'].proofOfLegitimacyImageUrlLink
-                );
+                    userId,
+                    userDetails['userModel'].contactNumber,
+                    userDetails['userModel'].orgDescription,
+                    userDetails['userModel'].proofOfLegitimacyImageUrlLink);
               });
             },
-            child: Icon(Icons.edit),
+            child: const Icon(Icons.edit),
           ),
         ],
       ),
@@ -95,7 +99,7 @@ class UserProfileState extends State<UserProfile> {
                 builder: (BuildContext context,
                     AsyncSnapshot<Map<String, dynamic>> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
+                    return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else if (snapshot.hasData) {
@@ -111,19 +115,19 @@ class UserProfileState extends State<UserProfile> {
                               width: 150,
                               height: 150,
                               decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                    // TODO: Replace default picture
-                                    userInformation.proofOfLegitimacyImageUrlLink == ''
-                                    ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
-                                    : userInformation.proofOfLegitimacyImageUrlLink
-                                  )
-                                ),
-                                color: Colors.red
-                                ),
-                              ),
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(
+                                          // TODO: Replace default picture
+                                          userInformation
+                                                      .proofOfLegitimacyImageUrlLink ==
+                                                  ''
+                                              ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+                                              : userInformation
+                                                  .proofOfLegitimacyImageUrlLink)),
+                                  color: Colors.red),
+                            ),
                           ],
                         ),
                         // FOR NAME
@@ -132,7 +136,7 @@ class UserProfileState extends State<UserProfile> {
                           children: [
                             Text(
                               userInformation.username,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontFamily: "Poppins",
                                 fontSize: 32,
                                 fontWeight: FontWeight.w700,
@@ -170,21 +174,21 @@ class UserProfileState extends State<UserProfile> {
                         Container(
                           width: double.infinity,
                           height: 200,
-                          child: Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: userInformation.orgDescription == null
-                                ? Text('')
-                                : Text(
-                                    userInformation.orgDescription,
-                                    style: const TextStyle(
-                                        fontFamily: "Poppins", fontSize: 16),
-                                  ),
-                          ),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(5)),
                             border: Border.all(color: Colors.grey, width: 1.0),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: userInformation.orgDescription == null
+                                ? const Text('No biography available')
+                                : Text(
+                                    userInformation.orgDescription,
+                                    style: const TextStyle(
+                                        fontFamily: "Poppins", fontSize: 16),
+                                  ),
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -355,7 +359,7 @@ class UserProfileState extends State<UserProfile> {
                       ],
                     );
                   } else {
-                    return Text('No data available');
+                    return const Text('No data available');
                   }
                 },
               ),
@@ -366,21 +370,23 @@ class UserProfileState extends State<UserProfile> {
     );
   }
 
-Future<void> OpenEditDialog(String userId, String contactNumber, String? description, String imageUrl) => 
+  Future<void> OpenEditDialog(String userId, String contactNumber,
+          String? description, String imageUrl) =>
       showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (BuildContext context) {
-          final _formKey = GlobalKey<FormState>();
+          final formKey = GlobalKey<FormState>();
           final screenHeight = MediaQuery.of(context).size.height;
-          final contactNumberController = TextEditingController(text: contactNumber);
+          final contactNumberController =
+              TextEditingController(text: contactNumber);
           final descriptionController =
-              TextEditingController(text: description == null ? '' : description);
+              TextEditingController(text: description ?? '');
           return SingleChildScrollView(
             child: Container(
               height: screenHeight * 0.8,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(25.0),
@@ -388,14 +394,13 @@ Future<void> OpenEditDialog(String userId, String contactNumber, String? descrip
                 ),
               ),
               child: Form(
-                key: _formKey,
+                key: formKey,
                 child: Padding(
-                  padding: EdgeInsets.all(30),
+                  padding: const EdgeInsets.all(30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
-                      Text(
+                      const Text(
                         'Edit your details',
                         style: TextStyle(
                           fontFamily: 'Poppins',
@@ -412,38 +417,44 @@ Future<void> OpenEditDialog(String userId, String contactNumber, String? descrip
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: Text('Edit profile picture'),
+                                    title: const Text('Edit profile picture'),
                                     content: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
+                                      child: Column(children: [
                                         ElevatedButton(
-                                          onPressed: () async {
+                                            onPressed: () async {
                                               if (await Permission.storage
                                                   .request()
                                                   .isGranted) {
                                                 // _pickImageFromGallery();
-                                                file = await ImagePicker().pickImage(
-                                                    source: ImageSource.gallery);
+                                                file = await ImagePicker()
+                                                    .pickImage(
+                                                        source: ImageSource
+                                                            .gallery);
                                                 setState(() {});
                                               } else {
                                                 // Permission is not granted. Handle the scenario accordingly.
                                                 showDialog(
                                                   context: context,
-                                                  builder: (BuildContext context) {
+                                                  builder:
+                                                      (BuildContext context) {
                                                     return AlertDialog(
-                                                      title: Text(
+                                                      title: const Text(
                                                           "storage Permission Required"),
-                                                      content: Text(
+                                                      content: const Text(
                                                           "Please grant stroage permission in settings to enable storage access."),
                                                       actions: <Widget>[
                                                         ElevatedButton(
-                                                          child: Text("CANCEL"),
+                                                          child: const Text(
+                                                              "CANCEL"),
                                                           onPressed: () {
-                                                            Navigator.of(context).pop();
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
                                                           },
                                                         ),
                                                         ElevatedButton(
-                                                          child: Text("SETTINGS"),
+                                                          child: const Text(
+                                                              "SETTINGS"),
                                                           onPressed: () {
                                                             openAppSettings(); // This will open the app settings where the user can enable permissions.
                                                           },
@@ -454,58 +465,63 @@ Future<void> OpenEditDialog(String userId, String contactNumber, String? descrip
                                                 );
                                               }
                                             },
-                                          child: Text('Upload photo')
+                                            child: const Text('Upload photo')),
+                                        const SizedBox(
+                                          height: 10,
                                         ),
-                                        SizedBox(height: 10,),
                                         ElevatedButton(
-                                          onPressed: () async {
-                                            if (await Permission.camera
-                                                .request()
-                                                .isGranted) {
-                                              file = await ImagePicker()
-                                                  .pickImage(source: ImageSource.camera);
-                                              setState(() {});
-                                            } else {
-                                              // Permission is not granted. Handle the scenario accordingly.
-                                              showDialog(
-                                                context: context,
-                                                builder: (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: Text(
-                                                        "Camera Permission Required"),
-                                                    content: Text(
-                                                        "Please grant camera permission in settings to enable camera access."),
-                                                    actions: <Widget>[
-                                                      ElevatedButton(
-                                                        child: Text("CANCEL"),
-                                                        onPressed: () {
-                                                          Navigator.of(context).pop();
-                                                        },
-                                                      ),
-                                                      ElevatedButton(
-                                                        child: Text("SETTINGS"),
-                                                        onPressed: () {
-                                                          openAppSettings(); // This will open the app settings where the user can enable permissions.
-                                                        },
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
-                                            }
-                                          },
-                                          child: Text('Open camera')
-                                        ),
-                                      ]
+                                            onPressed: () async {
+                                              if (await Permission.camera
+                                                  .request()
+                                                  .isGranted) {
+                                                file = await ImagePicker()
+                                                    .pickImage(
+                                                        source:
+                                                            ImageSource.camera);
+                                                setState(() {});
+                                              } else {
+                                                // Permission is not granted. Handle the scenario accordingly.
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      title: const Text(
+                                                          "Camera Permission Required"),
+                                                      content: const Text(
+                                                          "Please grant camera permission in settings to enable camera access."),
+                                                      actions: <Widget>[
+                                                        ElevatedButton(
+                                                          child: const Text(
+                                                              "CANCEL"),
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                        ),
+                                                        ElevatedButton(
+                                                          child: const Text(
+                                                              "SETTINGS"),
+                                                          onPressed: () {
+                                                            openAppSettings(); // This will open the app settings where the user can enable permissions.
+                                                          },
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              }
+                                            },
+                                            child: const Text('Open camera')),
+                                      ]),
                                     ),
-                                  ),
                                     actions: <Widget>[
-                                      
                                       TextButton(
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
-                                        child: Text('Close'),
+                                        child: const Text('Close'),
                                       ),
                                     ],
                                   );
@@ -516,26 +532,23 @@ Future<void> OpenEditDialog(String userId, String contactNumber, String? descrip
                               width: 150,
                               height: 150,
                               decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                    // TODO: Replace default picture
-                                    imageUrl == ''
-                                    ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
-                                    : imageUrl
-                                  )
-                                ),
-                                color: Colors.red
-                              ),
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(
+                                          // TODO: Replace default picture
+                                          imageUrl == ''
+                                              ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+                                              : imageUrl)),
+                                  color: Colors.red),
                             ),
                           )
                         ],
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       TextFormField(
                           controller: contactNumberController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             fillColor: Colors.white,
                             border: OutlineInputBorder(
                               borderSide: BorderSide(color: Color(0XFFD2D2D2)),
@@ -547,13 +560,16 @@ Future<void> OpenEditDialog(String userId, String contactNumber, String? descrip
                             if (value == null || value.isEmpty) {
                               return 'Please enter a contact number';
                             }
+                            if (value.length != 11) {
+                              return 'Contact number must be of length 11';
+                            }
                             return null;
                           }),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       TextFormField(
                           controller: descriptionController,
                           maxLines: 7,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             fillColor: Colors.white,
                             border: OutlineInputBorder(
                               borderSide: BorderSide(color: Color(0XFFD2D2D2)),
@@ -567,7 +583,7 @@ Future<void> OpenEditDialog(String userId, String contactNumber, String? descrip
                             }
                             return null;
                           }),
-                      Spacer(),
+                      const Spacer(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -576,9 +592,9 @@ Future<void> OpenEditDialog(String userId, String contactNumber, String? descrip
                               width: double.infinity,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.all(10),
+                                  padding: const EdgeInsets.all(10),
                                   backgroundColor: Colors.red[600],
-                                  shape: RoundedRectangleBorder(
+                                  shape: const RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(5)),
                                   ),
@@ -596,46 +612,89 @@ Future<void> OpenEditDialog(String userId, String contactNumber, String? descrip
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           Expanded(
                             child: SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.all(10),
-                                  backgroundColor: Color(0xFF37A980),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5)),
+                                  style: ElevatedButton.styleFrom(
+                                    padding: const EdgeInsets.all(10),
+                                    backgroundColor: const Color(0xFF37A980),
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5)),
+                                    ),
                                   ),
-                                ),
-                                onPressed: () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    print(contactNumberController.text);
-                                    print(descriptionController.text);
-                                    Map<String, dynamic> updates = {
-                                      "contactNumber":
-                                          contactNumberController.text,
-                                      "orgDescription":
-                                          descriptionController.text
-                                    };
-                                    final result = await context
-                                        .read<UserProvider>()
-                                        .updateUserModel(userId, updates);
-                                    print(result);
-                                    Navigator.pop(context);
-                                  }
-                                },
-                                child: const Text(
-                                  'Confirm',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: "Poppins",
-                                      fontSize: 20),
-                                ),
-                              ),
+                                  onPressed: () async {
+                                    if (formKey.currentState!.validate()) {
+                                      try {
+                                        setState(() {
+                                          _isLoading = true;
+                                        });
+
+                                        Map<String, dynamic> updates = {
+                                          "contactNumber":
+                                              contactNumberController.text,
+                                          "orgDescription":
+                                              descriptionController.text
+                                        };
+
+                                        if (context.mounted) {
+                                          final result = await context
+                                              .read<UserProvider>()
+                                              .updateUserModel(userId, updates);
+                                          if (!result['success']) {
+                                            throw result['error'];
+                                          }
+                                        }
+
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(const SnackBar(
+                                            content: Text('Profile edited'),
+                                            backgroundColor: Colors.green,
+                                          ));
+                                        }
+
+                                        if (context.mounted) {
+                                          Navigator.pop(context);
+                                        }
+
+                                        setState(() {
+                                          _isLoading = false;
+                                        });
+                                      } catch (error) {
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(error.toString()),
+                                            backgroundColor: Colors.red,
+                                          ));
+                                        }
+
+                                        setState(() {
+                                          _isLoading = false;
+                                        });
+                                      }
+                                    }
+                                  },
+                                  child: _isLoading
+                                      ? Container(
+                                          width: 20,
+                                          height: 20,
+                                          padding: const EdgeInsets.all(4),
+                                          child:
+                                              const CircularProgressIndicator(
+                                            color: Colors.white,
+                                            strokeWidth: 2,
+                                          ),
+                                        )
+                                      : const Text('Confirm',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: "Poppins"))),
                             ),
                           )
                         ],

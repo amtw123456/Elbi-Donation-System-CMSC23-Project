@@ -23,7 +23,7 @@ class _UserDonationHistoryState extends State<UserDonationHistory> {
     final userId = context.read<UserAuthProvider>().user?.uid;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Donation History',
+        title: const Text('Donation History',
             style: TextStyle(
                 fontFamily: 'Poppins',
                 fontSize: 24,
@@ -42,17 +42,16 @@ class _UserDonationHistoryState extends State<UserDonationHistory> {
             final userInformation = snapshot.data!['userModel'];
             return SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.all(30),
+                padding: const EdgeInsets.all(30),
                 child: Column(
                   children: [
                     ListView.separated(
                       separatorBuilder: (BuildContext context, int index) =>
-                          SizedBox(height: 25),
+                          const SizedBox(height: 25),
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: userInformation.donationsList.length,
                       itemBuilder: (context, index) {
-                        print(userInformation.donationsList[index]);
                         return FutureBuilder<Map<String, dynamic>>(
                           future: context
                               .read<DonorProvider>()
@@ -69,8 +68,6 @@ class _UserDonationHistoryState extends State<UserDonationHistory> {
                             } else if (snapshot.hasData) {
                               final donationInformation =
                                   snapshot.data!['donationModel'];
-                              print("blue");
-                              print(snapshot.data);
                               return GestureDetector(
                                 child: DonationCard(
                                   donationInformation: donationInformation,
@@ -87,7 +84,7 @@ class _UserDonationHistoryState extends State<UserDonationHistory> {
                                 },
                               );
                             } else {
-                              return Text('No data available');
+                              return const Text('No data available');
                             }
                           },
                         );
@@ -98,7 +95,7 @@ class _UserDonationHistoryState extends State<UserDonationHistory> {
               ),
             );
           } else {
-            return Text('No data available');
+            return const Text('No data available');
           }
         },
       ),

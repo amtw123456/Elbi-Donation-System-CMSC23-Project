@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elbi_donation_app/models/donation_drive_model.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class fireBaseOrganizationAPI {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -82,23 +83,72 @@ class fireBaseOrganizationAPI {
     }
   }
 
+  // The reason why i commented it out is because that portion of the code
+  // can cause problems, because not all operations involve adding something
+  // in the list of donations, eg, delete
+
   Future<Map<String, dynamic>> updateDonationDrives(
       String id, Map<String, dynamic> updates) async {
     try {
       // Update the document with the given id
 
-      if (updates['listOfDonationsId'] != null) {
-        // Use FieldValue.arrayUnion for organizationDriveList
-        updates['listOfDonationsId'] = FieldValue.arrayUnion(
-            updates['listOfDonationsId'] is List
-                ? updates['listOfDonationsId']
-                : [updates['listOfDonationsId']]);
-      }
+      // if (updates['listOfDonationsId'] != null) {
+      //   // Use FieldValue.arrayUnion for organizationDriveList
+      //   updates['listOfDonationsId'] = FieldValue.arrayUnion(
+      //       updates['listOfDonationsId'] is List
+      //           ? updates['listOfDonationsId']
+      //           : [updates['listOfDonationsId']]);
+      // }
 
       await FirebaseFirestore.instance
           .collection("donationDriveModels")
           .doc(id)
           .update(updates);
+
+      return {'success': true, 'message': "Successfully updated!"};
+    } on FirebaseException catch (e) {
+      return {
+        'success': false,
+        'error': 'Firebase Error: ${e.code} : ${e.message}'
+      };
+    } catch (e) {
+      return {'success': false, 'error': 'Error: $e'};
+    }
+  }
+
+  // dereference the donation from donation drives and users
+  Future<Map<String, dynamic>> dereferenceDonation(String donationId) async {
+    try {
+      final CollectionReference donationDriveCollection =
+          db.collection("donationDriveModels");
+      final CollectionReference userCollection = db.collection("userModels");
+      final QuerySnapshot querySnapshotDonationDrive =
+          await donationDriveCollection
+              .where('listOfDonationsId', arrayContains: donationId)
+              .get();
+      final QuerySnapshot querySnapshotUser = await userCollection
+          .where('donationsList', arrayContains: donationId)
+          .get();
+
+      // because it's a delicate operation
+      WriteBatch batch = db.batch();
+
+      for (QueryDocumentSnapshot doc in querySnapshotDonationDrive.docs) {
+        DocumentReference docRef = donationDriveCollection.doc(doc.id);
+        batch.update(docRef, {
+          'listOfDonationsId': FieldValue.arrayRemove([donationId])
+        });
+      }
+
+      for (QueryDocumentSnapshot doc in querySnapshotUser.docs) {
+        DocumentReference docRef = userCollection.doc(doc.id);
+        batch.update(docRef, {
+          'donationsList': FieldValue.arrayRemove([donationId])
+        });
+      }
+
+      // finally commit
+      await batch.commit();
 
       return {'success': true, 'message': "Successfully updated!"};
     } on FirebaseException catch (e) {

@@ -12,15 +12,15 @@ class DonorProvider with ChangeNotifier {
     return result;
   }
 
+  Future<Map<String, dynamic>> deleteDonationModel(String id) async {
+    final result = await firebaseService.deleteDonationModel(id);
+    return result;
+  }
+
   Future<Map<String, dynamic>> updateDonationModel(
       String id, Map<String, dynamic> updates) async {
     final result = await firebaseService.updateDonationModel(id, updates);
     return result;
-  }
-
-  void deleteDonationModel(String id) async {
-    await firebaseService.deleteDonationModel(id);
-    notifyListeners();
   }
 
   Future<Map<String, dynamic>> getDonationModel(String id) async {

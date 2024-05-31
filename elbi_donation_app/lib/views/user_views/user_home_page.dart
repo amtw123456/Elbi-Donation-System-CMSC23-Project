@@ -16,7 +16,6 @@ class UserHomePage extends StatefulWidget {
 class _UserHomePageState extends State<UserHomePage> {
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
     final userId = context.read<UserAuthProvider>().user?.uid;
     final futureOrgList =
         context.read<UserProvider>().getAllVerifiedOrganizations();
@@ -30,7 +29,7 @@ class _UserHomePageState extends State<UserHomePage> {
           builder: (BuildContext context,
               AsyncSnapshot<Map<String, dynamic>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData) {
@@ -46,7 +45,7 @@ class _UserHomePageState extends State<UserHomePage> {
                     builder: (BuildContext context,
                         AsyncSnapshot<Map<String, dynamic>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
+                        return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       } else if (snapshot.hasData) {
