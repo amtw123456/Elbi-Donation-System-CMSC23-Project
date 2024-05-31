@@ -70,7 +70,122 @@ class OrgProfileState extends State<OrgProfile> {
                       // PROFILE IMAGE
                       _editing
                       ? GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Edit profile picture'),
+                                content: SingleChildScrollView(
+                                  child: Column(children: [
+                                    ElevatedButton(
+                                        onPressed: () async {
+                                          if (await Permission.storage
+                                              .request()
+                                              .isGranted) {
+                                            // _pickImageFromGallery();
+                                            file = await ImagePicker()
+                                                .pickImage(
+                                                    source: ImageSource
+                                                        .gallery);
+                                            setState(() {});
+                                          } else {
+                                            // Permission is not granted. Handle the scenario accordingly.
+                                            showDialog(
+                                              context: context,
+                                              builder:
+                                                  (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: const Text(
+                                                      "storage Permission Required"),
+                                                  content: const Text(
+                                                      "Please grant stroage permission in settings to enable storage access."),
+                                                  actions: <Widget>[
+                                                    ElevatedButton(
+                                                      child: const Text(
+                                                          "CANCEL"),
+                                                      onPressed: () {
+                                                        Navigator.of(
+                                                                context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                    ElevatedButton(
+                                                      child: const Text(
+                                                          "SETTINGS"),
+                                                      onPressed: () {
+                                                        openAppSettings(); // This will open the app settings where the user can enable permissions.
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          }
+                                        },
+                                        child: const Text('Upload photo')),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    ElevatedButton(
+                                        onPressed: () async {
+                                          if (await Permission.camera
+                                              .request()
+                                              .isGranted) {
+                                            file = await ImagePicker()
+                                                .pickImage(
+                                                    source:
+                                                        ImageSource.camera);
+                                            setState(() {});
+                                          } else {
+                                            // Permission is not granted. Handle the scenario accordingly.
+                                            showDialog(
+                                              context: context,
+                                              builder:
+                                                  (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: const Text(
+                                                      "Camera Permission Required"),
+                                                  content: const Text(
+                                                      "Please grant camera permission in settings to enable camera access."),
+                                                  actions: <Widget>[
+                                                    ElevatedButton(
+                                                      child: const Text(
+                                                          "CANCEL"),
+                                                      onPressed: () {
+                                                        Navigator.of(
+                                                                context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                    ElevatedButton(
+                                                      child: const Text(
+                                                          "SETTINGS"),
+                                                      onPressed: () {
+                                                        openAppSettings(); // This will open the app settings where the user can enable permissions.
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          }
+                                        },
+                                        child: const Text('Open camera')),
+                                  ]),
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('Close'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
                         child: Container(
                         width: 150,
                         height: 150,

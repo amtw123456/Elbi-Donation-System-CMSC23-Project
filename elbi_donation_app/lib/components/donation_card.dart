@@ -62,11 +62,21 @@ class _DonationCardState extends State<DonationCard> {
                 ),
                 const SizedBox(height: 18),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Image placeholder
-                    Icon(
-                      Icons.person,
-                      size: 60.0, // Adjust the size as needed
+                    Container(
+                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      height: 75, 
+                      width: 75, 
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(5)
+                      ),
+                      child: widget.donationInformation.imagesOfDonationsList != null &&
+                            widget.donationInformation.imagesOfDonationsList!.isNotEmpty
+                            ? Image.network(widget.donationInformation.imagesOfDonationsList![0])
+                            : Image.network('')
                     ),
 
                     Expanded(
@@ -78,36 +88,29 @@ class _DonationCardState extends State<DonationCard> {
                             style: const TextStyle(fontFamily: 'Poppins'),
                           ),
                           const SizedBox(height: 10),
-                          SizedBox(
-                            height: 20, // Adjust the height as needed
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount:
-                                  widget.donationInformation.categories!.length,
-                              itemBuilder: (context, index) {
-                                final category = widget
-                                    .donationInformation.categories![index];
+                          Wrap(
+                            spacing: 8.0, // horizontal gap between items
+                            runSpacing: 4.0, // vertical gap between lines
+                            children: List.generate(
+                              widget.donationInformation.categories!.length,
+                              (index) {
+                                final category = widget.donationInformation.categories![index];
                                 return Container(
-                                    margin: const EdgeInsets.only(
-                                        right:
-                                            8), // Add margin if you want some spacing between items
-                                    padding: const EdgeInsets.all(3),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: const Color(0xFF37A980),
-                                          width: 1),
-                                      borderRadius: BorderRadius.circular(5),
+                                  padding: const EdgeInsets.all(3),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF37A980),
+                                    border: Border.all(color: const Color(0xFF37A980), width: 1),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Text(
+                                    category,
+                                    style: const TextStyle(
+                                      fontSize: 9,
+                                      fontFamily: 'Poppins',
+                                      color: Colors.white,
                                     ),
-                                    child: Center(
-                                      child: Text(
-                                        category,
-                                        style: const TextStyle(
-                                          fontSize: 9,
-                                          fontFamily: 'Poppins',
-                                          color: Color(0xFF37A980),
-                                        ),
-                                      ),
-                                    ));
+                                  ),
+                                );
                               },
                             ),
                           ),
@@ -121,13 +124,15 @@ class _DonationCardState extends State<DonationCard> {
                         border: Border.all(
                             color: const Color(0xFFD2D2D2), width: 1),
                         borderRadius: BorderRadius.circular(5),
+                        color: widget.donationInformation.status == 'Confirmed' ?  Color(0xFF37A980) : Colors.white 
+
                       ),
                       child: Text(
                         widget.donationInformation.status ?? 'N/A',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontFamily: 'Poppins',
-                          color: Color(0xFFD2D2D2),
+                          color: widget.donationInformation.status == 'Confirmed' ? Colors.white :Color(0xFFD2D2D2),
                         ),
                       ),
                     )
