@@ -31,7 +31,7 @@ class _DonationCardState extends State<DonationCard> {
         } else if (snapshot.hasData) {
           final userInformation = snapshot.data!['userModel'];
           return Container(
-            height: 150,
+            height: 170,
             width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.white,

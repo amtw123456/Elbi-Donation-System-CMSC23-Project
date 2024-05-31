@@ -31,7 +31,8 @@ class _DonorDonationCardState extends State<DonorDonationCard> {
         } else if (snapshot.hasData) {
           final userInformation = snapshot.data!['userModel'];
           return Container(
-            height: 150,
+
+            height: 170,
             width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -66,7 +67,7 @@ class _DonorDonationCardState extends State<DonorDonationCard> {
                   children: [
                     // Image placeholder
                     Container(
-                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
                       height: 75, 
                       width: 75, 
                       decoration: BoxDecoration(
